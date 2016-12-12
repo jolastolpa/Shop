@@ -11,7 +11,7 @@ class Product {
     
 
 
-    public function __construct() {
+    public function __construct() { 
 
         $this->id = -1;
         $this->name = "";
@@ -22,7 +22,7 @@ class Product {
     }
 
     public function setName($NewName) { 
-        if(name>1){
+        if(strlen($NewName)>1){
         $this->name = $NewName;
         } else{ 
             throw new TooShortExeption('It should be more than 1 letter!');
@@ -30,15 +30,15 @@ class Product {
     }
 
     public function setPrice($newPrice) { 
-        if(price>0.00) { 
+        if($newPrice>0.00) { 
         $this->price = $newPrice; 
         }else { 
             throw new PriceExeption ('Price mustbe>0.00');
         }
     }
 
-    public function setDescripion($NewDescription) { 
-        if(description>1) { 
+    public function setDescription($NewDescription) { 
+        if(strlen($NewDescription)>1) { 
         $this->description = $NewDescription; 
         }else { 
             throw new TooShortExeption('It should be more than 1 letter!');
@@ -57,11 +57,11 @@ class Product {
     }
 
     public function getName() {
-        return $this->Name;
+        return $this->name;
     }
 
     public function getPrice() {
-        return $this->Price;
+        return $this->price;
     }
 
     public function getDescription() {
@@ -79,13 +79,19 @@ class Product {
         if ($this->id == -1) {
         
             $sql = "INSERT INTO Products(name, price, description,quantity,idCategory) "
-                 . "VALUES ('$this->name', '$this->price','$this->description', '$this->quantity','$this->idCategory) ";
+                 . "VALUES ('$this->name', $this->price,'$this->description', $this->quantity,$this->idCategory) ";
                     
             $result = $conn->query($sql);
             if ($result == true) {
                 $this->id = $conn->insert_id;
                 return true;
-            }
+           
+            } else { 
+            $sql="UPDATE Products SET name='$this->name' ,price=$this->price,"
+                    . "description='$this->description', quantity=$this->quantity,idCategory=$this->idCategory "
+                    . "WHERE id=$this->id ";
+        } 
+        return $conn->query($sql);
         } 
     }   
  
@@ -101,7 +107,7 @@ class Product {
             $loadedProduct->id = $row['id'];
             $loadedProduct->name = $row['name'];
             $loadedProduct->price = $row['price'];
-            $loadedProduct->description = $row['descrption']; 
+            $loadedProduct->description = $row['description']; 
             $loadedProduct->quantity = $row['quantity']; 
             $loadedProduct->idCategory = $row['idCategory'];
             return $loadedProduct;
@@ -119,7 +125,7 @@ class Product {
              $loadedProduct->id = $row['id'];
              $loadedProduct->name = $row['name'];
              $loadedProduct->price = $row['price'];
-             $loadedProduct->description = $row['descrption']; 
+             $loadedProduct->description = $row['description']; 
              $loadedProduct->quantity = $row['quantity']; 
              $loadedProduct->idCategory = $row['idCategory'];
                 $ret[] = $loadedProduct;
