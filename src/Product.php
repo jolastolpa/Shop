@@ -29,11 +29,11 @@ class Product {
           } 
     }
 
-    public function setPrice($newPrice) { 
-        if($newPrice>0.00) { 
-        $this->price = $newPrice; 
+    public function setPrice($NewPrice) { 
+        if($NewPrice>0.00) { 
+        $this->price = $NewPrice; 
         }else { 
-            throw new PriceExeption ('Price mustbe>0.00');
+            throw new ZeroExeption ('Must be >0');
         }
     }
 
@@ -44,11 +44,19 @@ class Product {
             throw new TooShortExeption('It should be more than 1 letter!');
         }
     }  
-    public function setQuantity($NewQuantity) {
-        $this->quantity = $NewQuantity;
+    public function setQuantity($NewQuantity) { 
+        if($NewQuantity>0) { 
+        $this->quantity = $NewQuantity; 
+        }else { 
+            throw new ZeroExeption ('Must be >0');
+        }
     } 
-    public function setIdCategory($NewIdCategory) {
-        $this->idCategory = $NewIdCategory;
+    public function setIdCategory($NewIdCategory) { 
+        if($NewIdCategory>0) { 
+        $this->idCategory = $NewIdCategory; 
+        }else { 
+            throw new ZeroExeption ('Must be >0');
+        }
     }
     
     
