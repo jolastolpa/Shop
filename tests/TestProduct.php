@@ -1,48 +1,62 @@
 <?php
 
 //require_once __DIR__.'/vendor/autoload.php'; // - mi ta ścieżka  nie działa,próbowąłam na wiele spodobób nie wiem czemu
-require_once '../src/Product.php';
 
-class TestProduct extends PHPUnit_Framework_TestCase { 
+// Poprawiona sciezka. Po wpisaniu w konsoli komendy; 
+// './tests/vendor/bin/phpunit tests/TestProduct.php'
+// gra i buczy! ;-)
+require_once __DIR__.'/../src/Product.php';
+
+
+class TestProduct extends PHPUnit_Framework_TestCase{ 
     
-    protected function setUp() { 
-        $this-> product=New Product();
+    private $product;
+    
+    // inicjacja obiektu klasy Product
+    protected function setUp(){ 
+        
+        $this->product = New Product();
     }
-    public function testIfCreationIsCorrect () { 
+    
+    // test dzialania konstruktora klasy Product
+    public function testIfCreationIsCorrect(){ 
         
-        $this->assertEquals('-1',$this->product->getId()); 
-        $this->assertEquals('',$this->product->getName());
-        $this->assertEquals('',$this->product->getPrice());    
-        $this->assertEquals('',$this->product->getDescription()); 
-        $this->assertEquals('',$this->product->getQuantity()); 
-        $this->assertEquals('',$this->product->getIdCategory()); 
-        
+        $this->assertEquals('-1', $this->product->getId()); 
+        $this->assertEquals('', $this->product->getName());
+        $this->assertEquals(0, $this->product->getPrice());    
+        $this->assertEquals('', $this->product->getDescription()); 
+        $this->assertEquals(0, $this->product->getQuantity()); 
+        $this->assertEquals(0, $this->product->getIdCategory());    
     }  
     
-    public function testSetGetName() {  
+    // testy seterow
+    public function testSetGetName(){  
+        
         $this->product->setName("desk"); 
-        $this->assertEquals("desk", $this->product->getName());
-        
+        $this->assertEquals("desk", $this->product->getName());  
     } 
-    public function testSetGetPrice (){  
-        $this->product->setPrice("20.00"); 
-        $this->assertEquals("20.00", $this->product->getPrice());
+    
+    public function testSetGetPrice(){  
         
+        $this->product->setPrice(20.00); 
+        $this->assertEquals(20.00, $this->product->getPrice());   
     } 
-     public function testSetGetDescription (){  
+    
+    public function testSetGetDescription(){  
+        
         $this->product->setDescription("beautiful"); 
-        $this->assertEquals("beautiful", $this->product->getDescription());
-        
-    }  
-     public function testSetGetQuantity (){  
-        $this->product->setQuantity("5"); 
-        $this->assertEquals("5", $this->product->getQuantity());
-        
-    }  
-     public function testSetGetIdCategory (){  
-        $this->product->setIdCategory("1"); 
-        $this->assertEquals("1", $this->product->getIdCategory());
-        
+        $this->assertEquals("beautiful", $this->product->getDescription()); 
     }  
     
+    public function testSetGetQuantity(){ 
+        
+        $this->product->setQuantity(5); 
+        $this->assertEquals(5, $this->product->getQuantity());
+    }  
+    
+    public function testSetGetIdCategory(){ 
+        
+        $this->product->setIdCategory(1); 
+        $this->assertEquals(1, $this->product->getIdCategory());
+    }  
 } 

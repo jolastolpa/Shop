@@ -1,8 +1,9 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../src/User.php';
 
 class TestUser extends PHPUnit_Framework_TestCase{
+    
     private $user;
     
     // inicjuje obiekt klasy User

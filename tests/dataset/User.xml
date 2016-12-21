@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <Users
+    <User
         id="-1"
         name="Marek"
         surname="Korcz"
         email="mark.korcz@gmail.com"
         password="$2y$10$oV3sZgPrPQ99Ch42CM8vZ.9pIOz.NJBsN6XjRT4Wo/CJR7Ot4YwFS"
         deliver_addr="Sezamkowa"
-        
     />
         <!-- password: 'tralala' -->
-    <Users
+    <User
         id="-1"
         name="Darek"
         surname="Talarek"
