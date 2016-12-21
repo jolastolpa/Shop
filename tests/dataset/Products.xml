@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>  
+    <Products id="1"
+              name="desk" 
+              price="1.00 " 
+              description="beautiful" 
+              quantity="5" 
+              idCategory="1"  /> 
+    
+     <Products id="2"
+              name="pencil" 
+              price="2.00 "
+              description="black" 
+              quantity="5" 
+              idCategory="5"  /> 
+   
+</dataset>
