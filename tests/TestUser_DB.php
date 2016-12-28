@@ -1,7 +1,6 @@
 <?php
-//require_once __DIR__.'/../vendor/autoload.php';  - mi ta ścieżka nie działa, nie wiem czemu
 
-require_once __DIR__.'/../src/Product.php';
+require_once __DIR__.'/../src/User.php';
 
 
 class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{ 
@@ -21,7 +20,7 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
     
     public function getDataSet(){  
         
-        return $this->createFlatXmlDataSet(__DIR__.'/dataset/Product.xml');  
+        return $this->createFlatXmlDataSet(__DIR__.'/dataset/User.xml');  
     } 
     
     static public function setUpBeforeClass(){ 
@@ -34,20 +33,20 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         );
     }   
     
-    public function testSaveAnewProduct(){ 
+    public function testSaveANewUser(){ 
          
-        $product = new Product(); 
-        $product->setName("name"); 
-        $product->setPrice(2);  
-        $product->setDescription("text"); 
-        $product->setQuantity(3);  
-        $product->setIdCategory(1);
-        $this->assertTrue($product->saveToDB(self::$mysqliConn));    
+        $user = new User(); 
+        $user->setName("Mario"); 
+        $user->setSurname('Bros');  
+        $user->setEmail('mario.bros@nintendo.com'); 
+        $user->setPassword('princess');  
+        $user->setDeliverAddress('castle');
+        $this->assertTrue($user->saveToDB(self::$mysqliConn));    
     }
        
     public function testIfIdReturnsProductName(){ 
          
-        $loadedProduct = Product::loadProductById(self::$mysqliConn,1); 
-        $this->assertEquals("desk", $loadedProduct->getName());
+        $loadedUser = Product::loadProductById(self::$mysqliConn, 1); 
+        $this->assertEquals('Mario', $loadedUser->getName());
     }       
 }

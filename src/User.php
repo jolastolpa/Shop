@@ -93,4 +93,95 @@ class User{
         
         return $this->deliver_addr;
     }
+    
+    
+    // operacje na bazie danych
+    public function saveToDB(mysqli $conn){
+        
+        if($this->id == -1){
+        
+            $sql = "INSERT INTO User(name, surname, email, password, deliver_adr)"
+                . "VALUES ('$this->name', $this->surname,'$this->email', $this->password,"
+                . "$this->deliver_addr)";
+                    
+            $result = $conn->query($sql);
+            if($result == true){
+                
+                $this->id = $conn->insert_id;
+                return true;
+            } 
+        }else{ 
+            
+            $sql="UPDATE User SET name='$this->name' ,surname='$this->surname',"
+                . "email='$this->email', password='$this->password',"
+                . "delive_add='$this->deliver_addr' WHERE id='$this->id'";
+            
+            $result = $conn->query($sql);
+            if($result == true){              
+                return true;
+            }
+        }
+        return false;
+    } 
+      
+    public function delete(mysqli $conn){
+        
+        if($this->id != -1){
+            
+            $sql = "DELETE FROM User WHERE id='$this->id'";
+            
+            $result = $conn->query($sql);
+            if($result == true){
+                $this->id = -1;
+                return true;
+            }
+            return false;
+        } 
+        return true; 
+    }
+ 
+    static public function loadUserById(mysqli $conn, $id){
+        
+        $sql = "SELECT * FROM User WHERE id='$id'";
+        
+        $result = $conn->query($sql); 
+    
+        if($result == true && $result->num_rows == 1){
+            
+            $row = $result->fetch_assoc();
+            $loadedUser = new Product();
+            $loadedUser->id = $row['id'];
+            $loadedUser->name = $row['name'];
+            $loadedUser->surname = $row['surname'];
+            $loadedUser->email = $row['email']; 
+            $loadedUser->password = $row['password']; 
+            $loadedUser->deliver_adr = $row['deliver_adr'];
+            
+            return $loadedUser;
+        }
+        return null; 
+    }
+
+    static public function loadAllUsers(mysqli $conn){
+        
+        $sql = "SELECT * FROM User";
+        $ret = [];
+        
+        $result = $conn->query($sql);
+        if($result == true && $result->num_rows != 0){
+            
+            foreach($result as $row){
+                $loadedUser = new Product();
+                $loadedUser->id = $row['id'];
+                $loadedUser->name = $row['name'];
+                $loadedUser->surname = $row['surname'];
+                $loadedUser->email = $row['email']; 
+                $loadedUser->password = $row['password']; 
+                $loadedUser->deliver_adr = $row['deliver_adr'];
+                
+                $ret[] = $loadedUser;
+            }
+        }
+        return $ret;
+    }    
 }

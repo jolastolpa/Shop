@@ -11,6 +11,9 @@ idCategory INT
 )
 */
 
+require_once 'TooShortExeption.php';
+require_once 'ZeroExeption.php';
+
 class Product{ 
     
     private $id; 
@@ -20,21 +23,21 @@ class Product{
     private $quantity; 
     private $idCategory;
     
-    public function __construct(){ 
+    public function __construct($name = "", $price = 0.00, $description = "", $quantity = 0, $idCategory = 0){ 
 
         $this->id = -1;
-        $this->name = "";
-        $this->price = 0.00;
-        $this->description = ""; 
-        $this->quantity = 0; 
-        $this->idCategory = 0;
+        $this->setName($name);
+        $this->setPrice($price);
+        $this->setDescription($description); 
+        $this->setQuantity($quantity); 
+        $this->setIdCategory($idCategory);
     }
 
     
     //setery
     public function setName($NewName){ 
         
-        if(strlen($NewName) > 1){
+        if(strlen($NewName) >= 0){
             $this->name = $NewName;
         }else{ 
             throw new TooShortExeption('It should be more than 1 letter!');
@@ -43,7 +46,7 @@ class Product{
 
     public function setPrice($NewPrice){ 
         
-        if($NewPrice > 0.00){ 
+        if($NewPrice >= 0.00){ 
             $this->price = $NewPrice; 
         }else{ 
             throw new ZeroExeption ('Must be > 0');
@@ -52,7 +55,7 @@ class Product{
 
     public function setDescription($NewDescription){ 
         
-        if(strlen($NewDescription) > 1) { 
+        if(strlen($NewDescription) >= 0) { 
             $this->description = $NewDescription; 
         }else{ 
             throw new TooShortExeption('It should be more than 1 letter!');
@@ -61,7 +64,7 @@ class Product{
     
     public function setQuantity($NewQuantity){ 
         
-        if($NewQuantity > 0){ 
+        if($NewQuantity >= 0){ 
             $this->quantity = $NewQuantity; 
         }else{ 
             throw new ZeroExeption('Must be > 0');
@@ -70,7 +73,7 @@ class Product{
     
     public function setIdCategory($NewIdCategory){ 
         
-        if($NewIdCategory > 0){ 
+        if($NewIdCategory >= 0){ 
             $this->idCategory = $NewIdCategory; 
         }else{ 
             throw new ZeroExeption('Must be > 0');
@@ -157,7 +160,7 @@ class Product{
  
     static public function loadProductById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Product WHERE id=$id";
+        $sql = "SELECT * FROM Product WHERE id='$id'";
         
         $result = $conn->query($sql); 
     

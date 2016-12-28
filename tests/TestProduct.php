@@ -21,7 +21,7 @@ class TestProduct extends PHPUnit_Framework_TestCase{
     // test dzialania konstruktora klasy Product
     public function testIfCreationIsCorrect(){ 
         
-        $this->assertEquals('-1', $this->product->getId()); 
+        $this->assertEquals(-1, $this->product->getId()); 
         $this->assertEquals('', $this->product->getName());
         $this->assertEquals(0, $this->product->getPrice());    
         $this->assertEquals('', $this->product->getDescription()); 

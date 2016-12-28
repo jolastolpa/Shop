@@ -6,6 +6,7 @@ class TestUser extends PHPUnit_Framework_TestCase{
     
     private $user;
     
+    
     // inicjuje obiekt klasy User
     protected function setUp() {
         $this->user = new User('Marek', 'Korcz', 'mark.korcz@gmail.com', 'tralala', 'Sezamkowa');
