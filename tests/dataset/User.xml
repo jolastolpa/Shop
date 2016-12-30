@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     <User
-        id="-1"
+        id="1"
         name="Marek"
         surname="Korcz"
         email="mark.korcz@gmail.com"
@@ -10,7 +10,7 @@
     />
         <!-- password: 'tralala' -->
     <User
-        id="-1"
+        id="2"
         name="Darek"
         surname="Talarek"
         email="darek.talarek$gmail.com"

@@ -119,8 +119,8 @@ class Product{
         if($this->id == -1){
         
             $sql = "INSERT INTO Product(name, price, description, quantity, idCategory)"
-                . "VALUES ('$this->name', $this->price,'$this->description', $this->quantity,"
-                . "$this->idCategory)";
+                . "VALUES ('$this->name', '$this->price','$this->description', '$this->quantity',"
+                . "'$this->idCategory')";
                     
             $result = $conn->query($sql);
             if($result == true){

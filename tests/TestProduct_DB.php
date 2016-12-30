@@ -49,5 +49,9 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
          
         $loadedProduct = Product::loadProductById(self::$mysqliConn,1); 
         $this->assertEquals("desk", $loadedProduct->getName());
-    }       
+    }     
+    
+    static public function tearDownAfterClass(){
+        self::$mysqliConn = null;
+    }
 }

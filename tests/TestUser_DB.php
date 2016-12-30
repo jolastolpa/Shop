@@ -23,6 +23,7 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         return $this->createFlatXmlDataSet(__DIR__.'/dataset/User.xml');  
     } 
     
+    // nawiązanie połącznia 
     static public function setUpBeforeClass(){ 
         
         self::$mysqliConn = new mysqli(
@@ -36,6 +37,7 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
     public function testSaveANewUser(){ 
          
         $user = new User(); 
+        $user->setId(-1);
         $user->setName("Mario"); 
         $user->setSurname('Bros');  
         $user->setEmail('mario.bros@nintendo.com'); 
@@ -44,9 +46,19 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         $this->assertTrue($user->saveToDB(self::$mysqliConn));    
     }
        
-    public function testIfIdReturnsProductName(){ 
+    public function testIfIdReturnsUserName(){ 
          
-        $loadedUser = Product::loadProductById(self::$mysqliConn, 1); 
-        $this->assertEquals('Mario', $loadedUser->getName());
+        // Pierwsze dane z pliku User.xml
+        $loadedFirstUser = User::loadUserById(self::$mysqliConn, 1); 
+        $this->assertEquals('Marek', $loadedFirstUser->getName());
+        
+        // Drugie dane z pliku User.xml
+        $loadedSecondUser = User::loadUserById(self::$mysqliConn, 2);
+        $this->assertEquals('Darek', $loadedSecondUser->getName());
     }       
+    
+    // zakończenie połączenia
+    static public function tearDownAfterClass(){
+        self::$mysqliConn = null;
+    }
 }

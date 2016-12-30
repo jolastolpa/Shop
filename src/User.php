@@ -30,6 +30,16 @@ class User{
         $this->setDeliverAddress($deliver_addr);
     }
     
+    public function setId($id){
+        if(is_int($id)){
+            $this->id = $id;
+        }
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
     public function setName($name){
         
         if(is_string($name) && strlen($name) >= 2){
@@ -100,9 +110,9 @@ class User{
         
         if($this->id == -1){
         
-            $sql = "INSERT INTO User(name, surname, email, password, deliver_adr)"
-                . "VALUES ('$this->name', $this->surname,'$this->email', $this->password,"
-                . "$this->deliver_addr)";
+            $sql = "INSERT INTO User(name, surname, email, password, deliver_addr)"
+                . "VALUES ('$this->name', '$this->surname','$this->email', '$this->password',"
+                . "'$this->deliver_addr')";
                     
             $result = $conn->query($sql);
             if($result == true){
@@ -149,13 +159,13 @@ class User{
         if($result == true && $result->num_rows == 1){
             
             $row = $result->fetch_assoc();
-            $loadedUser = new Product();
+            $loadedUser = new User();
             $loadedUser->id = $row['id'];
             $loadedUser->name = $row['name'];
             $loadedUser->surname = $row['surname'];
             $loadedUser->email = $row['email']; 
             $loadedUser->password = $row['password']; 
-            $loadedUser->deliver_adr = $row['deliver_adr'];
+            $loadedUser->deliver_addr = $row['deliver_addr'];
             
             return $loadedUser;
         }
