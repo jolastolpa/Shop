@@ -23,7 +23,7 @@ class Product{
     private $quantity; 
     private $idCategory;
     
-    public function __construct($name = "", $price = 0.00, $description = "", $quantity = 0, $idCategory = 0){ 
+    public function __construct($name = "", $price = 1.00, $description = "", $quantity = 1, $idCategory = 1){ 
 
         $this->id = -1;
         $this->setName($name);
@@ -46,7 +46,7 @@ class Product{
 
     public function setPrice($NewPrice){ 
         
-        if($NewPrice >= 0.00){ 
+        if($NewPrice > 0.00){ 
             $this->price = $NewPrice; 
         }else{ 
             throw new ZeroExeption ('Must be > 0');
@@ -64,7 +64,7 @@ class Product{
     
     public function setQuantity($NewQuantity){ 
         
-        if($NewQuantity >= 0){ 
+        if($NewQuantity > 0){ 
             $this->quantity = $NewQuantity; 
         }else{ 
             throw new ZeroExeption('Must be > 0');
@@ -73,7 +73,7 @@ class Product{
     
     public function setIdCategory($NewIdCategory){ 
         
-        if($NewIdCategory >= 0){ 
+        if($NewIdCategory > 0){ 
             $this->idCategory = $NewIdCategory; 
         }else{ 
             throw new ZeroExeption('Must be > 0');

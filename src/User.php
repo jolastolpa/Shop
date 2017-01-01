@@ -31,12 +31,14 @@ class User{
     }
     
     public function setId($id){
+        
         if(is_int($id)){
             $this->id = $id;
         }
     }
 
     public function getId(){
+        
         return $this->id;
     }
 
@@ -193,5 +195,28 @@ class User{
             }
         }
         return $ret;
-    }    
+    } 
+    
+    // metoda dedykowana dla admina
+    static public function loadUserByEmail(mysqli $conn, $email){
+        
+        $sql = "SELECT * FROM User WHERE id='$email'";
+        
+        $result = $conn->query($sql); 
+    
+        if($result == true && $result->num_rows == 1){
+            
+            $row = $result->fetch_assoc();
+            $loadedUser = new User();
+            $loadedUser->id = $row['id'];
+            $loadedUser->name = $row['name'];
+            $loadedUser->surname = $row['surname'];
+            $loadedUser->email = $row['email']; 
+            $loadedUser->password = $row['password']; 
+            $loadedUser->deliver_addr = $row['deliver_addr'];
+            
+            return $loadedUser;
+        }
+        return null; 
+    }
 }
