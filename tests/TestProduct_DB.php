@@ -35,7 +35,7 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         );
     }   
     
-    // test metody saveToDB() i delete()
+    // test metody saveToDB() (zapis oraz update) i delete()
     public function testSaveAndDeleteANewProduct(){ 
          
         // inicjacja nowego obiektu
@@ -47,7 +47,12 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         $product->setIdCategory(1);
         
         // test zapisu
-        $this->assertTrue($product->saveToDB(self::$mysqliConn));    
+        $this->assertTrue($product->saveToDB(self::$mysqliConn)); 
+        
+        // test update'u
+        $product->setPrice(30);
+        $product->setQuantity(111);
+        $this->assertTrue($product->saveToDB(self::$mysqliConn));
         
         // test usuniecia
         $this->assertTrue($product->delete(self::$mysqliConn));

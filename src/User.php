@@ -126,7 +126,7 @@ class User{
             
             $sql="UPDATE User SET name='$this->name' ,surname='$this->surname',"
                 . "email='$this->email', password='$this->password',"
-                . "delive_add='$this->deliver_addr' WHERE id='$this->id'";
+                . "deliver_addr='$this->deliver_addr' WHERE id='$this->id'";
             
             $result = $conn->query($sql);
             if($result == true){              

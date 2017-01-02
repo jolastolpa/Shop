@@ -34,7 +34,7 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         );
     }   
     
-    // test metody saveToDB() i delete()
+    // test metody saveToDB() (zapis oraz update) i delete()
     public function testSaveAndDeleteANewUser(){ 
          
         // inicjacja nowego obiektu
@@ -48,6 +48,11 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         
         // test zapisu
         $this->assertTrue($user->saveToDB(self::$mysqliConn)); 
+        
+        // test update'u
+        $user->setSurname('Gonzales');
+        $user->setDeliverAddress('New Mexico');
+        $this->assertTrue($user->saveToDB(self::$mysqliConn));
         
         // test usuniecia
         $this->assertTrue($user->delete(self::$mysqliConn));
