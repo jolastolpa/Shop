@@ -23,10 +23,10 @@ class TestProduct extends PHPUnit_Framework_TestCase{
         
         $this->assertEquals(-1, $this->product->getId()); 
         $this->assertEquals('', $this->product->getName());
-        $this->assertEquals(0, $this->product->getPrice());    
+        $this->assertEquals(1, $this->product->getPrice());    
         $this->assertEquals('', $this->product->getDescription()); 
-        $this->assertEquals(0, $this->product->getQuantity()); 
-        $this->assertEquals(0, $this->product->getIdCategory());    
+        $this->assertEquals(1, $this->product->getQuantity()); 
+        $this->assertEquals(1, $this->product->getIdCategory());    
     }  
     
     // testy seterow

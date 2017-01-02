@@ -174,6 +174,7 @@ class User{
         return null; 
     }
 
+    // metoda dedykowana dla admina
     static public function loadAllUsers(mysqli $conn){
         
         $sql = "SELECT * FROM User";
@@ -183,13 +184,13 @@ class User{
         if($result == true && $result->num_rows != 0){
             
             foreach($result as $row){
-                $loadedUser = new Product();
+                $loadedUser = new User();
                 $loadedUser->id = $row['id'];
                 $loadedUser->name = $row['name'];
                 $loadedUser->surname = $row['surname'];
                 $loadedUser->email = $row['email']; 
                 $loadedUser->password = $row['password']; 
-                $loadedUser->deliver_adr = $row['deliver_adr'];
+                $loadedUser->deliver_addr = $row['deliver_addr'];
                 
                 $ret[] = $loadedUser;
             }
@@ -200,7 +201,7 @@ class User{
     // metoda dedykowana dla admina
     static public function loadUserByEmail(mysqli $conn, $email){
         
-        $sql = "SELECT * FROM User WHERE id='$email'";
+        $sql = "SELECT * FROM User WHERE email='$email'";
         
         $result = $conn->query($sql); 
     

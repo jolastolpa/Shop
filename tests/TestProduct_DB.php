@@ -24,6 +24,7 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         return $this->createFlatXmlDataSet(__DIR__.'/dataset/Product.xml');  
     } 
     
+    // nawiązanie połącznia 
     static public function setUpBeforeClass(){ 
         
         self::$mysqliConn = new mysqli(
@@ -34,23 +35,38 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         );
     }   
     
-    public function testSaveAnewProduct(){ 
+    // test metody saveToDB() i delete()
+    public function testSaveAndDeleteANewProduct(){ 
          
+        // inicjacja nowego obiektu
         $product = new Product(); 
         $product->setName("name"); 
         $product->setPrice(2);  
         $product->setDescription("text"); 
         $product->setQuantity(3);  
         $product->setIdCategory(1);
+        
+        // test zapisu
         $this->assertTrue($product->saveToDB(self::$mysqliConn));    
+        
+        // test usuniecia
+        $this->assertTrue($product->delete(self::$mysqliConn));
     }
        
-    public function testIfIdReturnsProductName(){ 
+    // test metody loadProductById()
+    public function testIfAbleToLoadProductByItsId(){ 
          
         $loadedProduct = Product::loadProductById(self::$mysqliConn,1); 
         $this->assertEquals("desk", $loadedProduct->getName());
     }     
     
+    // test metody loadAllProducts()
+    public function testIfReturnsAnArrayOfProducts(){
+        
+        $this->assertTrue(is_array(Product::loadAllProducts(self::$mysqliConn)));
+    }
+    
+    // zakończenie połączenia
     static public function tearDownAfterClass(){
         self::$mysqliConn = null;
     }
