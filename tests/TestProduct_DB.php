@@ -25,13 +25,14 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase {
         ($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWD'], $GLOBALS['DB_NAME']);
     }   
     
-     public function testSaveAnewProduct() { 
+     public function testSaveAnewProduct() {  
+         // z jakiegos powodu
         $product= new Product(); 
-        $product->setName("name"); 
-        $product->setPrice(2);  
-        $product->setDescription("text"); 
-        $product->setQuantity(3);  
-        $product->setIdCategory(1);
+        $product->setName(""); 
+        $product->setPrice();  
+        $product->setDescription(""); 
+        $product->setQuantity();  
+        $product->setIdCategory();
         $this->assertTrue($product->saveToDB(self::$mysqliConn));
         
     } 
