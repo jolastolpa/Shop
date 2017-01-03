@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<datase> 
+    
+    <Image 
+        id="1" 
+        imageLink="Images/1/1.jpg" 
+        productId="1" />

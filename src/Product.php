@@ -160,7 +160,8 @@ class Product{
  
     static public function loadProductById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Product WHERE id='$id'";
+        $sql = "SELECT * FROM Products JOIN Images ON "
+                . "Products.id=Pictures.productId WHERE Products.id='$id'";
         
         $result = $conn->query($sql); 
     
@@ -174,7 +175,8 @@ class Product{
             $loadedProduct->description = $row['description']; 
             $loadedProduct->quantity = $row['quantity']; 
             $loadedProduct->idCategory = $row['idCategory'];
-            
+            // cholera wie czy tak sie da
+            $loadedProduct=Image::loadAllImagesByProductId($conn, $loadedProduct->getId());
             return $loadedProduct;
         }
         return null; 

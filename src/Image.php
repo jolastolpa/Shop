@@ -101,7 +101,7 @@ class Image {
             $loadedImage->imageLink = $row['imageLink'];
             $loadedImage->productId = $row['productId'];
             
-            return $loadedUser;
+            return $loadedImage;
         }
         return null; 
     }
