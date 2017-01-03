@@ -86,11 +86,11 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         /*
             NIE WIEM CZEMU DRUGI TEST (POMIMO, ŻE TAKI SAM), NIE DZIAŁA. KOMUNIKAT Z KONSOLI:
                 PHP Fatal error:  Call to a member function getEmail() on a non-object in ...
-
+        */
         // test drugich danych z pliku User.xml
         $loadedSecondUser = User::loadUserByEmail(self::$mysqliConn, 'darek.talarek@gmail.com');
         $this->assertEquals('darek.talarek@gmail.com', $loadedSecondUser->getEmail()); 
-        */
+        
     }
     
     // zakończenie połączenia

@@ -174,7 +174,6 @@ class User{
         return null; 
     }
 
-    // metoda dedykowana dla admina
     static public function loadAllUsers(mysqli $conn){
         
         $sql = "SELECT * FROM User";
@@ -198,7 +197,6 @@ class User{
         return $ret;
     } 
     
-    // metoda dedykowana dla admina
     static public function loadUserByEmail(mysqli $conn, $email){
         
         $sql = "SELECT * FROM User WHERE email='$email'";
