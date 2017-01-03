@@ -35,14 +35,14 @@ class Image {
         return $this->productId;
     }
    
-    public function setId($id) {
-        $this->id = $id;
+    public function setId($NewId) {
+        $this->id = $NewId;
     }
-    public function setImageLink($imageLink) {
-        $this->imageLink = $imageLink;
+    public function setImageLink($NewImageLink) {
+        $this->imageLink = $NewImageLink;
     }
-    public function setProductId($productId) {
-        $this->productId = $productId;
+    public function setProductId($NewProductId) {
+        $this->productId = $NewProductId;
     }
     
     public function saveToDb(mysqli $conn) { 
@@ -111,7 +111,7 @@ class Image {
             
             $sql="SELECT Images.imageLink FROM Products JOIN Images ON 
                 Products.id=Pictures.productId WHERE Products.id=$productId ";
-            
+         
             $ret=[]; 
             $result = $conn->query($sql);
             if($result == true && $result->num_rows != 0){

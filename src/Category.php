@@ -16,16 +16,16 @@ class Category {
      public $categoryName;
  
      public function __construct($categoryId = -1, $categoryName = null) {
-         $this->categoryId = $categoryId;
-         $this->setCategoryName($categoryName);
+         $this->setCategoryId = $NewCategoryId;
+         $this->setCategoryName($NewCategoryName);
      }  
      
-     function setCategoryId($categoryId) {
-         $this->categorId = $categoryId;
+     function setCategoryId($NewCategoryId) {
+         $this->categorId = $NewCategoryId;
      }
      
-     function setCategoryName($categoryName) {
-         $this->categoryName = $categoryName;
+     function setCategoryName($NewCategoryName) {
+         $this->categoryName = $NewCategoryName;
      } 
      
      function getCategoryId() {
@@ -36,14 +36,27 @@ class Category {
           return $this->categoryName;
       }
  
-     public function saveToDb(mysqli $conn) {
-         $sql = "INSERT INTO Categories (category_name) VALUES ('$this->categoryName')";
+     public function saveToDb(mysqli $conn) { 
+         if($this->id==-1) { 
+         $sql = "INSERT INTO Categories VALUES ($this->categoryId,'$this->categoryName')";
          $result = $conn->query($sql);
          if ($result == true) {
-             return true;
-         } else {
+             $this->id=$conn->insert_id; 
+             return true ; 
+          }
+         }  else{  
+            
+            $sql="UPDATE Categories SET categoryName='$this->categoryName' WHERE id='$this->id'";
+            
+            $result = $conn->query($sql);
+            if($result == true){              
+                return true;
+            } else {
+        
              return false;
-         }
+         
+             }
+        } 
      }
  
      public static function deleteCategory(mysqli $conn, $categotyId) {
