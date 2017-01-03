@@ -1,38 +1,48 @@
-<?php
+<?php 
+
+/*
+CREATE TABLE `Images`(
+id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+imageLink MEDIUMBLOB,
+productId INT,
+FOREIGN KEY(productId) REFERENCES Products(id)
+ON DELETE CASCADE
+)
+*/
 
 class Image {
     
     private $id;
-    private $image_link;
-    private $product_id;
+    private $imageLink;
+    private $productId;
     
     
     
-    public function __construct($id = -1, $image_link = null, $product_id = null) {
+    public function __construct($id = -1, $imageLink = null, $productId = null) {
         $this->id = $id;
-        $this->setImage_link($image_link);
-        $this->setProduct_id($product_id);
+        $this->setImageLink($imageLink);
+        $this->setProductId($productId);
         
     } 
     
     function getId() {
         return $this->id;
     }
-    function getImage_link() {
-        return $this->image_link;
+    function getImageLink() {
+        return $this->imageLink;
     }
-    function getProduct_id() {
-        return $this->product_id;
+    function getProductId() {
+        return $this->productId;
     }
    
     function setId($id) {
         $this->id = $id;
     }
-    function setImage_link($image_link) {
-        $this->image_link = $image_link;
+    function setImageLink($imageLink) {
+        $this->imageLink = $imageLink;
     }
-    function setProduct_id($product_id) {
-        $this->product_id = $product_id;
+    function setProductId($productId) {
+        $this->productId = $productId;
     }
      
 }

@@ -1,4 +1,14 @@
-<?php
+<?php 
+
+
+/*
+CREATE TABLE Category(
+id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(20),
+
+*/
+
+
 
 class Category {
  
@@ -26,7 +36,7 @@ class Category {
           return $this->categoryName;
       }
  
-     public function addNewCategory(mysqli $conn) {
+     public function saveToDb(mysqli $conn) {
          $sql = "INSERT INTO Categories (category_name) VALUES ('$this->categoryName')";
          $result = $conn->query($sql);
          if ($result == true) {
@@ -44,20 +54,32 @@ class Category {
          } else {
              return false;
          }
-     }
+     } 
+     
+     public static function loadCategoryById(mysqli $conn, $categoryId) {
+        $sql="SELECT * FROM Categories WHERE category_id = $categoryId";
+        $result=$conn->query($sql);
+        if ($result == true && $result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $loadedCategory = new Category();
+            $loadedCategory->categoryId=$row['category_id'];
+            $loadedCategory->categoryName=$row['category_name'];
+            return $loadedCategory;
+        }
+    }
+
  
      public static function loadAllProductFromCategory(mysqli $conn, $categoryId) { 
          // to zpaytanie jeszcze nie wiem czy poprawne 
-         $sql = "SELECT * FROM Products
-                JOIN Categories ON Products.categoryId = Categories.categoryId
-                WHERE Categories.categoryId = '$categoryId'";
+         $sql = "SELECT * FROM Products JOIN Categories ON Products.categoryId = Categories.categoryId
+               WHERE Categories.category_id = $categoryId";
         
          $result = $conn->query($sql); 
          $ret=[];
          if ($result == true && $result->num_rows > 0) {
              foreach ($result as $row) {
                  $loadedProduct = new Product();
-                 $loadedProduct->productId = $row['id'];
+                 $loadedProduct->id = $row['id'];
                  $loadedProduct->name = $row['name'];
                  $loadedProduct->description = $row['description'];
                  $loadedProduct->categoryId = $categoryId;

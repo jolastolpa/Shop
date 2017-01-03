@@ -126,7 +126,7 @@ class User{
             
             $sql="UPDATE User SET name='$this->name' ,surname='$this->surname',"
                 . "email='$this->email', password='$this->password',"
-                . "delive_add='$this->deliver_addr' WHERE id='$this->id'";
+                . "deliver_addr='$this->deliver_addr' WHERE id='$this->id'";
             
             $result = $conn->query($sql);
             if($result == true){              
@@ -174,7 +174,6 @@ class User{
         return null; 
     }
 
-    // metoda dedykowana dla admina
     static public function loadAllUsers(mysqli $conn){
         
         $sql = "SELECT * FROM User";
@@ -198,7 +197,6 @@ class User{
         return $ret;
     } 
     
-    // metoda dedykowana dla admina
     static public function loadUserByEmail(mysqli $conn, $email){
         
         $sql = "SELECT * FROM User WHERE email='$email'";
