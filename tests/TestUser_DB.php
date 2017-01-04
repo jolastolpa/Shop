@@ -3,7 +3,7 @@
 require_once __DIR__.'/../src/User.php';
 
 
-class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{ 
+class TestUser_DB extends PHPUnit_Extensions_Database_TestCase{ 
     
     protected static $mysqliConn; 
     

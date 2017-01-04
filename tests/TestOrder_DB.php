@@ -65,21 +65,21 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
     }
     
     // test metody loadOrderByOrderOwnerId()
-    public function testIfAbleToLoadOrderByItsId(){ 
+    public function testIfAbleToLoadOrderByOrderOwnerId(){ 
          
         // Pierwsze dane z pliku Order.xml
-        $loadedFirstOrder = Order::loadOrderByOrderOwnerId(self::$mysqliConn, 1); 
+        $loadedFirstOrder = Order::loadOrderByOrderOwnerId(self::$mysqliConn, 10); 
         $this->assertTrue($loadedFirstOrder);
-        $this->assertEquals(10, $loadedFirstOrder->getOrderOwnerId());
+        $this->assertEquals(1, $loadedFirstOrder->getOrderId());
         
         // Drugie dane z pliku Order.xml
-        $loadedSecondOrder = Order::loadOrderByOrderOwnerId(self::$mysqliConn, 2);
+        $loadedSecondOrder = Order::loadOrderByOrderOwnerId(self::$mysqliConn, 20);
         $this->assertTrue($loadedSecondOrder);
         $this->assertEquals(3, $loadedSecondOrder->getOrderStatus());
     }
     
     // test metody loadOrderByItsOwnId()
-    public function testIfReturnsOrderObjectByItsOwnId() {
+    public function testIfAbleToLoadOrderByItsOwnId(){
         
         // test pierwszych danych z pliku Order.xml
         $loadedFirstOrder = Order::loadOrderByItsOwnId(self::$mysqliConn, 1); 

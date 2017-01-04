@@ -12,7 +12,7 @@ class TestUser extends PHPUnit_Framework_TestCase{
         $this->user = new User('Marek', 'Korcz', 'mark.korcz@gmail.com', 'tralala', 'Sezamkowa');
     }
     
-    // testy seterow
+    // testy seterow i geterow
     public function testIfSetCorrectName(){
         $this->assertEquals('Marek', $this->user->getName());
     }

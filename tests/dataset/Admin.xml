@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Admin
+        admin_id="1"
+        admin_name="AgentSmith"
+        admin_email="agent.smith@gmail.com"
+        admin_pass="$2y$10$oV3sZgPrPQ99Ch42CM8vZ.9pIOz.NJBsN6XjRT4Wo/CJR7Ot4YwFS"
+    />
+        <!-- password: 'tralala' -->
+    <Admin
+        admin_id="2"
+        admin_name="AgentWatson"
+        admin_email="agent.watson@gmail.com"
+        admin_pass="$2y$10$oV3sZgPrPQ99Ch42CM8vZ.9pIOz.NJBsN6XjRT4Wo/CJR7Ot4YwFS"
+    />
+        <!-- password: 'tralala' -->
+</dataset>
