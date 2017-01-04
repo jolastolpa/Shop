@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-<datase> 
-    
+<dataset> 
     <Image 
-        id="1" 
-        imageLink="Images/1/1.jpg" 
-        productId="1" />
+        image_id="1" 
+        image_link="Images/1/1.jpg" 
+        product_id="10" 
+    />
+    <Image 
+        image_id="2" 
+        image_link="Images/2/2.jpg" 
+        product_id="20" 
+    />
+</dataset>

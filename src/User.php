@@ -30,6 +30,8 @@ class User{
         $this->setDeliverAddress($deliver_addr);
     }
     
+    
+    // setery i getery
     public function setId($id){
         
         if(is_int($id)){

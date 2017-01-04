@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     <Category
-        id="1"
-        name="Furniture"
-       
-    />
-        
+        category_id="1"
+        category_name="Furniture"
+    />   
     <Category
-        id="2"
-        name="Clothes"
-       
+        category_id="2"
+        category_name="Clothes"
     />
-      
 </dataset>

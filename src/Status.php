@@ -1,47 +1,62 @@
 <?php
 
-class Status { 
-     private $id ; 
-     private $name; 
-     
-     
-     public function __construct($id = -1, $name=null) {
-        $this->id = $id;
-        $this->setName($name);
+class Status{ 
     
+    private $status_id ; 
+    private $status_name; 
+     
+     
+    public function __construct($id = -1, $name = ""){
         
+        $this->setStatusId($id);
+        $this->setStatusName($name);   
     } 
     
-    public function getId() {
-        return $this->id;
-    }
-    public function getName() {
-        return $this->name;
+    
+    // getery
+    public function getStatusId(){
+        
+        return $this->status_id;
     }
     
-    public function setId($NewId) {
-        $this->id = $NewId;
-    }
-    public function setName($NewName) {
-        $this->name = $NewName;
+    public function getStatusName(){
+    
+        return $this->status_name;
     }
     
+    // setery
+    public function setStatusId($newId){
+        
+        if(is_int($newId)){
+            $this->status_id = $newId;
+        }
+    }
+    
+    public function setStatusName($newName){
+        
+        if(is_string($newName) && strlen($newName) >= 2){
+            $this->status_name = trim($newName);
+        }
+    }
+    
+    
+    // operacje na bazie danych
     public function saveToDb(mysqli $conn) { 
         
         if($this->id == -1){
         
-        $sql = "INSERT INTO Statuses(id, name)"
-                . "VALUES ($this->id, '$this->name')";
+            $sql = "INSERT INTO Status(status_id, status_name)"
+                 . "VALUES ('$this->status_id', '$this->status_name')";
                     
             $result = $conn->query($sql);
             if($result == true){
                 
-                $this->id = $conn->insert_id;
+                $this->status_id = $conn->insert_id;
                 return true;
             } 
         }else{ 
             
-            $sql="UPDATE Statuses SET name='$this->name' WHERE id='$this->id'";
+            $sql="UPDATE Status SET name='$this->status_name' WHERE status_id='$this->status_id'";
             
             $result = $conn->query($sql);
             if($result == true){              
@@ -69,7 +84,7 @@ class Status {
     
     static public function loadStatusById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Statuses WHERE id=$id";
+        $sql = "SELECT * FROM Status WHERE status_id=$id";
         
         $result = $conn->query($sql); 
     
@@ -77,8 +92,8 @@ class Status {
             
             $row = $result->fetch_assoc();
             $loadedStatus = new Status();
-            $loadedStatus->id = $row['id'];
-            $loadedStatus->name = $row['name'];
+            $loadedStatus->status_id = $row['status_id'];
+            $loadedStatus->status_name = $row['status_name'];
           
             return $loadedStatus;
         }
@@ -87,7 +102,7 @@ class Status {
 
     static public function loadAllStatuses(mysqli $conn){
         
-        $sql = "SELECT * FROM Statuses";
+        $sql = "SELECT * FROM Status";
         $ret = [];
         
         $result = $conn->query($sql);
@@ -95,9 +110,8 @@ class Status {
             
             foreach($result as $row){
                 $loadedStatus = new Status();
-                $loadedStatus->id = $row['id'];
-                $loadedStatus->name = $row['name'];
-               
+                $loadedStatus->status_id = $row['status_id'];
+                $loadedStatus->status_name = $row['status_name'];
                 
                 $ret[] = $loadedStatus;
             }

@@ -1,56 +1,75 @@
 <?php 
 
 /*
-CREATE TABLE `Images`(
-id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-imageLink MEDIUMBLOB,
-productId INT,
-FOREIGN KEY(productId) REFERENCES Products(id)
+CREATE TABLE `Image`(
+image_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+image_link MEDIUMBLOB,
+product_id INT,
+FOREIGN KEY(product_id) REFERENCES Product(id)
 ON DELETE CASCADE
 )
 */
 
 class Image {
     
-    private $id;
-    private $imageLink;
-    private $productId;
+    private $image_id;
+    private $image_link;
+    private $product_id;
     
     
-    
-    public function __construct($id = -1, $imageLink = null, $productId = null) {
-        $this->id = $id;
-        $this->setImageLink($imageLink);
-        $this->setProductId($productId);
+    public function __construct($id = -1, $imageLink = "", Product $product = NULL) {
         
+        $this->setId($id);
+        $this->setImageLink($imageLink);
+        $product != NULL ? $this->setProductId($product->getId()) : $this->setProductId(-1);  
     } 
     
-    public function getId() {
-        return $this->id;
-    }
-    public function getImageLink() {
-        return $this->imageLink;
-    }
-    public function getProductId() {
-        return $this->productId;
-    }
-   
-    public function setId($NewId) {
-        $this->id = $NewId;
-    }
-    public function setImageLink($NewImageLink) {
-        $this->imageLink = $NewImageLink;
-    }
-    public function setProductId($NewProductId) {
-        $this->productId = $NewProductId;
+    
+    // setery i getery
+    public function setId($newId){
+        
+        if(is_int($newId)){
+            $this->image_id = $newId;
+        }
     }
     
+    public function setImageLink($newImageLink){
+        
+        if(is_string($newImageLink) && strlen($newImageLink) > 0){
+            $this->image_link = $newImageLink;
+        }
+    }
+    
+    public function setProductId($newProductId){
+        
+        if(is_int($newProductId)){
+            $this->product_id = $newProductId;
+        }
+    }
+    
+    public function getImageId(){
+        
+        return $this->image_id;
+    }
+    
+    public function getImageLink(){
+        
+        return $this->image_link;
+    }
+    
+    public function getProductId() {
+        
+        return $this->product_id;
+    }
+   
+
+    // operacje na bazie danych
     public function saveToDb(mysqli $conn) { 
         
         if($this->id == -1){
         
-            $sql = "INSERT INTO Images(id, imageLink, productId)"
-                . "VALUES ($this->id, '$this->imageLink','$this->productId,)";
+            $sql = "INSERT INTO Image(image_id, image_link, product_id)"
+                . "VALUES ($this->image_id, '$this->image_link','$this->product_id,)";
                     
             $result = $conn->query($sql);
             if($result == true){
@@ -60,8 +79,8 @@ class Image {
             } 
         }else{ 
             
-            $sql="UPDATE Images SET imageLink='$this->imageLink', "
-                    . "productId='$this->productId WHERE id='$this->id'";
+            $sql="UPDATE Image SET image_link='$this->image_link', "
+               . "product_id='$this->product_id WHERE image_id='$this->image_id'";
             
             $result = $conn->query($sql);
             if($result == true){              
@@ -75,7 +94,7 @@ class Image {
         
         if($this->id != -1){
             
-            $sql = "DELETE FROM Images WHERE id='$this->id'";
+            $sql = "DELETE FROM Image WHERE image_id='$this->image_id'";
             
             $result = $conn->query($sql);
             if($result == true){
@@ -89,7 +108,7 @@ class Image {
  
     static public function loadImageById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Images WHERE id='$id'";
+        $sql = "SELECT * FROM Image WHERE image_id='$id'";
         
         $result = $conn->query($sql); 
     
@@ -97,37 +116,57 @@ class Image {
             
             $row = $result->fetch_assoc();
             $loadedImage = new Image();
-            $loadedImage->id = $row['id'];
-            $loadedImage->imageLink = $row['imageLink'];
-            $loadedImage->productId = $row['productId'];
+            $loadedImage->image_id = $row['image_id'];
+            $loadedImage->image_link = $row['image_link'];
+            $loadedImage->product_id = $row['product_id'];
             
             return $loadedImage;
         }
         return null; 
     }
     
-    static public function loadAllImagesByProductId (mysqli $conn, $productId) { 
-        if($this->id != -1){
+    
+    // a czy ta fukcja nie wytarczy zamiast tej nizej?? :-P
+    static public function loadImagesByProductId(mysqli $conn, $product_id){
+        
+        $sql = "SELECT * FROM Image WHERE product_id='$product_id'";
+        
+        $result = $conn->query($sql); 
+    
+        if($result == true && $result->num_rows == 1){
             
-            $sql="SELECT Images.imageLink FROM Products JOIN Images ON 
-                Products.id=Pictures.productId WHERE Products.id=$productId ";
-         
-            $ret=[]; 
-            $result = $conn->query($sql);
-            if($result == true && $result->num_rows != 0){
+            $row = $result->fetch_assoc();
+            $loadedImage = new Image();
+            $loadedImage->image_id = $row['image_id'];
+            $loadedImage->image_link = $row['image_link'];
+            $loadedImage->product_id = $row['product_id'];
             
-            foreach($result as $row){
+            return $loadedImage;
+        }
+        return null; 
+    }
+    
+    static public function loadAllImagesByProductId(mysqli $conn, $product_id) { 
+            
+        $sql="SELECT Image.image_link FROM Product JOIN Image ON 
+            Product.id = Image.product_id WHERE Product.id='$product_id'";
+
+        $ret=[]; 
+
+        $result = $conn->query($sql);
+        if($result == true && $result->num_rows != 0){
+
+            foreach ($result as $row){
                 $loadedImage = new Image();
-                $loadedImage->imageLink = $row['imageLink'];
-              
-                
+                $loadedImage->image_id = $row['image_id'];
+                $loadedImage->image_link = $row['image_link'];
+                $loadedImage->product_id = $row['product_id'];
+
                 $ret[] = $loadedImage;
             }
         }
-        return $ret;
-        }
-    }
-            
+        return $ret;   
+    }        
 }
 
     

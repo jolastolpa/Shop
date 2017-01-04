@@ -7,12 +7,13 @@ name VARCHAR(20),
 price FLOAT,
 description VARCHAR(500),
 quantity INT,
-idCategory INT
+category_id INT
 )
 */
 
 require_once 'TooShortExeption.php';
 require_once 'ZeroExeption.php';
+
 
 class Product{ 
     
@@ -21,7 +22,7 @@ class Product{
     private $price;
     private $description; 
     private $quantity; 
-    private $idCategory;
+    private $category_id;
     
     public function __construct($name = "", $price = 1.00, $description = "", $quantity = 1, $idCategory = 1){ 
 
@@ -30,11 +31,18 @@ class Product{
         $this->setPrice($price);
         $this->setDescription($description); 
         $this->setQuantity($quantity); 
-        $this->setIdCategory($idCategory);
+        $this->setProductCategoryId($idCategory);
     }
 
     
     //setery
+    public function setId($id){
+        
+        if(is_int($id)){
+            $this->id = $id;
+        }
+    }
+    
     public function setName($NewName){ 
         
         if(strlen($NewName) >= 0){
@@ -71,10 +79,10 @@ class Product{
         }
     } 
     
-    public function setIdCategory($NewIdCategory){ 
+    public function setProductCategoryId($NewIdCategory){ 
         
         if($NewIdCategory > 0){ 
-            $this->idCategory = $NewIdCategory; 
+            $this->category_id = $NewIdCategory; 
         }else{ 
             throw new ZeroExeption('Must be > 0');
         }
@@ -107,9 +115,9 @@ class Product{
         return $this->quantity;
     }  
     
-    public function getIdCategory(){
+    public function getProductCategoryId(){
         
-        return $this->idCategory;
+        return $this->category_id;
     } 
     
     
@@ -118,9 +126,9 @@ class Product{
         
         if($this->id == -1){
         
-            $sql = "INSERT INTO Product(name, price, description, quantity, idCategory)"
+            $sql = "INSERT INTO Product(name, price, description, quantity, category_id)"
                 . "VALUES ('$this->name', '$this->price','$this->description', '$this->quantity',"
-                . "'$this->idCategory')";
+                . "'$this->category_id')";
                     
             $result = $conn->query($sql);
             if($result == true){
@@ -132,7 +140,7 @@ class Product{
             
             $sql="UPDATE Product SET name='$this->name' ,price='$this->price',"
                 . "description='$this->description', quantity='$this->quantity',"
-                . "idCategory='$this->idCategory' WHERE id='$this->id'";
+                . "category_id='$this->category_id' WHERE id='$this->id'";
             
             $result = $conn->query($sql);
             if($result == true){              
@@ -160,8 +168,8 @@ class Product{
  
     static public function loadProductById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Products JOIN Images ON "
-                . "Products.id=Pictures.productId WHERE Products.id='$id'";
+        $sql = "SELECT * FROM Product JOIN Images ON "
+                . "Product.id = Image.productId WHERE Product.id='$id'";
         
         $result = $conn->query($sql); 
     
@@ -174,8 +182,38 @@ class Product{
             $loadedProduct->price = $row['price'];
             $loadedProduct->description = $row['description']; 
             $loadedProduct->quantity = $row['quantity']; 
-            $loadedProduct->idCategory = $row['idCategory'];
+            $loadedProduct->category_id = $row['category_id'];
             // cholera wie czy tak sie da
+            
+            // Zastanawiam się ciągle czy w ogóle trzeba? W sensie przy tworzeniu 
+            // produktu bedziemy inicjowac obiekt klasy Image do ktorego wpiszemy id
+            // tego wlasnie produktu wiec pozniej w ten sposob bedzie mozna dojsc do 
+            // korealacji... ale wiadomo, mozna i w jednej metodzie to zrobic i moze
+            // z użyciem np array_merge(stworzyc tutaj nowy obiekt klasy Image, 
+            // przypisac jego wartosci w postaci asocjacyjnej (tak jak się to ma w $loadedProdukt), 
+            // a nastepnie polaczyc przez array_merge tablice z danymi z Image z $loadedProdukt)
+            // 
+            // Ponizej wklejam prosty przyklad ktory pokazuje,
+            // ze juz teraz mozna dojsc do latwego dostepu do linkow zdjec(jesli chcesz to wklej 
+            // sobie ten kod pod klasa Product i odpal):
+            
+            /*
+               require_once 'Image.php';
+
+               $p = new Product('kot', 20, 'w butach byl sobie kot', 1, 2);
+
+               $i = new Image('Images/1/1.jpg', $p);
+
+               echo $i->getImageId().'<br>';
+               echo $i->getImageLink().'<br>';
+               echo $i->getProductId().'<br>';
+              
+                //ewentualnie: var_dump($i);   i wsio
+            */
+            
+            // Moge się mylić oczywiście!! Wciąz się uczymy w końcu!! :-) No i może
+            // o co innego Ci chodzilo, a ja sie wpierdzielam jak zwykle... :P
+      
             $loadedProduct=Image::loadAllImagesByProductId($conn, $loadedProduct->getId());
             return $loadedProduct;
         }
@@ -197,7 +235,7 @@ class Product{
                 $loadedProduct->price = $row['price'];
                 $loadedProduct->description = $row['description']; 
                 $loadedProduct->quantity = $row['quantity']; 
-                $loadedProduct->idCategory = $row['idCategory'];
+                $loadedProduct->category_id = $row['category_id'];
                 
                 $ret[] = $loadedProduct;
             }

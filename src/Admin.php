@@ -32,6 +32,7 @@ class Admin{
     }
     
     public function setAdminName($name){
+        
         if(is_string($name) && strlen($name) >= 2){
         
             $this->admin_name = trim($name);

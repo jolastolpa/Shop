@@ -10,23 +10,22 @@ class TestProduct extends PHPUnit_Framework_TestCase{
     // inicjacja obiektu klasy Category
     protected function setUp(){ 
         
-        $this->category = New Category();
+        $this->category = New Category("Multimedia");
     }
     
-    // test dzialania konstruktora klasy Category
-    public function testIfCreationIsCorrect(){ 
-        
-        $this->assertEquals(-1, $this->category->getId()); 
-        $this->assertEquals('', $this->category->getName());
-         
-    }  
     
-   
-    public function testSetGetName(){  
-        
-        $this->category->setName("furniture"); 
-        $this->assertEquals("furniture", $this->category->getName());  
+    // testy seterow i geterow
+    public function testIfSetCorrectCategoryId() {
+        $this->assertEquals(-1, $this->category->getCategoryId());
     } 
     
-
+    public function testIfSetCorrectCategoryName(){
+        $this->assertEquals('Multimedia', $this->category->getCategoryName());
+    }  
+    
+    
+    // zeruje obiekt klasy Category
+    protected function tearDown(){
+        $this->category = null;
+    }
 }

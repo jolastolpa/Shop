@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>  
-    <Product id="1"
+    <Product 
+        id="1"
         name="desk" 
         price="1.00 " 
         description="beautiful" 
         quantity="5" 
-        idCategory="1"  
+        category_id="1"  
     /> 
-    
-    <Product id="2"
+    <Product 
+        id="2"
         name="pencil" 
         price="2.00 "
         description="black" 
         quantity="5" 
-        idCategory="5"  
+        category_id="5"  
     /> 
 </dataset>
