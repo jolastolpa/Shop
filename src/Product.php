@@ -3,7 +3,7 @@
 /*
 CREATE TABLE Product(
 id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-name VARCHAR(20),
+name VARCHAR(100),
 price FLOAT,
 description VARCHAR(500),
 quantity INT,
@@ -168,8 +168,7 @@ class Product{
  
     static public function loadProductById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Product JOIN Images ON "
-                . "Product.id = Image.productId WHERE Product.id='$id'";
+        $sql = "SELECT * FROM Product WHERE id='$id'";
         
         $result = $conn->query($sql); 
     
@@ -183,38 +182,7 @@ class Product{
             $loadedProduct->description = $row['description']; 
             $loadedProduct->quantity = $row['quantity']; 
             $loadedProduct->category_id = $row['category_id'];
-            // cholera wie czy tak sie da
-            
-            // Zastanawiam się ciągle czy w ogóle trzeba? W sensie przy tworzeniu 
-            // produktu bedziemy inicjowac obiekt klasy Image do ktorego wpiszemy id
-            // tego wlasnie produktu wiec pozniej w ten sposob bedzie mozna dojsc do 
-            // korealacji... ale wiadomo, mozna i w jednej metodzie to zrobic i moze
-            // z użyciem np array_merge(stworzyc tutaj nowy obiekt klasy Image, 
-            // przypisac jego wartosci w postaci asocjacyjnej (tak jak się to ma w $loadedProdukt), 
-            // a nastepnie polaczyc przez array_merge tablice z danymi z Image z $loadedProdukt)
-            // 
-            // Ponizej wklejam prosty przyklad ktory pokazuje,
-            // ze juz teraz mozna dojsc do latwego dostepu do linkow zdjec(jesli chcesz to wklej 
-            // sobie ten kod pod klasa Product i odpal):
-            
-            /*
-               require_once 'Image.php';
 
-               $p = new Product('kot', 20, 'w butach byl sobie kot', 1, 2);
-
-               $i = new Image('Images/1/1.jpg', $p);
-
-               echo $i->getImageId().'<br>';
-               echo $i->getImageLink().'<br>';
-               echo $i->getProductId().'<br>';
-              
-                //ewentualnie: var_dump($i);   i wsio
-            */
-            
-            // Moge się mylić oczywiście!! Wciąz się uczymy w końcu!! :-) No i może
-            // o co innego Ci chodzilo, a ja sie wpierdzielam jak zwykle... :P
-      
-            $loadedProduct=Image::loadAllImagesByProductId($conn, $loadedProduct->getId());
             return $loadedProduct;
         }
         return null; 

@@ -22,7 +22,7 @@ class Order{
     
     public function __construct(User $user = NULL, $order_status = 0, $order_product = ""){
         
-        $this->setOrderId(-1);
+        $this->order_id = -1;
         $user != NULL ? $this->order_owner_id = $user->getId() : $this->order_owner_id = -1;
         $this->setOrderStatus($order_status);
         $this->setOrderProduct($order_product);
@@ -106,7 +106,7 @@ class Order{
             
             $sql = "INSERT INTO `Order`(order_owner_id, order_status, order_product, order_date) "
                 . "VALUES ('$this->order_owner_id', '$this->order_status', '$this->order_product', '$this->order_date')";
-                    
+                    echo $sql;exit;
             $result = $conn->query($sql);
             if($result == true){
                 
