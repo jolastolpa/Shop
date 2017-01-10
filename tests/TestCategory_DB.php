@@ -39,7 +39,7 @@ class TestCategory_DB extends PHPUnit_Extensions_Database_TestCase {
     // inicjuje obiekt klasy Category
     protected function setUp(){
         
-        $this->category = new Category(1,"Furniture");
+        $this->category = new Category("Furniture");
     }
     
     // test zapisu metody saveToDB()

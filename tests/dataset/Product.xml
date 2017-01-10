@@ -15,5 +15,23 @@
         description="black" 
         quantity="5" 
         category_id="5"  
+    />  
+    <Product 
+        id="3"
+        name="stool" 
+        price="999 " 
+        description="new" 
+        quantity="6" 
+        category_id="3"  
+    />  
+     <Product 
+        id="4"
+        name="sofa" 
+        price="19 " 
+        description="new" 
+        quantity="7" 
+        category_id="3"  
     /> 
+    
+    
 </dataset>

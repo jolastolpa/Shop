@@ -64,7 +64,7 @@ class Category {
         }else{  
 
             $sql = "UPDATE Category SET category_name='$this->category_name' "
-                 . "WHERE category_id='$this->category_id'";
+                 . "WHERE category_id=$this->category_id";
 
             $result = $conn->query($sql);
            
@@ -96,7 +96,7 @@ class Category {
 
     public static function loadCategoryById(mysqli $conn, $category_id){
         
-        $sql = "SELECT * FROM Category WHERE category_id = $category_id";
+        $sql = "SELECT * FROM Category WHERE category_id = '$category_id'";
        
         $result = $conn->query($sql);
        
