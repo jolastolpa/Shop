@@ -26,7 +26,7 @@ class TestProduct extends PHPUnit_Framework_TestCase{
         $this->assertEquals(1, $this->product->getPrice());    
         $this->assertEquals('', $this->product->getDescription()); 
         $this->assertEquals(1, $this->product->getQuantity()); 
-        $this->assertEquals(1, $this->product->getIdCategory());    
+        $this->assertEquals(1, $this->product->getProductCategoryId());    
     }  
     
     // testy seterow
@@ -56,7 +56,7 @@ class TestProduct extends PHPUnit_Framework_TestCase{
     
     public function testSetGetIdCategory(){ 
         
-        $this->product->setIdCategory(1); 
-        $this->assertEquals(1, $this->product->getIdCategory());
+        $this->product->setProductCategoryId(1); 
+        $this->assertEquals(1, $this->product->getProductCategoryId());
     }  
 } 

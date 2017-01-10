@@ -52,7 +52,7 @@ class Category {
         
         if($this->category_id == -1){ 
             
-            $sql = "INSERT INTO Category VALUES ('$this->category_id', '$this->category_name')";
+            $sql = "INSERT INTO Category VALUES ($this->category_id, '$this->category_name')";
             
             $result = $conn->query($sql);
             
@@ -64,7 +64,7 @@ class Category {
         }else{  
 
             $sql = "UPDATE Category SET category_name='$this->category_name' "
-                 . "WHERE category_id='$this->category_id'";
+                 . "WHERE category_id=$this->category_id";
 
             $result = $conn->query($sql);
            
@@ -80,7 +80,7 @@ class Category {
         
         if($this->category_id != -1){
         
-            $sql = "DELETE FROM Category WHERE category_id = '$this->category_id')";
+            $sql = "DELETE FROM Category WHERE category_id = $this->category_id)";
 
             $result = $conn->query($sql);
 
@@ -94,9 +94,9 @@ class Category {
         return true;
     } 
 
-    public static function loadCategoryById(mysqli $conn, $categoryId){
+    public static function loadCategoryById(mysqli $conn, $category_id){
         
-        $sql = "SELECT * FROM Category WHERE category_id = '$categoryId'";
+        $sql = "SELECT * FROM Category WHERE category_id = $category_id";
        
         $result = $conn->query($sql);
        
@@ -114,11 +114,11 @@ class Category {
     }
 
 
-    public static function loadAllProductFromCategory(mysqli $conn, $categoryId) { 
+    public static function loadAllProductFromCategory(mysqli $conn, $category_id) { 
         
         // to zpaytanie jeszcze nie wiem czy poprawne 
         $sql = "SELECT * FROM Product JOIN Category ON Product.category_id = Category.category_id "
-             . "WHERE Category.category_id = '$categoryId'";
+             . "WHERE Category.category_id = $categoryId";
 
         $ret = [];
         $result = $conn->query($sql); 
@@ -130,7 +130,7 @@ class Category {
                 $loadedProduct->id = $row['id'];
                 $loadedProduct->name = $row['name'];
                 $loadedProduct->description = $row['description'];
-                $loadedProduct->categoryId = $categoryId;
+              
                 $loadedProduct->price = $row['price'];
                 $loadedProduct->quantity = $row['quantity'];
                 $loadedProduct->category_id = $row['category_id'];

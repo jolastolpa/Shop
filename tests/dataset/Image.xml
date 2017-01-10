@@ -3,11 +3,16 @@
     <Image 
         image_id="1" 
         image_link="Images/1/1.jpg" 
-        product_id="10" 
+        product_id="1" 
     />
     <Image 
         image_id="2" 
-        image_link="Images/2/2.jpg" 
-        product_id="20" 
+        image_link="Images/2/1.jpg" 
+        product_id="2" 
+    /> 
+     <Image 
+        image_id="3" 
+        image_link="Images/1/2.jpg" 
+        product_id="1" 
     />
 </dataset>

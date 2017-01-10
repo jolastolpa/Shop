@@ -168,8 +168,7 @@ class Product{
  
     static public function loadProductById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Product JOIN Images ON "
-                . "Product.id = Image.productId WHERE Product.id='$id'";
+        $sql = "SELECT * FROM Product  WHERE id=$id";
         
         $result = $conn->query($sql); 
     
@@ -182,7 +181,10 @@ class Product{
             $loadedProduct->price = $row['price'];
             $loadedProduct->description = $row['description']; 
             $loadedProduct->quantity = $row['quantity']; 
-            $loadedProduct->category_id = $row['category_id'];
+            $loadedProduct->category_id = $row['category_id']; 
+            
+            return $loadedProduct; 
+            
             // cholera wie czy tak sie da
             
             // Zastanawiam się ciągle czy w ogóle trzeba? W sensie przy tworzeniu 
@@ -214,8 +216,7 @@ class Product{
             // Moge się mylić oczywiście!! Wciąz się uczymy w końcu!! :-) No i może
             // o co innego Ci chodzilo, a ja sie wpierdzielam jak zwykle... :P
       
-            $loadedProduct=Image::loadAllImagesByProductId($conn, $loadedProduct->getId());
-            return $loadedProduct;
+            
         }
         return null; 
     }

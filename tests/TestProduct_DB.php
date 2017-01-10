@@ -1,12 +1,11 @@
 <?php
 //require_once __DIR__.'/../vendor/autoload.php';  - mi ta ścieżka nie działa, nie wiem czemu
-
 require_once __DIR__.'/../src/Product.php';
-
-
 class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{ 
     
     protected static $mysqliConn; 
+    
+    private $product;
     
     public function getConnection(){ 
         
@@ -24,6 +23,12 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         return $this->createFlatXmlDataSet(__DIR__.'/dataset/Product.xml');  
     } 
     
+    // inicjacja obiektu
+    public function setUp(){
+        
+        $this->product = new Product('kasza', 5, 'manna', 100, 2); 
+    }
+    
     // nawiązanie połącznia 
     static public function setUpBeforeClass(){ 
         
@@ -34,50 +39,25 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
             $GLOBALS['DB_NAME']
         );
     }   
-    
-<<<<<<< HEAD
-<<<<<<< HEAD
-     public function testSaveAnewProduct() {  
-         // z jakiegos powodu
-        $product= new Product(); 
-        $product->setName(""); 
-        $product->setPrice();  
-        $product->setDescription(""); 
-        $product->setQuantity();  
-        $product->setIdCategory();
-        $this->assertTrue($product->saveToDB(self::$mysqliConn));
-=======
-    // test metody saveToDB() i delete()
-=======
     // test metody saveToDB() (zapis oraz update) i delete()
->>>>>>> f9363f549459f474e338e0ecdee52a248ee77272
     public function testSaveAndDeleteANewProduct(){ 
-         
-        // inicjacja nowego obiektu
-        $product = new Product(); 
-        $product->setName("name"); 
-        $product->setPrice(2);  
-        $product->setDescription("text"); 
-        $product->setQuantity(3);  
-        $product->setIdCategory(1);
->>>>>>> origin/master
         
         // test zapisu
-        $this->assertTrue($product->saveToDB(self::$mysqliConn)); 
+        $this->assertTrue($this->product->saveToDB(self::$mysqliConn)); 
         
         // test update'u
-        $product->setPrice(30);
-        $product->setQuantity(111);
-        $this->assertTrue($product->saveToDB(self::$mysqliConn));
+        $this->product->setPrice(30);
+        $this->product->setQuantity(111);
+        $this->assertTrue($this->product->saveToDB(self::$mysqliConn));
         
         // test usuniecia
-        $this->assertTrue($product->delete(self::$mysqliConn));
+        $this->assertTrue($this->product->delete(self::$mysqliConn));
     }
        
     // test metody loadProductById()
     public function testIfAbleToLoadProductByItsId(){ 
          
-        $loadedProduct = Product::loadProductById(self::$mysqliConn,1); 
+        $loadedProduct = Product::loadProductById(self::$mysqliConn, 1); 
         $this->assertEquals("desk", $loadedProduct->getName());
     }     
     
@@ -87,8 +67,19 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         $this->assertTrue(is_array(Product::loadAllProducts(self::$mysqliConn)));
     }
     
+    
+    // zerowanie obiektu
+    public function tearDown(){
+        
+        $this->product = null;
+    }
+    
     // zakończenie połączenia
     static public function tearDownAfterClass(){
+        
         self::$mysqliConn = null;
     }
 }
+
+
+
