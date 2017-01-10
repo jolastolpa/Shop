@@ -250,4 +250,31 @@ class Product{
         }
         return $ret;
     }    
+    
+     public static function loadAllProductFromCategory(mysqli $conn, $category_id) { 
+        
+       
+        $sql = "SELECT * FROM Product WHERE category_id = $category_id";
+
+        $ret = [];
+        $result = $conn->query($sql); 
+
+        if ($result == true && $result->num_rows > 0){
+            
+            foreach ($result as $row){
+                $loadedProduct = new Product();
+                $loadedProduct->id = $row['id'];
+                $loadedProduct->name = $row['name'];
+                $loadedProduct->description = $row['description'];
+              
+                $loadedProduct->price = $row['price'];
+                $loadedProduct->quantity = $row['quantity'];
+                $loadedProduct->category_id = $row['category_id'];
+
+                $ret[] = $loadedProduct;
+            }
+        }
+        return $ret;
+    }
+    
 }

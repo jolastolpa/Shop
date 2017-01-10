@@ -68,8 +68,8 @@ class Image {
         
         if($this->image_id == -1){
         
-            $sql = "INSERT INTO Image(image_id, image_link, product_id)"
-                . "VALUES ($this->image_id, '$this->image_link','$this->product_id,)";
+            $sql = $sql = "INSERT INTO Image(image_link, product_id)"
+                . "VALUES ('$this->image_link', $this->product_id)";
                     
             $result = $conn->query($sql);
             if($result == true){
@@ -79,9 +79,8 @@ class Image {
             } 
         }else{ 
             
-            $sql="UPDATE Image SET image_link='$this->image_link', "
-               . "product_id='$this->product_id WHERE image_id='$this->image_id'";
-            
+            $sql=$sql="UPDATE Image SET image_link='$this->image_link', "
+               . "product_id=$this->product_id WHERE image_id=$this->image_id";
             $result = $conn->query($sql);
             if($result == true){              
                 return true;
@@ -127,7 +126,7 @@ class Image {
     
     
    
-    static public function loadImagesByProductId(mysqli $conn, $product_id){
+   static public function loadImagesByProductId(mysqli $conn, $product_id){
         
         $sql = "SELECT * FROM Image WHERE product_id='$product_id'";
         $ret=[]; 
@@ -136,16 +135,16 @@ class Image {
         if($result == true && $result->num_rows >0){
             
             foreach ($result as $row){
-            $loadedImage = new Image();
-            $loadedImage->image_id = $row['image_id'];
-            $loadedImage->image_link = $row['image_link'];
-            $loadedImage->product_id = $row['product_id'];
-            $ret[] = $loadedImage;
+                $loadedImage = new Image();
+                $loadedImage->image_id = $row['image_id'];
+                $loadedImage->image_link = $row['image_link'];
+                $loadedImage->product_id = $row['product_id'];
+                $ret[] = $loadedImage;
+            }
             return $ret;
         }
-        return null; 
-    } 
-    } 
+        return null;
+    }
     
 }
     

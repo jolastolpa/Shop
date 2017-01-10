@@ -114,32 +114,7 @@ class Category {
     }
 
 
-    public static function loadAllProductFromCategory(mysqli $conn, $category_id) { 
-        
-        // to zpaytanie jeszcze nie wiem czy poprawne 
-        $sql = "SELECT * FROM Product JOIN Category ON Product.category_id = Category.category_id "
-             . "WHERE Category.category_id = $category_id";
-
-        $ret = [];
-        $result = $conn->query($sql); 
-
-        if ($result == true && $result->num_rows > 0){
-            
-            foreach ($result as $row){
-                $loadedProduct = new Product();
-                $loadedProduct->id = $row['id'];
-                $loadedProduct->name = $row['name'];
-                $loadedProduct->description = $row['description'];
-              
-                $loadedProduct->price = $row['price'];
-                $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->category_id = $row['category_id'];
-
-                $ret[] = $loadedProduct;
-            }
-        }
-        return $ret;
-    }
+   
 
     public static function loadAllCategories(mysqli $connection) {
         
