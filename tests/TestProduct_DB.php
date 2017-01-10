@@ -39,6 +39,7 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
             $GLOBALS['DB_NAME']
         );
     }   
+
     // test metody saveToDB() (zapis oraz update) i delete()
     public function testSaveAndDeleteANewProduct(){ 
         

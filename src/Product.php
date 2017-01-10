@@ -3,7 +3,7 @@
 /*
 CREATE TABLE Product(
 id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-name VARCHAR(20),
+name VARCHAR(100),
 price FLOAT,
 description VARCHAR(500),
 quantity INT,
@@ -168,7 +168,11 @@ class Product{
  
     static public function loadProductById(mysqli $conn, $id){
         
+
         $sql = "SELECT * FROM Product  WHERE id=$id";
+
+
+
         
         $result = $conn->query($sql); 
     
@@ -181,6 +185,7 @@ class Product{
             $loadedProduct->price = $row['price'];
             $loadedProduct->description = $row['description']; 
             $loadedProduct->quantity = $row['quantity']; 
+
             $loadedProduct->category_id = $row['category_id']; 
             
             return $loadedProduct; 
@@ -217,6 +222,8 @@ class Product{
             // o co innego Ci chodzilo, a ja sie wpierdzielam jak zwykle... :P
       
             
+
+ 
         }
         return null; 
     }
