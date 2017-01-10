@@ -1,14 +1,16 @@
 <?php
 
 require_once __DIR__.'/../src/Category.php';
-require_once __DIR__.'/../src/Product.php'; 
+
 
 class TestCategory_DB extends PHPUnit_Extensions_Database_TestCase {
 
+  
+    private $category; 
+    
+    
     protected static $mysqliConn; 
     
-    private $category;
-
     public function getConnection(){ 
         
         $conn = new PDO(
@@ -23,7 +25,8 @@ class TestCategory_DB extends PHPUnit_Extensions_Database_TestCase {
     public function getDataSet(){  
         
         return $this->createFlatXmlDataSet(__DIR__.'/dataset/Category.xml');  
-    } 
+    }  
+    
     
     // nawiązanie połącznia 
     static public function setUpBeforeClass(){ 
@@ -34,32 +37,26 @@ class TestCategory_DB extends PHPUnit_Extensions_Database_TestCase {
             $GLOBALS['DB_PASSWD'], 
             $GLOBALS['DB_NAME']
         );
-    }
+    }   
     
-    // inicjuje obiekt klasy Category
-    protected function setUp(){
+    // test metody saveToDB() (zapis oraz update) i delete()
+    public function testSaveAndDeleteANewCategory(){ 
+      
         
-        $this->category = new Category("Furniture");
-    }
-    
-    // test zapisu metody saveToDB()
-    public function testSaveNewCategory(){ 
+        $category = new Category(); 
+        $category->setCategoryId(-1);
+        $category->setCategoryName("Furniture"); 
          
-        $this->assertTrue($this->category->saveToDB(self::$mysqliConn)); 
-    }
-    
-    // test update'u metody saveToDB()
-    public function testUpdateANewCategory(){ 
-    
-        $this->category->setCategoryName('Clothes');
-        $this->assertTrue($this->category->saveToDB(self::$mysqliConn));
-    }
-
-    // test usuniecia deleteCategory()
-    public function testDeleteANewCategory(){
+      // test zapisu
+        $this->assertTrue($category->saveToDB(self::$mysqliConn)); 
         
-        $this->assertTrue($this->category->deleteCategory(self::$mysqliConn));
-    } 
+        // test update'u
+        $category->setCategoryName("Clothes");
+        $this->assertTrue($category->saveToDB(self::$mysqliConn));
+        
+        // test usuniecia
+        $this->assertTrue($category->delete(self::$mysqliConn));
+    }
     
     public function testIfAbleToLoadCategoryByItsId(){
         

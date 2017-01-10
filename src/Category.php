@@ -6,18 +6,17 @@ category_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 category_name VARCHAR(30)
 )
 */
-require_once __DIR__.'/../src/Product.php';
 
 class Category {
  
     private $category_id;
     private $category_name;
 
-    public function __construct($name = ""){
-
-       $this->category_id = -1;
-       $this->setCategoryName($name);
-    }  
+   public function __construct($id = -1, $name = ""){
+        
+        $this->setCategoryId($id);
+        $this->setCategoryName($name);   
+    } 
     
 
     // setery i getery
@@ -48,55 +47,50 @@ class Category {
      
     
     // operacje na bazie danych
-    public function saveToDb(mysqli $conn){ 
+    public function saveToDb(mysqli $conn) { 
         
-        if($this->category_id == -1){ 
-            
-            $sql = "INSERT INTO Category(category_name) VALUES ('$this->category_name')";
-            
+        if($this->category_id == -1){
+        
+            $sql = "INSERT INTO Category(category_name)"
+                . "VALUES ('$this->category_name')";
+                    
             $result = $conn->query($sql);
-            
             if($result == true){
+                
+                $this->category_id = $conn->insert_id;
+                return true;
+            } 
+        }else{ 
             
-                $this->category_id = $conn->insert_id; 
-                return true; 
-            }
-        }else{  
-
-            $sql = "UPDATE Category SET category_name='$this->category_name' "
-                 . "WHERE category_id=$this->category_id";
-
+            $sql="UPDATE Category SET category_name='$this->category_name', "
+               . "WHERE category_id=$this->category_id";
             $result = $conn->query($sql);
-           
-            if($result == true){ 
-               
+            if($result == true){              
                 return true;
             }
-        }return false;
-    }
-
-    
-    public function deleteCategory(mysqli $conn){
+        }
+        return false;
+    } 
+      
+    public function delete(mysqli $conn){
         
         if($this->category_id != -1){
-        
-            $sql = "DELETE FROM Category WHERE category_id = '$this->category_id')";
-
+            
+            $sql = "DELETE FROM Category WHERE category_id='$this->category_id'";
+            
             $result = $conn->query($sql);
-
             if($result == true){
-
                 $this->category_id = -1;
                 return true;
             }
             return false;
-        }
-        return true;
-    } 
+        } 
+        return true; 
+    }
 
     public static function loadCategoryById(mysqli $conn, $category_id){
         
-        $sql = "SELECT * FROM Category WHERE category_id = '$category_id'";
+        $sql = "SELECT * FROM Category WHERE category_id = $category_id";
        
         $result = $conn->query($sql);
        
@@ -120,7 +114,7 @@ class Category {
         
         $sql = "SELECT * FROM Category ORDER BY category_id";
         
-        $categories = [];
+        $ret = [];
         
         $result = $connection->query($sql);
         if ($result == true && $result->num_rows > 0){
@@ -131,10 +125,10 @@ class Category {
                 $loadedCategory->category_id = $row['category_id'];
                 $loadedCategory->category_name = $row['category_name'];
                 
-                $categories[] = $loadedCategory;
+                $ret[] = $loadedCategory;
             }
         }
-        return $categories;
+        return $ret;
     }
 }
 

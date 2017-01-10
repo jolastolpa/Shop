@@ -68,7 +68,7 @@ class Image {
         
         if($this->image_id == -1){
         
-            $sql = $sql = "INSERT INTO Image(image_link, product_id)"
+            $sql = "INSERT INTO Image(image_link, product_id)"
                 . "VALUES ('$this->image_link', $this->product_id)";
                     
             $result = $conn->query($sql);
@@ -79,7 +79,7 @@ class Image {
             } 
         }else{ 
             
-            $sql=$sql="UPDATE Image SET image_link='$this->image_link', "
+            $sql="UPDATE Image SET image_link='$this->image_link', "
                . "product_id=$this->product_id WHERE image_id=$this->image_id";
             $result = $conn->query($sql);
             if($result == true){              
