@@ -6,7 +6,7 @@ category_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 category_name VARCHAR(30)
 )
 */
-
+require_once __DIR__.'/../src/Product.php';
 
 class Category {
  
@@ -52,7 +52,7 @@ class Category {
         
         if($this->category_id == -1){ 
             
-            $sql = "INSERT INTO Category VALUES ($this->category_id, '$this->category_name')";
+            $sql = "INSERT INTO Category(category_name) VALUES ('$this->category_name')";
             
             $result = $conn->query($sql);
             
@@ -64,7 +64,7 @@ class Category {
         }else{  
 
             $sql = "UPDATE Category SET category_name='$this->category_name' "
-                 . "WHERE category_id=$this->category_id";
+                 . "WHERE category_id='$this->category_id'";
 
             $result = $conn->query($sql);
            
@@ -80,7 +80,7 @@ class Category {
         
         if($this->category_id != -1){
         
-            $sql = "DELETE FROM Category WHERE category_id = $this->category_id)";
+            $sql = "DELETE FROM Category WHERE category_id = '$this->category_id')";
 
             $result = $conn->query($sql);
 
@@ -118,7 +118,7 @@ class Category {
         
         // to zpaytanie jeszcze nie wiem czy poprawne 
         $sql = "SELECT * FROM Product JOIN Category ON Product.category_id = Category.category_id "
-             . "WHERE Category.category_id = $categoryId";
+             . "WHERE Category.category_id = $category_id";
 
         $ret = [];
         $result = $conn->query($sql); 
