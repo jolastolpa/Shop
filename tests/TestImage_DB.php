@@ -3,7 +3,7 @@
 require_once __DIR__.'/../src/Image.php';
 require_once __DIR__.'/../src/Product.php'; 
 
-class TestCategory extends PHPUnit_Extensions_Database_TestCase {
+class TestImage_DB extends PHPUnit_Extensions_Database_TestCase {
     private $image; 
     private $product;
     

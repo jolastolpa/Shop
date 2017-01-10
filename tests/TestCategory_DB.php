@@ -3,7 +3,7 @@
 require_once __DIR__.'/../src/Category.php';
 require_once __DIR__.'/../src/Product.php'; 
 
-class TestCategory extends PHPUnit_Extensions_Database_TestCase {
+class TestCategory_DB extends PHPUnit_Extensions_Database_TestCase {
 
     protected static $mysqliConn; 
     
