@@ -52,7 +52,7 @@ class Category {
         
         if($this->category_id == -1){ 
             
-            $sql = "INSERT INTO Category VALUES ('$this->category_id', '$this->category_name')";
+            $sql = "INSERT INTO Category (category_name) VALUES ('$this->category_name')";
             
             $result = $conn->query($sql);
             

@@ -106,7 +106,7 @@ class Order{
             
             $sql = "INSERT INTO `Order`(order_owner_id, order_status, order_product, order_date) "
                 . "VALUES ('$this->order_owner_id', '$this->order_status', '$this->order_product', '$this->order_date')";
-                    echo $sql;exit;
+
             $result = $conn->query($sql);
             if($result == true){
                 

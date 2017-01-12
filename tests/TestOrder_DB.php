@@ -41,7 +41,11 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
     // inicjacja obiektu klasy User i zmiennej produktow
     public function setUp(){
         
+        // stworzenie obiektu klasy User i zapisanie go do DB
         $this->user = new User();
+        $this->user->saveToDB(self::$mysqliConn);
+        
+        // id i ilosc produktow
         $this->product = ["3" => "5", "7" => "11", "13" => "17"];
     }
     
@@ -103,7 +107,10 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
     // wyczyszczenie obiektu i zmiennej z atrybutow
     public function tearDown(){
         
-        $this->user = NULL;
+        // usuniecie obiektu klasy User z bazy danych
+        $this->user->delete(self::$mysqliConn);
+        
+        // zerownie tablicy z id i iloscia produktow
         $this->product = NULL;
     }
     

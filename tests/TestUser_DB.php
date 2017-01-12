@@ -9,7 +9,9 @@ class TestUser_DB extends PHPUnit_Extensions_Database_TestCase {
     public function getConnection() {
 
         $conn = new PDO(
-                $GLOBALS['DB_DSN'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWD']
+                $GLOBALS['DB_DSN'], 
+                $GLOBALS['DB_USER'], 
+                $GLOBALS['DB_PASSWD']
         );
 
         return new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection($conn, $GLOBALS['DB_NAME']);
@@ -24,7 +26,10 @@ class TestUser_DB extends PHPUnit_Extensions_Database_TestCase {
     static public function setUpBeforeClass() {
 
         self::$mysqliConn = new mysqli(
-                $GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWD'], $GLOBALS['DB_NAME']
+                $GLOBALS['DB_HOST'], 
+                $GLOBALS['DB_USER'], 
+                $GLOBALS['DB_PASSWD'], 
+                $GLOBALS['DB_NAME']
         );
     }
 
