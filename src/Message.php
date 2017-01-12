@@ -23,10 +23,10 @@ class Message {
     private $admin_name;
     
    
-    public function __construct($receiver_id = 0, $sender_id = 0, 
+    public function __construct($receiver_id = 1, $sender_id = 1, 
             $message_text = "", $message_title = "", $creationDate = ""){ 
 
-        $this->id = -1;
+        $this->message_id = -1;
         $this->setReceiverId($receiver_id);
         $this->setSenderId($sender_id);
         $this->setMessageText($message_text); 
@@ -35,14 +35,11 @@ class Message {
     }
     
     
-    
-   
     public function setMessageId($newMessageId) {
         if (is_numeric($newMessageId)) {
-            $this->id = $newMessageId;
+            $this->message_id = $newMessageId;
         }
     } 
-    
     public function setReceiverId($newReceiverId) {
         if (is_numeric($newReceiverId)) {
             $this->receiver_id = $newReceiverId;
@@ -52,11 +49,10 @@ class Message {
         if (is_numeric($newSenderId)) {
             $this->sender_id = $newSenderId;
         }
-      
     } 
     public function setMessageText($newMessageText) {
         if (is_string($newMessageText)) {
-            $this->message_text = $newTextMessage;
+            $this->message_text = $newMessageText;
         }
     } 
      public function setMessageTitle($newMessageTitle) {
@@ -64,12 +60,11 @@ class Message {
             $this->message_title = $newMessageTitle;
         } 
      } 
-     public function setCreationDate($newCreationDate) {
+    public function setCreationDate($newCreationDate) {
         if (is_integer($newCreationDate)) {
             $this->creationDate = $newCreationDate;
         }
     }
-     
     public function getMessageId() {
         return $this->message_id;
     }
@@ -97,13 +92,13 @@ class Message {
     
 // zpaisywanie do bazy podczas wysyłania - funkcja dla admina
     public function saveToDB(mysqli $conn) {
-        if ($this->id == -1) {
+        if ($this->message_id == -1) {
             $sql = "INSERT INTO Message(receiver_id, sender_id ,message_text,message_title,creationDate)
                    VALUES ('$this->receiver_id', '$this->sender_id',"
                     . " '$this->message_text', '$this->message_title', '$this->creationDate')";
             $result = $conn->query($sql);
             if ($result == true) {
-                $this->id = $conn->insert_id;
+                $this->message_id = $conn->insert_id;
                 return true;
             } else {
                 return false;
@@ -121,7 +116,7 @@ class Message {
         if ($result == true && $result->num_rows != 0) {
             foreach ($result as $row) {
                 $loadedMessage = new Message();
-                $loadedMessage->message_id = $row['id'];
+                $loadedMessage->message_id = $row['message_id'];
                 $loadedMessage->sender_id = $row['sender_id']; 
                 $loadedMessage->message_text = $row['message_text'];
                 $loadedMessage->message_title = $row['message_title'];
@@ -144,11 +139,11 @@ class Message {
         if ($result == true && $result->num_rows != 0) {
             foreach ($result as $row) {
                 $loadedMessage = new Message();
-                $loadedMessage->id = $row['id'];
+                $loadedMessage->id = $row['message_id'];
                 $loadedMessage->receiver_id = $row['receiver_id'];
                 $loadedMessage->message_text = $row['message_text'];
                 $loadedMessage->message_title = $row['message_title'];
-                $loadedMessage->creationDate = $row['creation_date']; 
+                $loadedMessage->creationDate = $row['creationDate']; 
                 $loadedMessage->name = $row['name']; 
                 $loadedMessage->surname = $row['surname'];
                 $ret[] = $loadedMessage;
@@ -169,7 +164,7 @@ class Message {
             $loadedMessage->sender_id = $row['sender_id']; 
             $loadedMessage->message_text = $row['message_text'];
             $loadedMessage->message_title = $row['message_title'];
-            $loadedMessage->creationDate = $row['creation_date']; 
+            $loadedMessage->creationDate = $row['creationDate']; 
             return $loadedMessage;
         }
         return null; 

@@ -7,7 +7,8 @@ name VARCHAR(100),
 price FLOAT,
 description VARCHAR(500),
 quantity INT,
-category_id INT
+category_id INT, 
+FOREIGN KEY (category_id) REFERENCES Category(category_id)
 )
 */
 

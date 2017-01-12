@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>  
+    <Message
+        message_id="1"
+        receiver_id="1" 
+        sender_id="1" 
+        message_text="Welcome new User" 
+        message_title="Welcome" 
+        creationDate="10-01-2017"  
+    /> 
+     <Message
+        message_id="2"
+        receiver_id="2" 
+        sender_id="2" 
+        message_text="Welcome new User" 
+        message_title="Welcome" 
+        creationDate="10-01-2017"  
+    /> 
+    
+    
+</dataset>
