@@ -69,7 +69,11 @@ class TestCategory extends PHPUnit_Extensions_Database_TestCase {
         $this->assertEquals('Furniture', $loadedCategory->getCategoryName());
     }
     
-    
+     // zakończenie połączenia
+    static public function tearDownAfterClass(){
+        
+        self::$mysqliConn = null;
+    }
     
     // zeruje obiekt klasy Category
     protected function tearDown(){

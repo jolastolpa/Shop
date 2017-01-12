@@ -17,10 +17,10 @@ class Image {
     private $product_id;
     
     
-    public function __construct($id = -1, $imageLink = "", Product $product = NULL) {
+    public function __construct($image_id = -1, $image_link = "", Product $product = NULL) {
         
-        $this->setId($id);
-        $this->setImageLink($imageLink);
+        $this->setId($image_id);
+        $this->setImageLink($image_link);
         $product != NULL ? $this->setProductId($product->getId()) : $this->setProductId(-1);  
     } 
     
@@ -66,22 +66,21 @@ class Image {
     // operacje na bazie danych
     public function saveToDb(mysqli $conn) { 
         
-        if($this->id == -1){
+        if($this->image_id == -1){
         
-            $sql = "INSERT INTO Image(image_id, image_link, product_id)"
-                . "VALUES ($this->image_id, '$this->image_link','$this->product_id,)";
+            $sql = "INSERT INTO Image(image_link, product_id)"
+                . "VALUES ('$this->image_link', $this->product_id)";
                     
             $result = $conn->query($sql);
             if($result == true){
                 
-                $this->id = $conn->insert_id;
+                $this->image_id = $conn->insert_id;
                 return true;
             } 
         }else{ 
             
             $sql="UPDATE Image SET image_link='$this->image_link', "
-               . "product_id='$this->product_id WHERE image_id='$this->image_id'";
-            
+               . "product_id=$this->product_id WHERE image_id=$this->image_id";
             $result = $conn->query($sql);
             if($result == true){              
                 return true;
@@ -92,13 +91,13 @@ class Image {
       
     public function delete(mysqli $conn){
         
-        if($this->id != -1){
+        if($this->image_id != -1){
             
             $sql = "DELETE FROM Image WHERE image_id='$this->image_id'";
             
             $result = $conn->query($sql);
             if($result == true){
-                $this->id = -1;
+                $this->image_id = -1;
                 return true;
             }
             return false;
@@ -126,48 +125,31 @@ class Image {
     }
     
     
-    // a czy ta fukcja nie wytarczy zamiast tej nizej?? :-P
-    static public function loadImagesByProductId(mysqli $conn, $product_id){
+   
+   static public function loadImagesByProductId(mysqli $conn, $product_id){
         
         $sql = "SELECT * FROM Image WHERE product_id='$product_id'";
-        
+        $ret=[]; 
         $result = $conn->query($sql); 
     
-        if($result == true && $result->num_rows == 1){
+        if($result == true && $result->num_rows >0){
             
-            $row = $result->fetch_assoc();
-            $loadedImage = new Image();
-            $loadedImage->image_id = $row['image_id'];
-            $loadedImage->image_link = $row['image_link'];
-            $loadedImage->product_id = $row['product_id'];
-            
-            return $loadedImage;
-        }
-        return null; 
-    }
-    
-    static public function loadAllImagesByProductId(mysqli $conn, $product_id) { 
-            
-        $sql="SELECT Image.image_link FROM Product JOIN Image ON 
-            Product.id = Image.product_id WHERE Product.id='$product_id'";
-
-        $ret=[]; 
-
-        $result = $conn->query($sql);
-        if($result == true && $result->num_rows != 0){
-
             foreach ($result as $row){
                 $loadedImage = new Image();
                 $loadedImage->image_id = $row['image_id'];
                 $loadedImage->image_link = $row['image_link'];
                 $loadedImage->product_id = $row['product_id'];
-
                 $ret[] = $loadedImage;
             }
+            return $ret;
         }
-        return $ret;   
-    }        
+        return null;
+    }
+    
 }
+    
+        
+
 
     
 

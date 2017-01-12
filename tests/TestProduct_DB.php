@@ -1,9 +1,6 @@
 <?php
 //require_once __DIR__.'/../vendor/autoload.php';  - mi ta ścieżka nie działa, nie wiem czemu
-
 require_once __DIR__.'/../src/Product.php';
-
-
 class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{ 
     
     protected static $mysqliConn; 
@@ -69,6 +66,34 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
     public function testIfReturnsAnArrayOfProducts(){
         
         $this->assertTrue(is_array(Product::loadAllProducts(self::$mysqliConn)));
+    } 
+    
+    
+      public function testIfAbleToLoadProductsByCategoryId(){
+        
+        $product1 = new Product();
+        $product1->setId(3);
+        $product1->setName('stool');
+        $product1->setPrice(999);
+        $product1->setDescription('new');
+        $product1->setQuantity(6);
+        $product1->setProductCategoryId(3);
+        $product1->saveToDB(self::$mysqliConn); 
+        
+        $product2 = new Product();
+        $product2->setId(4);
+        $product2->setName('sofa');
+        $product2->setPrice(19);
+        $product2->setDescription('new');
+        $product2->setQuantity(7);
+        $product2->setProductCategoryId(3);
+        $product2->saveToDB(self::$mysqliConn); 
+        
+        $arrayProductsCategoryId3[] = $product1;
+        $arrayProductsCategoryId3[] = $product2;
+        
+        $loadedProductsCategory3 = Product::loadAllProductFromCategory(self::$mysqliConn, 3);
+        $this->assertEquals($arrayProductsCategoryId3, $loadedProductsCategory3);
     }
     
     
@@ -84,3 +109,6 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         self::$mysqliConn = null;
     }
 }
+
+
+

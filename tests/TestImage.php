@@ -17,9 +17,9 @@ class TestImage extends PHPUnit_Framework_TestCase{
     // test dzialania konstruktora klasy Category
     public function testIfCreationIsCorrect(){ 
         
-        $this->assertEquals(-1, $this->image->getId()); 
+        $this->assertEquals(-1, $this->image->getImageId()); 
         $this->assertEquals('', $this->image->getImageLink()); 
-        $this->assertEquals('', $this->image->ProductId());
+        $this->assertEquals(-1, $this->image->getProductId());
          
     }  
     

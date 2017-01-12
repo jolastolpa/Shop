@@ -1,4 +1,9 @@
-<?php
+<?php 
+/*CREATE TABLE Status (
+status_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+status_name VARCHAR(30)
+) */
+
 
 class Status{ 
     
@@ -43,10 +48,10 @@ class Status{
     // operacje na bazie danych
     public function saveToDb(mysqli $conn) { 
         
-        if($this->id == -1){
+        if($this->status_id == -1){
         
-            $sql = "INSERT INTO Status(status_id, status_name)"
-                 . "VALUES ('$this->status_id', '$this->status_name')";
+            $sql = "INSERT INTO Status(status_name)"
+                 . "VALUES ( '$this->status_name')";
                     
             $result = $conn->query($sql);
             if($result == true){
@@ -56,7 +61,7 @@ class Status{
             } 
         }else{ 
             
-            $sql="UPDATE Status SET name='$this->status_name' WHERE status_id='$this->status_id'";
+            $sql="UPDATE Status SET status_name='$this->status_name' WHERE status_id='$this->status_id'";
             
             $result = $conn->query($sql);
             if($result == true){              
@@ -68,9 +73,9 @@ class Status{
       
     public function delete(mysqli $conn){
         
-        if($this->id != -1){
+        if($this->status_id != -1){
             
-            $sql = "DELETE FROM Statuses WHERE id='$this->id'";
+            $sql = "DELETE FROM Status WHERE status_id='$this->status_id'";
             
             $result = $conn->query($sql);
             if($result == true){

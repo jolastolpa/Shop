@@ -127,8 +127,8 @@ class Product{
         if($this->id == -1){
         
             $sql = "INSERT INTO Product(name, price, description, quantity, category_id)"
-                . "VALUES ('$this->name', '$this->price','$this->description', '$this->quantity',"
-                . "'$this->category_id')";
+                . "VALUES ('$this->name', $this->price,'$this->description', $this->quantity,"
+                . "$this->category_id)";
                     
             $result = $conn->query($sql);
             if($result == true){
@@ -138,9 +138,9 @@ class Product{
             } 
         }else{ 
             
-            $sql="UPDATE Product SET name='$this->name' ,price='$this->price',"
-                . "description='$this->description', quantity='$this->quantity',"
-                . "category_id='$this->category_id' WHERE id='$this->id'";
+            $sql="UPDATE Product SET name='$this->name' ,price=$this->price,"
+                . "description='$this->description', quantity=$this->quantity,"
+                . "category_id=$this->category_id WHERE id=$this->id";
             
             $result = $conn->query($sql);
             if($result == true){              
@@ -168,7 +168,11 @@ class Product{
  
     static public function loadProductById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Product WHERE id='$id'";
+
+        $sql = "SELECT * FROM Product  WHERE id=$id";
+
+
+
         
         $result = $conn->query($sql); 
     
@@ -181,9 +185,45 @@ class Product{
             $loadedProduct->price = $row['price'];
             $loadedProduct->description = $row['description']; 
             $loadedProduct->quantity = $row['quantity']; 
-            $loadedProduct->category_id = $row['category_id'];
 
-            return $loadedProduct;
+            $loadedProduct->category_id = $row['category_id']; 
+            
+            return $loadedProduct; 
+            
+            // cholera wie czy tak sie da
+            
+            // Zastanawiam się ciągle czy w ogóle trzeba? W sensie przy tworzeniu 
+            // produktu bedziemy inicjowac obiekt klasy Image do ktorego wpiszemy id
+            // tego wlasnie produktu wiec pozniej w ten sposob bedzie mozna dojsc do 
+            // korealacji... ale wiadomo, mozna i w jednej metodzie to zrobic i moze
+            // z użyciem np array_merge(stworzyc tutaj nowy obiekt klasy Image, 
+            // przypisac jego wartosci w postaci asocjacyjnej (tak jak się to ma w $loadedProdukt), 
+            // a nastepnie polaczyc przez array_merge tablice z danymi z Image z $loadedProdukt)
+            // 
+            // Ponizej wklejam prosty przyklad ktory pokazuje,
+            // ze juz teraz mozna dojsc do latwego dostepu do linkow zdjec(jesli chcesz to wklej 
+            // sobie ten kod pod klasa Product i odpal):
+            
+            /*
+               require_once 'Image.php';
+
+               $p = new Product('kot', 20, 'w butach byl sobie kot', 1, 2);
+
+               $i = new Image('Images/1/1.jpg', $p);
+
+               echo $i->getImageId().'<br>';
+               echo $i->getImageLink().'<br>';
+               echo $i->getProductId().'<br>';
+              
+                //ewentualnie: var_dump($i);   i wsio
+            */
+            
+            // Moge się mylić oczywiście!! Wciąz się uczymy w końcu!! :-) No i może
+            // o co innego Ci chodzilo, a ja sie wpierdzielam jak zwykle... :P
+      
+            
+
+ 
         }
         return null; 
     }
@@ -210,4 +250,32 @@ class Product{
         }
         return $ret;
     }    
+    
+     public static function loadAllProductFromCategory(mysqli $conn, $category_id) { 
+        
+       
+        $sql = "SELECT * FROM Product WHERE category_id = $category_id";
+
+        $ret = [];
+        $result = $conn->query($sql); 
+
+        if ($result == true && $result->num_rows > 0){
+            
+            foreach ($result as $row){
+                $loadedProduct = new Product();
+                $loadedProduct->id = $row['id'];
+                $loadedProduct->name = $row['name'];
+                $loadedProduct->description = $row['description'];
+              
+                $loadedProduct->price = $row['price'];
+                $loadedProduct->quantity = $row['quantity'];
+                $loadedProduct->category_id = $row['category_id'];
+
+                $ret[] = $loadedProduct;
+            } 
+            return $ret;
+        }
+        return $ret;
+    }
+    
 }
