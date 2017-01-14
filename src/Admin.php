@@ -48,10 +48,10 @@ class Admin{
         
         if(is_string($pass) && strlen($pass) >= 5){
             // wersja z hash'owaniem hasla do testow z baza danych
-            // $this->admin_pass = password_hash(trim($pass), PASSWORD_DEFAULT);
+            $this->admin_pass = password_hash(trim($pass), PASSWORD_DEFAULT);
             
             // wersja do testow bez bazy danych
-            $this->admin_pass = trim($pass);
+            //$this->admin_pass = trim($pass);
         }
     }
     
@@ -156,9 +156,9 @@ class Admin{
         return null; 
     } 
     
-    static public function verifyPassword(mysqli $conn,$admin_email,$admin_pass) {
+    static public function verifyPassword(mysqli $conn,$email,$password) {
     
-     $sql = "SELECT*FROM Admin WHERE admin_email= '$admin_email' ";
+        $sql = "SELECT * FROM Admin WHERE admin_email= '$email' ";
         $result = $conn->query($sql); 
 
         if($result->num_rows == 1) {  
@@ -166,13 +166,23 @@ class Admin{
            $hashed_password=$row['admin_pass']; 
            
            
-            if(password_verify($admin_pass,$hashed_password)) {  
+            if(password_verify($password,$hashed_password)) {  
              
-               $admin_id=$row['admin_id'];  
-               return $admin_id ;
+               $id=$row['admin_id'];  
+               return $id ;
             }
         
         }  
         return -1;
-  }
+  }  
+    static public function availibilityOfEmail (mysqli $conn, $admin_email) { 
+        
+        $sql="SELECT * FROM Admin WHERE admin_email='$admin_email'"; 
+        $result = $conn->query($sql); 
+
+        if($result->num_rows == 0) {   
+            return true;
+        } 
+        return false;
+    }
 }
