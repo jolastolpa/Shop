@@ -44,7 +44,7 @@ class TestCategory extends PHPUnit_Extensions_Database_TestCase {
     
     
     // test zapisu metody saveToDB()
-    public function testSaveNewCategory(){ 
+    public function testSaveANewCategory(){ 
          
         $this->assertTrue($this->category->saveToDB(self::$mysqliConn)); 
     }
@@ -65,7 +65,6 @@ class TestCategory extends PHPUnit_Extensions_Database_TestCase {
     public function testIfAbleToLoadCategoryByItsId(){
         
         $loadedCategory = Category::loadCategoryById(self::$mysqliConn, 1); 
-        var_dump($loadedCategory);exit;
         $this->assertEquals('Furniture', $loadedCategory->getCategoryName());
     }
     

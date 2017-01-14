@@ -5,13 +5,15 @@ require_once __DIR__ . '/../src/User.php';
 class TestUser_DB extends PHPUnit_Extensions_Database_TestCase {
 
     protected static $mysqliConn;
+    
+    private $user;
 
     public function getConnection() {
 
         $conn = new PDO(
-                $GLOBALS['DB_DSN'], 
-                $GLOBALS['DB_USER'], 
-                $GLOBALS['DB_PASSWD']
+            $GLOBALS['DB_DSN'], 
+            $GLOBALS['DB_USER'], 
+            $GLOBALS['DB_PASSWD']
         );
 
         return new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection($conn, $GLOBALS['DB_NAME']);
@@ -26,37 +28,43 @@ class TestUser_DB extends PHPUnit_Extensions_Database_TestCase {
     static public function setUpBeforeClass() {
 
         self::$mysqliConn = new mysqli(
-                $GLOBALS['DB_HOST'], 
-                $GLOBALS['DB_USER'], 
-                $GLOBALS['DB_PASSWD'], 
-                $GLOBALS['DB_NAME']
+            $GLOBALS['DB_HOST'], 
+            $GLOBALS['DB_USER'], 
+            $GLOBALS['DB_PASSWD'], 
+            $GLOBALS['DB_NAME']
         );
     }
-
-    // test metody saveToDB() (zapis oraz update) i delete()
-    public function testSaveAndDeleteANewUser() {
-
-        // inicjacja nowego obiektu
-        $user = new User();
-        $user->setId(-1);
-        $user->setName("Mario");
-        $user->setSurname('Bros');
-        $user->setEmail('mario.bros@nintendo.com');
-        $user->setPassword('princess');
-        $user->setDeliverAddress('castle');
-
-        // test zapisu
-        $this->assertTrue($user->saveToDB(self::$mysqliConn));
-
-        // test update'u
-        $user->setSurname('Gonzales');
-        $user->setDeliverAddress('New Mexico');
-        $this->assertTrue($user->saveToDB(self::$mysqliConn));
-
-        // test usuniecia
-        $this->assertTrue($user->delete(self::$mysqliConn));
+    
+    // inicjuje obiekt klasy User
+    protected function setUp(){
+        
+        $this->user = new User("Mario", "Bros", "mario.bros@nintendo.com", "princess", "castle");
     }
 
+    
+    
+    // test zapisu z metody saveToDB()
+    public function testSaveANewUser() {
+
+        $this->assertTrue($this->user->saveUserToDB(self::$mysqliConn));
+    }
+    
+    // test update'u z metody saveToDB()
+    public function testIfUpdateANewUser(){
+
+        $this->user->setSurname('Gonzales');
+        $this->user->setDeliverAddress('New Mexico');
+        $this->assertTrue($this->user->saveUserToDB(self::$mysqliConn));
+    }
+    
+    // test usuniecia z metody deleteUser()
+    public function testIfDeleteANewUser() {
+
+        $this->assertTrue($this->user->deleteUser(self::$mysqliConn));
+    }
+
+    // metoda do dataProvider'a metody loadUserById()
+    // id i imie z pliku User.xml
     public function getNames(){
         return [
             [1, 'Marek'],
@@ -84,6 +92,7 @@ class TestUser_DB extends PHPUnit_Extensions_Database_TestCase {
     
     
     // metoda do dataProvider'a metody loadUserByEmail()
+    // email'e z pliku User.xml
     public function getEmails(){
         return [
             ['mark.korcz@gmail.com'],
@@ -103,9 +112,16 @@ class TestUser_DB extends PHPUnit_Extensions_Database_TestCase {
     }    
     
     
+    
+    
     // zakończenie połączenia
-    static public function tearDownAfterClass() {
-        self::$mysqliConn = null;
+    static public function tearDownAfterClass(){
+        
+        self::$mysqliConn = NULL;
     }
-
+    
+    protected function tearDown(){
+    
+        $this->user = NULL;
+    }
 }

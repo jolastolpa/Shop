@@ -110,7 +110,7 @@ class User{
     
     
     // operacje na bazie danych
-    public function saveToDB(mysqli $conn){
+    public function saveUserToDB(mysqli $conn){
         
         if($this->id == -1){
         
@@ -138,7 +138,7 @@ class User{
         return false;
     } 
       
-    public function delete(mysqli $conn){
+    public function deleteUser(mysqli $conn){
         
         if($this->id != -1){
             
