@@ -68,11 +68,11 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         <link rel="stylesheet" href="../css/style.css" type="text/css" />
     </head>
     <body>
- <div class="col-sm-8 text-center panel panel-success">
+ <div class="col-sm-6 text-center panel panel-success">
                    
                     <h3> Zarejestruj się by być adminem</h3>
-                    <form action=# method="POST">  
-                        
+                    <form role="form" class="form-horizontal" action=# method="POST" >  
+                       
                         <div class="form-group">
                             <label for="name">Imie:</label>
                             <input type="text" class="form-control"  id="name" name="name" value="<?php if(isset($form['name'])) echo $form['name']; //stosowane by dobrze wprowadzone dane nie ginęły gdy pojawi sie jakiś błąd?>"/> 
