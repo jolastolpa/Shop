@@ -154,5 +154,25 @@ class Admin{
             return $loadedAdmin;
         }
         return null; 
-    }
+    } 
+    
+    static public function verifyPassword(mysqli $conn,$admin_email,$admin_pass) {
+    
+     $sql = "SELECT*FROM Admin WHERE admin_email= '$admin_email' ";
+        $result = $conn->query($sql); 
+
+        if($result->num_rows == 1) {  
+           $row = $result->fetch_assoc(); 
+           $hashed_password=$row['admin_pass']; 
+           
+           
+            if(password_verify($admin_pass,$hashed_password)) {  
+             
+               $admin_id=$row['admin_id'];  
+               return $admin_id ;
+            }
+        
+        }  
+        return -1;
+  }
 }
