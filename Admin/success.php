@@ -20,12 +20,15 @@ if(!isset($_SESSION['registersuccess'])) { // zabezpieczenie gdyby ktos wpisal
         <link rel="stylesheet" href="../css/style.css" type="text/css" />
     </head>
 
-<body>
-    Gratulujemy <strong> <?php  echo $_SESSION['newadmin'] ;  ?> </strong>
-    rejestracji jako nowy admin .
-    Możesz się już zalogowac:<br><br>
-    <a href="log.php">Zaloguj się na swoje konto</a> 
-    <br> 
+<body> 
+     <div class="col-lg-6 text-center "> 
+         <p> Gratulujemy <strong> <?php  echo $_SESSION['newadmin'] ;  ?> </strong> rejestracji jako nowy admin!
+             <span class="glyphicon glyphicon-arrow-right "></span>
+             <a href="log.php">Zaloguj się na swoje konto</p>
+                  
+     </div>
+           
+    
     
     
 </body> 

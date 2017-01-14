@@ -41,28 +41,33 @@ $conn->close();
         <meta charset="UTF-8">
         <link rel="stylesheet" href="../css/style.css" type="text/css" />
     </head>
-    <body> 
-        <h2><a href="register.php">Rejestracja-gdy nie masz jeszcze konta</a></h2><br><br><br>
- <div class="col-sm-5 text-center panel panel-success">
-                     
-                    <h3> Zaloguj się adminie</h3>
-                    <form action=# method="POST">
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="email">
+    <body>  
+       <div class="container" > 
+           <div class="row">  
+               <div class="col-lg-6 text-center ">
+                   <h2><a href="register.php" >Rejestracja     <span class="glyphicon glyphicon-pencil "></span><br><br><br><br>
+               </div>
+           </div> 
+                    <div class="row">
+                        <div class="col-lg-6 text-center panel panel-success">
+                           <h3> Zaloguj się adminie</h3>
+                              <form action=# method="POST">
+                                 <div class="form-group">
+                                     <label for="email">Email:</label>
+                                     <input type="email" class="form-control" id="email" name="email" placeholder="email">
+                                 </div>
+                                 <div class="form-group">
+                                     <label for="password">Hasło:</label>
+                                     <input type="password" class="form-control" id="password" name="password" placeholder="hasło">
+                                 </div>
+
+                                 <button type="submit" class="bnt btn-group-vertical btn-sm">Zaloguj</button>
+                              </form>
                         </div>
-                        <div class="form-group">
-                            <label for="password">Hasło:</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="hasło">
-                        </div>
 
-                        <button type="submit" class="bnt btn-group-vertical">Zaloguj</button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-
+                    </div>
+        
+      </div>
 
     </body> 
     

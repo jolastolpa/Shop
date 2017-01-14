@@ -79,7 +79,7 @@ class TestAdmin_DB extends PHPUnit_Extensions_Database_TestCase{
     }
     
     public function testIfVerifyIsCorrectAndReturnId() { 
-        $id=Admin::verifyPassword(self::$mysqli,'agent.smith@gmail.com', 'tralala'); 
+        $id=Admin::verifyPassword(self::$mysqliConn,'agent.smith@gmail.com', 'tralala'); 
         $this->assertEquals(1,$id);
     }
     
