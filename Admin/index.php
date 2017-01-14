@@ -26,4 +26,4 @@ if(isset($_SESSION['admin_id'])) {
     <body>
  <div class="col-sm-5 text-center panel panel-success">
                    
-                    <h3> To twój panel zarządzający sklepem</h3>
+                    <h3> <?php echo $admin_name ?> To twój panel zarządzający sklepem</h3>

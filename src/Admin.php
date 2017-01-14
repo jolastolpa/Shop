@@ -4,7 +4,7 @@
 CREATE TABLE Admin(
 admin_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 admin_name VARCHAR(20),
-admin_pass VARCHAR(20),
+admin_pass VARCHAR(255),
 admin_email VARCHAR(30) UNIQUE
 )
 */
@@ -168,9 +168,9 @@ class Admin{
            
             if(password_verify($password,$hashed_password)) {  
              
-               $id=$row['admin_id'];  
-               return $id ;
-            }
+               return $row['admin_id'];  
+                
+            } 
         
         }  
         return -1;

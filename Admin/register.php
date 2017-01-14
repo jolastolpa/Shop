@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     $fields=['name', 'email', 'password', 'password2'] ; 
     // pobieranie danych : 
     foreach ( $fields as $field) { 
-        $form[$field]=  htmlspecialchars($_POST[$field]);  
+        $form[$field]=  htmlspecialchars(trim($_POST[$field]));  
         $error[$field]=''; // zakładam brak błędów
     }  
     

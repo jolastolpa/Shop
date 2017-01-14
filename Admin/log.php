@@ -12,17 +12,18 @@ require_once __DIR__.'/../src/index.html';
             $password=trim($_POST['password'] );    
         
             $admin_id= Admin::verifyPassword($conn, $email, $password);   
+           
               
             if ($admin_id!=-1) { 
             
               $_SESSION['admin_id']=$admin_id; 
-              $_SESSION['logged']=TRUE;
+              $_SESSION['logged']=true;
               header('location:index.php');   
            
             } else{  
                  $_SESSION['error']='<span style="color:red">Nieprawidlowy login 
                     lub hasło !</span>'; 
-                 //header('Location:log.php');
+                header('Location:log.php');
               } 
         }
          

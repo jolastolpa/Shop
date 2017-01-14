@@ -78,6 +78,10 @@ class TestAdmin_DB extends PHPUnit_Extensions_Database_TestCase{
         $this->assertEquals(2, $loadedSecondAdmin->getAdminId());    
     }
     
+    public function testIfVerifyIsCorrectAndReturnId() { 
+        $id=Admin::verifyPassword(self::$mysqli,'agent.smith@gmail.com', 'tralala'); 
+        $this->assertEquals(1,$id);
+    }
     
     // zakończenie połączenia
     static public function tearDownAfterClass(){
