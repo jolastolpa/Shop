@@ -18,26 +18,26 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         $error[$field]=''; // zakładam brak błędów
     }  
     
-    if((strlen($form['name'])<2) || (strlen($form['name'])>12 )){ 
-        $error['name']="imię musi mieć od 2do 12 znaków!" ; 
-        $valid=false;
-    } 
-    if(filter_var($form['email'],FILTER_VALIDATE_EMAIL)==false ) { 
-        $error['email']="wprowadź prawidłowy email!" ; 
-        $valid=false;
-    }  
-    if(Admin::availibilityOfEmail($conn, $form['email'])==false) {
-        $error['email']="przykro mi ten email jest już zajęty!" ; 
-        $valid=false; 
-    }   
-    if ((strlen($form['password'])<6) || (strlen($form['password'])>20)) { 
-        $error['password']="hasło musi mieć od 6 do 20 znaków!" ; 
-        $valid=false;
-    } 
-    if ($form['password']!=$form['password2']) {  
-        $error['password2']="hasła nie są identyczne!" ; 
-        $valid=false;    
-    } 
+        if((strlen($form['name'])<2) || (strlen($form['name'])>12 )){ 
+            $error['name']="imię musi mieć od 2do 12 znaków!" ; 
+            $valid=false;
+        } 
+        if(filter_var($form['email'],FILTER_VALIDATE_EMAIL)==false ) { 
+            $error['email']="wprowadź prawidłowy email!" ; 
+            $valid=false;
+        }  
+        if(Admin::availibilityOfEmail($conn, $form['email'])==false) {
+            $error['email']="przykro mi ten email jest już zajęty!" ; 
+            $valid=false; 
+        }   
+        if ((strlen($form['password'])<6) || (strlen($form['password'])>20)) { 
+            $error['password']="hasło musi mieć od 6 do 20 znaków!" ; 
+            $valid=false;
+        } 
+        if ($form['password']!=$form['password2']) {  
+            $error['password2']="hasła nie są identyczne!" ; 
+            $valid=false;    
+        } 
     
     
         if($valid) {   

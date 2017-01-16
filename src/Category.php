@@ -127,8 +127,9 @@ class Category {
             foreach($result as $row){
                 
                 $loadedCategory = new Category();
-                $loadedCategory->category_id = $row['category_id'];
-                $loadedCategory->category_name = $row['category_name'];
+                $loadedCategory->category_id = $row['category_id']; 
+                $loadedCategory->category_name = $row['category_name']; 
+                echo "<option value='" . $loadedCategory->getCategoryId() . "'>" . $loadedCategory->getCategoryName() . "</option>";
                 
                 $categories[] = $loadedCategory;
             }

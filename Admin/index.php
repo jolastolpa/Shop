@@ -28,12 +28,16 @@ if(isset($_SESSION['admin_id'])) {
       
      <ul class="nav nav-pills nav-justified">
      <li role="presentation" class="active"><a href="index.php">Strona główna</a></li>
-     <li role="presentation"><a href="#">Produkty</a> </li>
+     <li role="presentation"><a href="products.php">Produkty</a> </li>
      <li role="presentation"><a href="#">Kategorie</a></li> 
      <li role="presentation"><a href="#">Zamówienia</a></li> 
      <li role="presentation"><a href="#">Użytkownicy</a></li> 
-     <li role="presentation"><a href="#">Wiadomości</a></li> 
-     <li role="presentation"><a href="#">Twoje konto</a></li>
-     </ul> 
- </div> 
-      <h3> <?php echo $admin_name ?> To twój panel zarządzający sklepem</h3> 
+     <li role="presentation"><a href="#">Twoje konto</a></li> 
+     <li role="presentation"><a href="logout.php">Wyloguj się</a></li>
+   </ul>
+ </div> <br><br> 
+ 
+ <div class="col-lg-12 text-center panel panel-success">
+     <h3> <?php echo $admin_name ?> To twój panel zarządzający sklepem</h3> <br><br><br> 
+ </div>       
+      
