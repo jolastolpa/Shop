@@ -11,7 +11,9 @@ require_once __DIR__.'/../src/index.html';
     <head>
         <title> Zarządzanie produktami</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/style.css" type="text/css" />
+        <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
+        
+             <?php require_once __DIR__ . '/nav.php' ?>
     </head>
     <body>
         <div class="col-lg-12 text-center "> <br><br><br>

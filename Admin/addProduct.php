@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         if(isset($_POST['submitImage'])) {  
             if (isset($_FILES['fileToUpload'])) { 
     
-                 $file = '../Images/' . basename($_FILES['fileToUpload']['name']); 
+                 $file = '../Images/1/' . basename($_FILES['fileToUpload']['name']); echo $file;
                     if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $file)) { 
                         $images[]=$file ;  
                         foreach($images as $image){
@@ -104,7 +104,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     <head>
         <title> Dodaj produkt</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/style.css" type="text/css" />
+        <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
+        <?php //include __DIR__ . '/nav.php' ?><br><br>
     </head>
     <body>
         <div class="col-lg-8 text-left panel panel-success "> 
@@ -150,19 +151,21 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
                      <?php if (isset($error['description'])) {echo $error['description'];} ?>
                 </div>   
                 
-                <input class="btn btn-success btn-lg" type="submit" value="Dodaj produkt" name="submitImage"><br>
+                <input class="btn btn-success" type="submit" value="Dodaj produkt" name="submitImage"><br>
                 
             </form> 
         </div>
         <div class="col-sm-8 text-left panel panel-success">   
-            <form  method='POST'action="#" enctype="miltipart/form-data" 
-                <div class="form-group">
-                      <label for="fileToUpload">Dodaj zdjęcie</label>
+           <form method="POST" action="#"  enctype="multipart/form-data">
+                     <div class="form-group">
+                            <label for="fileToUpload">Dodaj zdjęcie</label>
                             <input class="form-control" type="file" name="fileToUpload" id="fileToUpload"><br>
-                            <input class="btn btn-success btn-lg" type="submit" value="Dodaj zdjęcie" name="submitImage">
-                    <?php if (isset($error['fileToUpload'])) {echo $error['fileToUpload'];} ?>
-            </form> 
+                            <input class="btn btn-success" type="submit" value="Dodaj zdjęcie" name="submitImage"> 
+                             <?php if (isset($error['fileToUpload'])) {echo $error['fileToUpload'];} ?>
+                    </div>
+            </form>
         </div>
             
  
-          
+        
+            

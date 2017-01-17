@@ -21,23 +21,12 @@ if(isset($_SESSION['admin_id'])) {
     <head>
         <title> Admin Panel</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/style.css" type="text/css" />
+        <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
+          <?php require_once __DIR__ . '/nav.php' ?>
     </head>
-    <body>
- <div class="col-lg-12 text-center panel panel-success">
-      
-     <ul class="nav nav-pills nav-justified">
-     <li role="presentation" class="active"><a href="index.php">Strona główna</a></li>
-     <li role="presentation"><a href="products.php">Produkty</a> </li>
-     <li role="presentation"><a href="#">Kategorie</a></li> 
-     <li role="presentation"><a href="#">Zamówienia</a></li> 
-     <li role="presentation"><a href="#">Użytkownicy</a></li> 
-     <li role="presentation"><a href="#">Twoje konto</a></li> 
-     <li role="presentation"><a href="logout.php">Wyloguj się</a></li>
-   </ul>
- </div> <br><br> 
- 
- <div class="col-lg-12 text-center panel panel-success">
-     <h3> <?php echo $admin_name ?> To twój panel zarządzający sklepem</h3> <br><br><br> 
- </div>       
-      
+    <body>  
+        <div class="col-lg-12 text-center "> <br><br><br>
+           <h3> <?php echo $admin_name ?> To twój panel zarządzający sklepem</h3>
+        </div>
+        
+   </body>
