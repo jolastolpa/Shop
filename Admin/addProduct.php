@@ -16,7 +16,7 @@ if(!isset($_SESSION['logged'])) {
 if ($_SERVER['REQUEST_METHOD']=='POST'){   
     $errorStart='<span style="color:red">' ; 
     $errorEnd="</span>" ;
-        if(isset($_POST['submit'])){  
+        if(isset($_POST['submit'])){ 
         $valid=TRUE;// zakładam prawidłowe dodanie danych
         $fields=['name','price','quantity','category','description'] ; 
         // pobieranie danych :  
@@ -58,20 +58,29 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
                     $newProduct->saveToDB($conn); 
                  
                     if($newProduct->saveToDB($conn)) {  
-                        $lastId=$conn->insert_id ; 
-                        $_SESSION['addProduct']="Dodano produkt";
-                        header('location:addProduct.php');
+                       
+                       $_SESSION['lastId']=$conn->insert_id();
+                      //  header('location:addProduct.php');
                        
                     } else { 
                              echo "Nie udało sie dodać produktu do bazy". $mysqli->error;
                             }         
-                } 
+                }  
                 
     } 
         if(isset($_POST['submitImage'])) {  
-            if (isset($_FILES['fileToUpload'])) { 
-    
-                 $file = '../Images/1/' . basename($_FILES['fileToUpload']['name']); echo $file;
+            if (isset($_FILES['fileToUpload'])) {   
+                $lastId=$_SESSION['lastId'];
+                $uploadDir='../Images' ;  
+                
+                if (is_dir($uploadDir . '/' . $lastId)) {
+                echo $uploadDir . '/' . $lastId . 'exists<br>';
+                } else {
+                  mkdir($uploadDir . '/' . $lastId);
+                  echo $uploadDir . '/' . $lastId . 'created<br>';
+                  }
+
+                 $file =  $uploadDir. '/' . $lastId. '/' . basename($_FILES['fileToUpload']['name']); 
                     if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $file)) { 
                         $images[]=$file ;  
                         foreach($images as $image){
@@ -83,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
                    
                         if($newImage->saveToDb($conn)) { 
                         $_SESSION['addImage']="Do produktu dodano też zdjecie";
-                        header('location:addProduct.php');
+                       // header('location:addProduct.php');
                         }
                             else { 
                                  echo "Nie udało sie dodać zdjęcia do bazy". $mysqli->error;
@@ -105,12 +114,16 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         <title> Dodaj produkt</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
-        <?php //include __DIR__ . '/nav.php' ?><br><br>
+        <?php include __DIR__ . '/nav.php' ?><br><br><br><br>
     </head>
-    <body>
-        <div class="col-lg-8 text-left panel panel-success "> 
-            <h3><span> <?php if(isset($_SESSION['addProduct'])){ echo $_SESSION['addProduct'];} unset($_SESSION['addProduct']);?> </span></h3> <br>
-            <h3><span> <?php if(isset($_SESSION['addImage'])){ echo $_SESSION['addImage'];} unset($_SESSION['addImage'])?> </span></h3>
+    <body> 
+        <ol class="breadcrumb">
+           <li><a href="index.php">Home</a></li>
+           <li><a href="products.php">Zarządzanie produktem</a></li>
+           <li class="active">Dodaj produkt</li>
+        </ol><br>
+        <div class="col-sm-8 text-left panel panel-success "> 
+           
             <form role="form" method="POST" action="#"> 
                 
                 <div class="form-group">
@@ -121,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
                 
                 <div class="form-group">
                     <label for="price">Cena</label>
-                    <input type="number" class="form-control" id="price" name="price" 
+                    <input type="number" class="form-control" id="price" name="price" step="0.01"
                            value="<?php if(isset($form['price'])){ echo $form['price'];} ?>"/> 
                             <?php if (isset($error['price'])) {echo $error['price'];} ?>
                 </div>  
@@ -151,14 +164,14 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
                      <?php if (isset($error['description'])) {echo $error['description'];} ?>
                 </div>   
                 
-                <input class="btn btn-success" type="submit" value="Dodaj produkt" name="submitImage"><br>
+                <input class="btn btn-success" type="submit" value="Dodaj produkt" name="submit"><br>
                 
             </form> 
         </div>
         <div class="col-sm-8 text-left panel panel-success">   
-           <form method="POST" action="#"  enctype="multipart/form-data">
+           <form method="POST"   enctype="multipart/form-data">
                      <div class="form-group">
-                            <label for="fileToUpload">Dodaj zdjęcie</label>
+                            <label for="fileToUpload">Dodaj zdjęcie</label> 
                             <input class="form-control" type="file" name="fileToUpload" id="fileToUpload"><br>
                             <input class="btn btn-success" type="submit" value="Dodaj zdjęcie" name="submitImage"> 
                              <?php if (isset($error['fileToUpload'])) {echo $error['fileToUpload'];} ?>
