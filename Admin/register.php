@@ -8,57 +8,56 @@ require_once '../src/Admin.php' ;
 
 
 
-if ($_SERVER['REQUEST_METHOD']=='POST'){ 
-    $valid=TRUE;// zakładam prawidłową walidacje
-    if(isset($_POST['submit'])){  
-    $fields=['name', 'email', 'password', 'password2'] ; 
-    // pobieranie danych : 
-    foreach ( $fields as $field) { 
-        $form[$field]=  htmlspecialchars(trim($_POST[$field]));  
-        $error[$field]=''; // zakładam brak błędów
-    }  
-    
-        if((strlen($form['name'])<2) || (strlen($form['name'])>12 )){ 
-            $error['name']="imię musi mieć od 2do 12 znaków!" ; 
-            $valid=false;
-        } 
-        if(filter_var($form['email'],FILTER_VALIDATE_EMAIL)==false ) { 
-            $error['email']="wprowadź prawidłowy email!" ; 
-            $valid=false;
-        }  
-        if(Admin::availibilityOfEmail($conn, $form['email'])==false) {
-            $error['email']="przykro mi ten email jest już zajęty!" ; 
-            $valid=false; 
-        }   
-        if ((strlen($form['password'])<6) || (strlen($form['password'])>20)) { 
-            $error['password']="hasło musi mieć od 6 do 20 znaków!" ; 
-            $valid=false;
-        } 
-        if ($form['password']!=$form['password2']) {  
-            $error['password2']="hasła nie są identyczne!" ; 
-            $valid=false;    
-        } 
-    
-    
-        if($valid) {   
-            $newAdmin=new Admin(); 
-            $newAdmin->setAdminName($form['name']);  
-            $newAdmin->setAdminEmail($form['email']); 
-            $newAdmin->setAdminPassword($form['password']); 
-            $newAdmin->saveToDB($conn);
-            
-            
-                if($newAdmin->saveToDB($conn))   {
-                $_SESSION['registersuccess']=TRUE;  
-                $_SESSION['newadmin']=$form['name']; 
-                header('Location:success.php');
-                } else { 
-                    echo "Nie udało sie dodać użytkownika do bazy". $mysqli->error;
-    
-                  }             
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $valid = TRUE; // zakładam prawidłową walidacje
+    if (isset($_POST['submit'])) {
+        $fields = ['name', 'email', 'password', 'password2'];
+        // pobieranie danych : 
+        foreach ($fields as $field) {
+            $form[$field] = htmlspecialchars(trim($_POST[$field]));
+            $error[$field] = ''; // zakładam brak błędów
         }
-    }  
-} 
+
+        if ((strlen($form['name']) < 2) || (strlen($form['name']) > 12 )) {
+            $error['name'] = "imię musi mieć od 2do 12 znaków!";
+            $valid = false;
+        }
+        if (filter_var($form['email'], FILTER_VALIDATE_EMAIL) == false) {
+            $error['email'] = "wprowadź prawidłowy email!";
+            $valid = false;
+        }
+        if (Admin::availibilityOfEmail($conn, $form['email']) == false) {
+            $error['email'] = "przykro mi ten email jest już zajęty!";
+            $valid = false;
+        }
+        if ((strlen($form['password']) < 6) || (strlen($form['password']) > 20)) {
+            $error['password'] = "hasło musi mieć od 6 do 20 znaków!";
+            $valid = false;
+        }
+        if ($form['password'] != $form['password2']) {
+            $error['password2'] = "hasła nie są identyczne!";
+            $valid = false;
+        }
+
+
+        if ($valid) {
+            $newAdmin = new Admin();
+            $newAdmin->setAdminName($form['name']);
+            $newAdmin->setAdminEmail($form['email']);
+            $newAdmin->setAdminPassword($form['password']);
+            $newAdmin->saveToDB($conn);
+
+
+            if ($newAdmin->saveToDB($conn)) {
+                $_SESSION['registersuccess'] = TRUE;
+                $_SESSION['newadmin'] = $form['name'];
+                header('Location:success.php');
+            } else {
+                echo "Nie udało sie dodać użytkownika do bazy" . $mysqli->error;
+            }
+        }
+    }
+}
 ?> 
 <!DOCTYPE html>
 <html>

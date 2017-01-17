@@ -6,32 +6,29 @@ require_once __DIR__.'/../src/Admin.php';
 require_once __DIR__.'/../src/index.html'; 
 
 
-    if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if(isset($_POST['email'])  && isset($_POST['password']))  {  
-            $email=trim($_POST['email']) ; 
-            $password=trim($_POST['password'] );    
-        
-            $admin_id= Admin::verifyPassword($conn, $email, $password);   
-           
-              
-            if ($admin_id!=-1) { 
-            
-              $_SESSION['admin_id']=$admin_id; 
-              $_SESSION['logged']=true;
-              header('location:index.php');   
-           
-            } else{  
-                 $_SESSION['error']='<span style="color:red">Nieprawidlowy login 
-                    lub hasło !</span>'; 
-                header('Location:log.php');
-              } 
-        }
-         
-    } 
-    
- 
-$conn->close(); 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['email']) && isset($_POST['password'])) {
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
 
+        $admin_id = Admin::verifyPassword($conn, $email, $password);
+
+
+        if ($admin_id != -1) {
+
+            $_SESSION['admin_id'] = $admin_id;
+            $_SESSION['logged'] = true;
+            header('location:index.php');
+        } else {
+            $_SESSION['error'] = '<span style="color:red">Nieprawidlowy login 
+                    lub hasło !</span>';
+            header('Location:log.php');
+        }
+    }
+}
+
+
+$conn->close();
 ?> 
 
 <!DOCTYPE html>
@@ -45,7 +42,7 @@ $conn->close();
        <div class="container" > 
            <div class="row">  
                <div class="col-lg-6 text-center ">
-                   <h2><a href="register.php" >Rejestracja     <span class="glyphicon glyphicon-pencil "></span><br><br><br><br>
+<!--                   <h2><a href="register.php" >Rejestracja     <span class="glyphicon glyphicon-pencil "></span><br><br><br><br>-->
                </div>
            </div> 
                     <div class="row">
@@ -61,7 +58,7 @@ $conn->close();
                                      <input type="password" class="form-control" id="password" name="password" placeholder="hasło">
                                  </div>
 
-                                 <button type="submit" class="bnt btn-group-vertical btn-sm">Zaloguj</button>
+                                 <button type="submit" class="bnt btn-sm">Zaloguj</button>
                               </form>
                         </div>
 
