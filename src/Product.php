@@ -281,12 +281,49 @@ class Product{
                 $loadedProduct->price = $row['price'];
                 $loadedProduct->quantity = $row['quantity'];
                 $loadedProduct->category_id = $row['category_id'];
-
+              
                 $ret[] = $loadedProduct;
             } 
             return $ret;
         }
         return $ret;
     }
-    
-}
+     public static function loadProductsSearchByAdmin(mysqli $conn, $productName) { 
+        
+       
+        $sql = "SELECT * FROM Product WHERE name LIKE '% $productName %' ";
+
+        $ret = [];
+        $result = $conn->query($sql); 
+
+        if ($result == true && $result->num_rows > 0){ 
+            echo '<table class="table table-striped">'; 
+            echo '<tr><th> Id </th><th> Nazwa </th><th> Cena </th><th> Opis </th><th> '
+            . 'Ilosć dostępna </th><th> Kategoria </th><th> Edytuj </th><th> Usuń </th><tr>' ; 
+           
+            foreach ($result as $row){
+                $loadedProduct = new Product();
+                $loadedProduct->id = $row['id'];
+                $loadedProduct->name = $row['name'];
+                $loadedProduct->description = $row['description'];
+                $loadedProduct->price = $row['price'];
+                $loadedProduct->quantity = $row['quantity'];
+                $loadedProduct->category_id = $row['category_id'];
+                
+                echo '<tr><td>'.$row['id']; 
+                echo '</td><td>'.$row['name']; 
+                echo '</td><td>'.$row['price'] ; 
+                echo '</td><td>'.$row['description'];
+                echo '</td><td>'.$row['quantity']; 
+                echo '</td><td>'.$row['category_id'];  
+                echo '</td><td><a href="editProduct.php?id='.$row['id'].'">Edytuj</a>';
+                echo '</td><td><a href="deleteProduct.php?id='.$row['id'].'">Usuń</a>';
+                echo '</td><tr>';
+                
+                $ret[] = $loadedProduct;
+            } 
+            return $ret;
+        }
+       return $ret;
+    }
+}   

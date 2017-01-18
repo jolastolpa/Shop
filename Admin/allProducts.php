@@ -18,7 +18,7 @@ if (!isset($_SESSION['logged'])) {
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Dodaj produkt</title>
+        <title> Wszystkie produkty</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
         <?php include __DIR__ . '/nav.php' ?><br><br><br><br>
