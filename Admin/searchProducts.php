@@ -20,7 +20,11 @@ require_once __DIR__.'/../src/index.html';
            <li><a href="index.php">Home</a></li>
            <li><a href="products.php">Zarządzanie produktem</a></li>
            <li class="active">Wyszukaj</li>
-        </ol><br>
+        </ol><br> 
+             <?php if (isset($_SESSION['delete'])){ 
+                   echo $_SESSION['delete']; 
+                   unset( $_SESSION['delete']);
+             } ?>
        
         <div class="col-lg-12 text-center  "> <br><br><br>
             <div class="list-group"> <br><br>

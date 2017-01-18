@@ -1,6 +1,5 @@
 <?php
 
-
 session_start();  
 require_once __DIR__.'/../config.php'; 
 require_once __DIR__.'/../src/Product.php'; 
@@ -29,7 +28,7 @@ if (!isset($_SESSION['logged'])) {
            <li><a href="index.php">Home</a></li>
            <li><a href="products.php">Zarządzanie produktem</a></li> 
            <li><a href="searchProducts.php">Wyszukaj</a></li>
-           <li class="active">Wyszukaj po kategorii </li>
+           <li class="active">Wyszukaj po Cenie </li>
         </ol><br><br><br> 
         
    
@@ -37,10 +36,11 @@ if (!isset($_SESSION['logged'])) {
            
             <form role="form" method="POST" action="#"> 
                 <div class="form-group">
-                    <label for="category">Kategoria</label>
-                        <select class="form-control" id="category" name="category">
-                            <option value="0">Wybierz kategorię</option> 
-                            <?php echo Category::loadAllCategories($conn); ?> 
+                    <label for="category">Cena:</label>
+                        <select class="form-control" id="price" name="price">
+                            <option value="0">Wybierz </option> 
+                            <option value="1">Rosnąco </option>  
+                            <option value="0">Malejąco </option> 
                         </select>
                
                 </div><br<br>
@@ -49,11 +49,8 @@ if (!isset($_SESSION['logged'])) {
         </div> 
         
         <div class="col-md-8 text-left ">  
-            <?php if ($_SERVER['REQUEST_METHOD']=="POST"  && isset($_POST['category'])) { 
-                      $category_id=trim($_POST['category']);  
-                     $loadedProducts[]= Product::loadAllProductFromCategory($conn, $category_id); 
-                    
+            <?php if ($_SERVER['REQUEST_METHOD']=="POST"  && isset($_POST['price'])) { 
+                      $price=trim($_POST['price']);  
+                      Product::loadAllProductFromCategory($conn, $category_id);
                   }  ?> 
         </div>
-
-

@@ -310,45 +310,6 @@ class Product{
         }
        return $ret;
     }
-    public static function loadProductsSearchByAdmin(mysqli $conn, $productName) { 
-        
-       
-        $sql = "SELECT * FROM Product JOIN Category ON Category.category_id = Product.category_id "
-                . " JOIN Image ON Image.product_id=Product.id WHERE name LIKE '%". ($productName). "%' " ;
-        $ret = [];
-        $result = $conn->query($sql); 
-
-        if ($result == true && $result->num_rows > 0){ 
-            echo '<table class="table table-striped">'; 
-            echo '<tr><th> Id </th><th> Nazwa </th><th> Cena </th><th> Opis </th><th> '
-            . 'Ilosć dostępna </th><th> Kategoria </th><th>Zdjęcie</th><th> Edytuj </th><th> Usuń </th><tr>' ; 
-           
-            foreach ($result as $row){
-                $loadedProduct = new Product();
-                $loadedProduct->id = $row['id'];
-                $loadedProduct->name = $row['name'];
-                $loadedProduct->description = $row['description'];
-                $loadedProduct->price = $row['price'];
-                $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->category_id = $row['category_id']; 
-                $loadedProduct->category_name = $row['category_name']; 
-                $loadedProduct->image_link = $row['image_link'];
-                
-                echo '<tr><td>'.$row['id']; 
-                echo '</td><td style="width: 100px">'.$row['name']; 
-                echo '</td><td style="width: 100px">'.$row['price'] ; 
-                echo '</td><td style="width: 100px">'.$row['description'];
-                echo '</td><td style="width: 100px">'.$row['quantity']; 
-                echo '</td><td style="width: 100px">'.$row['category_name'];  
-                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" width="60%" height="3%"/> ';  
-                echo '</td><td><a href="editProduct.php?id='.$row['id'].'">Edytuj</a>';
-                echo '</td><td><a href="deleteProduct.php?id='.$row['id'].'">Usuń</a>';
-                echo '</td><tr>';
-                
-                $ret[] = $loadedProduct;
-            } 
-            return $ret;
-        }
-       return $ret;
-    }
+      
+   
 }   

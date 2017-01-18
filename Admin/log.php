@@ -11,9 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($_POST['email']);
         $password = trim($_POST['password']);
 
-        if( $loadedAdmin = Admin::loadAdminByEmailAndPassword($conn, $email, $password)){
+        if( $loadedAdmin= Admin::loadAdminByEmailAndPassword($conn, $email, $password)){
 
-            $_SESSION['adminId']=$loadedAdmin->getAdminId();
+            $_SESSION['adminId']=$loadedAdmin->getAdminId(); 
+            $_SESSION['adminName']=$loadedAdmin->getAdminName(); 
             $_SESSION['logged'] = true;
             header('location:index.php');
         } else {
