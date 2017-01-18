@@ -38,6 +38,7 @@ class TestCategory extends PHPUnit_Extensions_Database_TestCase {
     // inicjuje obiekt klasy Category
     protected function setUp(){
         
+        parent::setUp();
         $this->category = new Category("Furniture");
     }
     
@@ -67,6 +68,13 @@ class TestCategory extends PHPUnit_Extensions_Database_TestCase {
         $loadedCategory = Category::loadCategoryById(self::$mysqliConn, 1); 
         $this->assertEquals('Furniture', $loadedCategory->getCategoryName());
     }
+    
+    public function testIfAbleToLoadAllCategories(){
+        
+        $loadedCategories = Category::loadAllCategories(self::$mysqliConn);
+        $this->assertTrue(is_array($loadedCategories));
+    }
+    
     
      // zakończenie połączenia
     static public function tearDownAfterClass(){

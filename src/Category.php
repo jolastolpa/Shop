@@ -3,7 +3,7 @@
 /*
 CREATE TABLE Category(
 category_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-category_name VARCHAR(30)
+category_name VARCHAR(50)
 )
 */
 
@@ -115,13 +115,13 @@ class Category {
 
 
 
-    public static function loadAllCategories(mysqli $connection) {
+    public static function loadAllCategories(mysqli $conn) {
         
         $sql = "SELECT * FROM Category ORDER BY category_id";
         
         $categories = [];
         
-        $result = $connection->query($sql);
+        $result = $conn->query($sql);
         if ($result == true && $result->num_rows > 0){
             
             foreach($result as $row){
@@ -129,7 +129,6 @@ class Category {
                 $loadedCategory = new Category();
                 $loadedCategory->category_id = $row['category_id']; 
                 $loadedCategory->category_name = $row['category_name']; 
-                echo "<option value='" . $loadedCategory->getCategoryId() . "'>" . $loadedCategory->getCategoryName() . "</option>";
                 
                 $categories[] = $loadedCategory;
             }
