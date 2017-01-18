@@ -233,14 +233,15 @@ class Product{
 
     static public function loadAllProducts(mysqli $conn){
         
-        $sql = "SELECT * FROM Product";
+        $sql = "SELECT * FROM Product JOIN Category ON Category.category_id = Product.category_id "
+                . " JOIN Image ON Image.product_id=Product.id ORDER BY id DESC";
         $ret = [];
         
         $result = $conn->query($sql);
         if($result == true && $result->num_rows != 0){
             echo '<table class="table table-striped">'; 
             echo '<tr><th> Id </th><th> Nazwa </th><th> Cena </th><th> Opis </th><th> '
-            . 'Ilosć dostępna </th><th> Kategoria </th><tr>' ; 
+            . 'Ilosć dostępna </th><th> Kategoria </th><th>Zdjęcie</th><th> Edytuj </th><th> Usuń </th><tr>' ; 
             
             foreach($result as $row){
                 $loadedProduct = new Product();
@@ -249,14 +250,19 @@ class Product{
                 $loadedProduct->price = $row['price'];
                 $loadedProduct->description = $row['description']; 
                 $loadedProduct->quantity = $row['quantity']; 
-                $loadedProduct->category_id = $row['category_id'];
+                $loadedProduct->category_id = $row['category_id']; 
+                $loadedProduct->category_name = $row['category_name']; 
+                $loadedProduct->image_link = $row['image_link'];
                
                 echo '<tr><td>'.$row['id']; 
-                echo '</td><td>'.$row['name']; 
-                echo '</td><td>'.$row['price'] ; 
-                echo '</td><td>'.$row['description'];
-                echo '</td><td>'.$row['quantity']; 
-                echo '</td><td>'.$row['category_id']; 
+                echo '</td><td style="width: 100px">'.$row['name']; 
+                echo '</td><td style="width: 100px">'.$row['price'] ; 
+                echo '</td><td style="width: 100px">'.$row['description'];
+                echo '</td><td style="width: 100px">'.$row['quantity']; 
+                echo '</td><td style="width: 100px">'.$row['category_name'];  
+                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" width="60%" height="3%"/> ';  
+                echo '</td><td><a href="editProduct.php?id='.$row['id'].'">Edytuj</a>';
+                echo '</td><td><a href="deleteProduct.php?id='.$row['id'].'">Usuń</a>';
                 echo '</td><tr>';
                 $ret[] = $loadedProduct;
             }
@@ -267,28 +273,42 @@ class Product{
     public static function loadAllProductFromCategory(mysqli $conn, $category_id) { 
         
        
-        $sql = "SELECT * FROM Product WHERE category_id = $category_id";
+        $sql = "SELECT * FROM Product JOIN Image ON Image.product_id=Product.id WHERE category_id = $category_id";
 
-        $ret = [];
+         $ret = [];
         $result = $conn->query($sql); 
 
-        if ($result == true && $result->num_rows > 0){
-            
+        if ($result == true && $result->num_rows > 0){ 
+            echo '<table class="table table-striped">'; 
+            echo '<tr><th> Id </th><th> Nazwa </th><th> Cena </th><th> Opis </th><th> '
+            . 'Ilosć dostępna </th><th>Zdjęcie</th><th> Edytuj </th><th> Usuń </th><tr>' ; 
+           
             foreach ($result as $row){
                 $loadedProduct = new Product();
                 $loadedProduct->id = $row['id'];
                 $loadedProduct->name = $row['name'];
                 $loadedProduct->description = $row['description'];
-              
                 $loadedProduct->price = $row['price'];
                 $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->category_id = $row['category_id'];
+                $loadedProduct->category_id = $row['category_id']; 
+                $loadedProduct->image_link = $row['image_link'];
+                
+                echo '<tr><td>'.$row['id']; 
+                echo '</td><td style="width: 100px">'.$row['name']; 
+                echo '</td><td style="width: 100px">'.$row['price'] ; 
+                echo '</td><td style="width: 100px">'.$row['description'];
+                echo '</td><td style="width: 100px">'.$row['quantity']; 
               
+                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" width="60%" height="3%"/> ';  
+                echo '</td><td><a href="editProduct.php?id='.$row['id'].'">Edytuj</a>';
+                echo '</td><td><a href="deleteProduct.php?id='.$row['id'].'">Usuń</a>';
+                echo '</td><tr>';
+                
                 $ret[] = $loadedProduct;
             } 
             return $ret;
         }
-        return $ret;
+       return $ret;
     }
     public static function loadProductsSearchByAdmin(mysqli $conn, $productName) { 
         
