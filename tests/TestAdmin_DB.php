@@ -7,6 +7,8 @@ class TestAdmin_DB extends PHPUnit_Extensions_Database_TestCase{
     
     protected static $mysqliConn; 
     
+    private $admin;
+    
     public function getConnection(){ 
         
         $conn = new PDO(
@@ -34,24 +36,32 @@ class TestAdmin_DB extends PHPUnit_Extensions_Database_TestCase{
         );
     }   
     
+    protected function setUp(){
+        
+        parent::setUp();
+        $this->admin = new Admin('Trinity', 'tuturuttututturuttuttutu', 'trinity.matrix@gmail.com'); 
+    }
     
     
-    // test metody saveToDB() (zapis oraz update) i delete()
-    public function testSaveAndDeleteANewAdmin(){
+    
+    // test zapisu admina z metody saveToDB()
+    public function testSaveANewAdmin(){
          
-        // inicjacja nowego obiektu
-        $admin = new Admin('Trinity', 'tuturuttututturuttuttutu', 'trinity.matrix@gmail.com'); 
+        $this->assertTrue($this->admin->saveAdminToDB(self::$mysqliConn)); 
+    }
+    
+    // test update'u admina z metody saveToDB()
+    public function testUpdateANewAdmin(){
+
+        $this->admin->setAdminName('Morpheus');
+        $this->admin->setAdminPassword('RedOrBlue');
+        $this->assertTrue($this->admin->saveAdminToDB(self::$mysqliConn));
+    }
+    
+    // test usuniecia admina przy uzyciu metody deleteAdmin()
+    public function testDeleteANewAdmin(){
         
-        // test zapisu
-        $this->assertTrue($admin->saveToDB(self::$mysqliConn)); 
-        
-        // test update'u
-        $admin->setAdminName('Morpheus');
-        $admin->setAdminPassword('RedOrBlue');
-        $this->assertTrue($admin->saveToDB(self::$mysqliConn));
-        
-        // test usuniecia
-        $this->assertTrue($admin->delete(self::$mysqliConn));
+        $this->assertTrue($this->admin->deleteAdmin(self::$mysqliConn));
     }
     
     // test metody loadAdminById()
@@ -67,7 +77,7 @@ class TestAdmin_DB extends PHPUnit_Extensions_Database_TestCase{
     }
     
     // test metody loadAdminByEmail()
-    public function testIfReturnsAdminObjectByItsEmail() {
+    public function testIfReturnsAdminObjectByItsEmail(){
         
         // test pierwszych danych z pliku Admin.xml
         $loadedFirstAdmin = Admin::loadAdminByEmail(self::$mysqliConn, 'agent.smith@gmail.com'); 
@@ -78,13 +88,23 @@ class TestAdmin_DB extends PHPUnit_Extensions_Database_TestCase{
         $this->assertEquals(2, $loadedSecondAdmin->getAdminId());    
     }
     
-    public function testIfVerifyIsCorrectAndReturnId() { 
-        $id=Admin::verifyPassword(self::$mysqliConn,'agent.smith@gmail.com', 'tralala'); 
-        $this->assertEquals(1,$id);
+    // test metody loadAdminByEmailAndPassword()
+    public function testIfReturnsAdminObjectByItsEmailAndPassword(){ 
+        
+        $loadedAdmin = Admin::loadAdminByEmailAndPassword(self::$mysqliConn, 'agent.smith@gmail.com', 'tralala'); 
+        $this->assertEquals('AgentSmith', $loadedAdmin->getAdminName());
     }
+    
+    
     
     // zakończenie połączenia
     static public function tearDownAfterClass(){
+        
         self::$mysqliConn = null;
+    }
+    
+    protected function tearDown(){
+        
+        $this->admin = NULL;
     }
 }

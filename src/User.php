@@ -5,8 +5,8 @@ CREATE TABLE User(
 id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 name VARCHAR(20),
 surname VARCHAR(20),
-email VARCHAR(20) UNIQUE,
-password VARCHAR(20),
+email VARCHAR(30) UNIQUE,
+password VARCHAR(50),
 deliver_addr VARCHAR(30)
 )
 */

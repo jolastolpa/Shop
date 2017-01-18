@@ -11,7 +11,7 @@ class TestAdmin extends PHPUnit_Framework_TestCase{
     protected function setUp() {
         $this->admin = new Admin('Neo', 'paparappapappara', 'neo.matrix@gmail.com');
     }
-    
+
     
     // testy seterow i geterow
     public function testIfSetCorrectAdminId(){
@@ -23,7 +23,7 @@ class TestAdmin extends PHPUnit_Framework_TestCase{
     }
     
     public function testIfSetCorrectAdminPassword(){
-        $this->assertEquals('paparappapappara', $this->admin->getAdminPassword());
+        $this->assertTrue(password_verify('paparappapappara', $this->admin->getAdminPassword()));
     }
     
     public function testIfSetCorrectAdminEmail(){

@@ -3,9 +3,9 @@
 /*
 CREATE TABLE Admin(
 admin_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-admin_name VARCHAR(20),
-admin_pass VARCHAR(255),
-admin_email VARCHAR(30) UNIQUE
+admin_name VARCHAR(50),
+admin_pass VARCHAR(70),
+admin_email VARCHAR(40) UNIQUE
 )
 */
 
@@ -74,7 +74,7 @@ class Admin{
     
     
     // operacje na bazie danych
-    public function saveToDB(mysqli $conn){
+    public function saveAdminToDB(mysqli $conn){
         
         if($this->admin_id == -1){
         
@@ -100,7 +100,7 @@ class Admin{
         return false;
     }
     
-    public function delete(mysqli $conn){
+    public function deleteAdmin(mysqli $conn){
         
         if($this->admin_id != -1){
             
@@ -156,33 +156,26 @@ class Admin{
         return null; 
     } 
     
-    static public function verifyPassword(mysqli $conn,$email,$password) {
+    static public function loadAdminByEmailAndPassword(mysqli $conn, $email, $password){
+        
+        $sql = "SELECT * FROM Admin WHERE admin_email='$email'";
+        
+        $result = $conn->query($sql); 
     
-        $sql = "SELECT * FROM Admin WHERE admin_email= '$email' ";
-        $result = $conn->query($sql); 
-
-        if($result->num_rows == 1) {  
-           $row = $result->fetch_assoc(); 
-           $hashed_password=$row['admin_pass']; 
-           
-           
-            if(password_verify($password,$hashed_password)) {  
-             
-               return $row['admin_id'];  
+        if($result == true && $result->num_rows == 1){
+            
+            $row = $result->fetch_assoc();
+            $loadedAdmin = new Admin();
+            $loadedAdmin->admin_id = $row['admin_id'];
+            $loadedAdmin->admin_name = $row['admin_name'];
+            $loadedAdmin->admin_pass = $row['admin_pass'];
+            $loadedAdmin->admin_email = $row['admin_email']; 
+            
+            if(password_verify($password, $loadedAdmin->getAdminPassword())){
                 
-            } 
-        
-        }  
-        return -1;
-  }  
-    static public function availibilityOfEmail (mysqli $conn, $admin_email) { 
-        
-        $sql="SELECT * FROM Admin WHERE admin_email='$admin_email'"; 
-        $result = $conn->query($sql); 
-
-        if($result->num_rows == 0) {   
-            return true;
-        } 
-        return false;
+                return $loadedAdmin;
+            }
+        }
+        return null; 
     }
 }

@@ -38,6 +38,7 @@ class TestUser_DB extends PHPUnit_Extensions_Database_TestCase {
     // inicjuje obiekt klasy User
     protected function setUp(){
         
+        parent::setUp();
         $this->user = new User("Mario", "Bros", "mario.bros@nintendo.com", "princess", "castle");
     }
 
@@ -116,12 +117,10 @@ class TestUser_DB extends PHPUnit_Extensions_Database_TestCase {
     
     // zakończenie połączenia
     static public function tearDownAfterClass(){
-        
         self::$mysqliConn = NULL;
     }
     
     protected function tearDown(){
-    
         $this->user = NULL;
     }
 }
