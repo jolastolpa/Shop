@@ -39,32 +39,37 @@ $conn->close();
         <link rel="stylesheet" href="../css/style.css" type="text/css" />
     </head>
     <body>  
-       <div class="container" > 
-           <div class="row">  
-               <div class="col-lg-6 text-center ">
-<!--                   <h2><a href="register.php" >Rejestracja     <span class="glyphicon glyphicon-pencil "></span><br><br><br><br>-->
-               </div>
-           </div> 
-                    <div class="row">
-                        <div class="col-lg-6 text-center panel panel-success">
-                           <h3> Zaloguj się adminie</h3>
-                              <form action=# method="POST">
-                                 <div class="form-group">
-                                     <label for="email">Email:</label>
-                                     <input type="email" class="form-control" id="email" name="email" placeholder="email">
-                                 </div>
-                                 <div class="form-group">
-                                     <label for="password">Hasło:</label>
-                                     <input type="password" class="form-control" id="password" name="password" placeholder="hasło">
-                                 </div>
+        <div class="container-fluid">
+           <div class="row">   
+                   <div class=" col-md-4"></div>
+                   <div class=" col-md-4 text-center"> <h2><a href="register.php" >Rejestracja     <span class="glyphicon glyphicon-pencil "></span></a><br><br><br><br></div>
+                   <div class=" col-md-4"></div>
+            </div>
+            <div class="row">  
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 panel panel-success text-center"> 
+                        <h3> Zaloguj się adminie</h3> 
+                            <form action=# method="POST"> 
+                                
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="email">
+                                </div> 
+                                
+                                <div class="form-group">
+                                    <label for="password">Hasło:</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="hasło">
+                                </div>
 
-                                 <button type="submit" class="bnt btn-sm">Zaloguj</button>
-                              </form>
-                        </div>
+                                <button type="submit" class="bnt btn-info btn-lg">Zaloguj</button> 
+                                
+                            </form>
+                    </div> 
+                    <div class="col-md-3"></div>
 
-                    </div>
+                </div>
         
-      </div>
+        </div>
 
     </body> 
     

@@ -21,8 +21,8 @@ require_once __DIR__.'/../src/index.html';
             <div class="list-group"> <br><br>
                 <h3>
             <a href="addProduct.php" class="list-group-item">Dodaj produkt  <span class="glyphicon glyphicon-plus "></span></a>
-            <a href="editProduct" class="list-group-item">Edytuj lub usuń  <span class="glyphicon glyphicon-minus "></span></a>
-            <a href="allProducts" class="list-group-item">Wszystkie produty  <span class="glyphicon glyphicon-eye-open "></span> </a>
+            <a href="editProduct.php" class="list-group-item">Edytuj lub usuń  <span class="glyphicon glyphicon-minus "></span></a>
+            <a href="allProducts.php" class="list-group-item">Wszystkie produty  <span class="glyphicon glyphicon-eye-open "></span> </a>
                 </h3>
           </div>
         </div>

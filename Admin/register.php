@@ -66,10 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <meta charset="UTF-8">
         <link rel="stylesheet" href="../css/style.css" type="text/css" />
     </head>
-    <body>
- <div class="col-sm-6 text-center panel panel-success">
-                   
-                    <h3> Zarejestruj się by być adminem</h3>
+    <body> 
+        <div class="container-fluid"> 
+            <div class="row"> 
+                <div class="col-md3"></div>
+                <div class="col-md-6 text-center panel panel-success">
+                    <h3> Zarejestruj się by być adminem</h3> 
+                    
                     <form role="form" class="form-horizontal" action=# method="POST" >  
                        
                         <div class="form-group">
@@ -97,12 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                              <?php if (isset($error['password2'])) echo $error['password2']; ?>  
                         </div>
 
-                        <button type="submit" name="submit" class="bnt btn-group-vertical">Zarejestruj</button>
-                    </form>
+                        <button type="submit" name="submit" class="bnt btn-group-vertical">Zarejestruj</button> 
+                        
+                    </form>  
                 </div>
-
+                <div class="col-md-3"></div>
             </div>
         </div>
+       
 
 
     </body> 

@@ -236,6 +236,9 @@ class Product{
         
         $result = $conn->query($sql);
         if($result == true && $result->num_rows != 0){
+            echo '<table class="table table-striped">'; 
+            echo '<tr><th> Id </th><th> Nazwa </th><th> Cena </th><th> Opis </th><th> '
+            . 'Ilosć dostępna </th><th> Kategoria </th><tr>' ; 
             
             foreach($result as $row){
                 $loadedProduct = new Product();
@@ -245,7 +248,14 @@ class Product{
                 $loadedProduct->description = $row['description']; 
                 $loadedProduct->quantity = $row['quantity']; 
                 $loadedProduct->category_id = $row['category_id'];
-                
+               
+                echo '<tr><td>'.$row['id']; 
+                echo '</td><td>'.$row['name']; 
+                echo '</td><td>'.$row['price'] ; 
+                echo '</td><td>'.$row['description'];
+                echo '</td><td>'.$row['quantity']; 
+                echo '</td><td>'.$row['category_id']; 
+                echo '</td><tr>';
                 $ret[] = $loadedProduct;
             }
         }
