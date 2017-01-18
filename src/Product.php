@@ -23,7 +23,9 @@ class Product{
     private $price;
     private $description; 
     private $quantity; 
-    private $category_id;
+    private $category_id; 
+    private $category_name; 
+    private $image_link;
     
     public function __construct($name = "", $price = 1.00, $description = "", $quantity = 1, $idCategory = 1){ 
 
@@ -262,7 +264,7 @@ class Product{
         return $ret;
     }    
     
-     public static function loadAllProductFromCategory(mysqli $conn, $category_id) { 
+    public static function loadAllProductFromCategory(mysqli $conn, $category_id) { 
         
        
         $sql = "SELECT * FROM Product WHERE category_id = $category_id";
@@ -288,17 +290,18 @@ class Product{
         }
         return $ret;
     }
-     public static function loadProductsSearchByAdmin(mysqli $conn, $productName) { 
+    public static function loadProductsSearchByAdmin(mysqli $conn, $productName) { 
         
        
-        $sql = "SELECT * FROM Product WHERE name LIKE '%". ($productName). "%'" ;
+        $sql = "SELECT * FROM Product JOIN Category ON Category.category_id = Product.category_id "
+                . " JOIN Image ON Image.product_id=Product.id WHERE name LIKE '%". ($productName). "%' " ;
         $ret = [];
         $result = $conn->query($sql); 
 
         if ($result == true && $result->num_rows > 0){ 
             echo '<table class="table table-striped">'; 
             echo '<tr><th> Id </th><th> Nazwa </th><th> Cena </th><th> Opis </th><th> '
-            . 'Ilosć dostępna </th><th> Kategoria </th><th> Edytuj </th><th> Usuń </th><tr>' ; 
+            . 'Ilosć dostępna </th><th> Kategoria </th><th>Zdjęcie</th><th> Edytuj </th><th> Usuń </th><tr>' ; 
            
             foreach ($result as $row){
                 $loadedProduct = new Product();
@@ -307,14 +310,17 @@ class Product{
                 $loadedProduct->description = $row['description'];
                 $loadedProduct->price = $row['price'];
                 $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->category_id = $row['category_id'];
+                $loadedProduct->category_id = $row['category_id']; 
+                $loadedProduct->category_name = $row['category_name']; 
+                $loadedProduct->image_link = $row['image_link'];
                 
                 echo '<tr><td>'.$row['id']; 
-                echo '</td><td>'.$row['name']; 
-                echo '</td><td>'.$row['price'] ; 
-                echo '</td><td>'.$row['description'];
-                echo '</td><td>'.$row['quantity']; 
-                echo '</td><td>'.$row['category_id'];  
+                echo '</td><td style="width: 100px">'.$row['name']; 
+                echo '</td><td style="width: 100px">'.$row['price'] ; 
+                echo '</td><td style="width: 100px">'.$row['description'];
+                echo '</td><td style="width: 100px">'.$row['quantity']; 
+                echo '</td><td style="width: 100px">'.$row['category_name'];  
+                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" width="60%" height="3%"/> ';  
                 echo '</td><td><a href="editProduct.php?id='.$row['id'].'">Edytuj</a>';
                 echo '</td><td><a href="deleteProduct.php?id='.$row['id'].'">Usuń</a>';
                 echo '</td><tr>';

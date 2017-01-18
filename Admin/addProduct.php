@@ -65,10 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
-    if (isset($_POST['submitImage'])) {
-        if (isset($_FILES['fileToUpload'])) { 
+    if (isset($_POST['submitImage'])) { 
+        if (isset($_FILES['fileToUpload'])) {  
             
-            $lastId = $_SESSION['lastId'];
+            $lastId = $_SESSION['lastId']; echo $lastId;
             $uploadDir = '../Images';
 
             if (is_dir($uploadDir . '/' . $lastId)) {
@@ -80,21 +80,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $file = $uploadDir . '/' . $lastId . '/' . basename($_FILES['fileToUpload']['name']);
             if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $file)) {
-                $images[] = $file;
-                foreach ($images as $image) {
+               
                     $newImage = new Image();
-                    $newImage->setImageLink($image);
+                    $newImage->setImageLink($file);
                     $newImage->setProductId($lastId);
                     $newImage->saveToDb($conn);
-                }
+                
 
                 if ($newImage->saveToDb($conn)) {
-                    $_SESSION['addImage'] = "Do produktu dodano też zdjecie";
-                    // header('location:addProduct.php');
+                   //header('location:addProduct.php'); 
+                   echo "Do produktu dodano zdjęcie";
                 } else {
-                    echo "Nie udało sie dodać zdjęcia do bazy" . $mysqli->error;
+                    echo "Nie udało sie dodać zdjęcia do bazy" . $conn->error;
                 }
-            }
+            } 
         } else {
             $error['fileToUpload'] = $errorStart . "nie przesłano zdjęcia" . $errorEnd;
         }
@@ -108,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <title> Dodaj produkt</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
-        <?php include __DIR__ . '/nav.php' ?><br><br><br><br>
+        <?php //include __DIR__ . '/nav.php' ?><br><br><br><br>
     </head>
     <body> 
         <ol class="breadcrumb">

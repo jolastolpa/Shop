@@ -3,8 +3,8 @@
 /*
 CREATE TABLE `Image`(
 image_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-image_link MEDIUMBLOB,
-product_id INT,
+image_link VARCHAR(255) NOT NULL,
+product_id INT NOT NULL,
 FOREIGN KEY(product_id) REFERENCES Product(id)
 ON DELETE CASCADE
 )

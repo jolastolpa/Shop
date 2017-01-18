@@ -31,21 +31,22 @@ if (!isset($_SESSION['logged'])) {
         </ol><br><br><br> 
         
    
-        <div class="col-sm-8 text-left panel panel-success "> 
+        <div class="col-md-8 text-left panel panel-success "> 
            
             <form role="form" method="POST" action="#"> 
                 
                 <div class="form-group"><br>
                      <label for="name">Nazwa przedmiotu</label>
-                     <input type="text" class="form-control"  id="name" name="name" 
+                     <input type="text" class="form-control"  id="name" name="name" >
                 </div> <br>
                  <input class="btn btn-toolbar" type="submit" value="Wyszukaj" name="submit"><br>
                 
             </form> 
         </div> 
         
-        <div class="col-sm-8 text-left ">  
+        <div class="col-md-8 text-left ">  
             <?php if ($_SERVER['REQUEST_METHOD']=="POST"  && isset($_POST['name'])) { 
                       $productName=trim($_POST['name']); 
                       Product::loadProductsSearchByAdmin($conn, $productName);
-                  }
+                  }?> 
+        </div>
