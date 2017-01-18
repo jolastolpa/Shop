@@ -291,8 +291,7 @@ class Product{
      public static function loadProductsSearchByAdmin(mysqli $conn, $productName) { 
         
        
-        $sql = "SELECT * FROM Product WHERE name LIKE '% $productName %' ";
-
+        $sql = "SELECT * FROM Product WHERE name LIKE '%". ($productName). "%'" ;
         $ret = [];
         $result = $conn->query($sql); 
 
