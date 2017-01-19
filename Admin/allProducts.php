@@ -1,31 +1,20 @@
 <?php
 
-session_start();  
-require_once __DIR__.'/../config.php'; 
-require_once __DIR__.'/../src/Product.php'; 
-require_once __DIR__.'/../src/Image.php';  
-require_once __DIR__.'/../src/Admin.php'; 
-require_once __DIR__.'/../src/Category.php'; 
-require_once __DIR__.'/../src/index.html'; 
-require_once __DIR__.'/html.php';  
 
-
-
+require_once __DIR__.'/require_once.php'; 
+ 
 if (!isset($_SESSION['logged'])) {
     header('Location:log.php');
     exit();
-} 
-?> 
-
+} ?> 
 
 <!DOCTYPE html>
 <html>
     <head>
         <title> Wszystkie produkty</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
-        <?php include __DIR__ . '/nav.php' ?><br><br><br><br>
-    </head>
+
+    <?php include __DIR__ . '/nav.php' ?><br><br><br><br>
+    
     <body> 
         <ol class="breadcrumb">
            <li><a href="index.php">Home</a></li>
@@ -48,6 +37,6 @@ if (!isset($_SESSION['logged'])) {
                             echo '</td><td >'.$product->getCategoryName();
                             echo '</td><td style="width: 100px"><img src="'.$product->getImageLink().'" class="img-responsive"/> ';  
                             echo '</td><td><a href="editProduct.php?id='.$product->getId().'">Edytuj</a>';
-                            echo '</td><td><a href="deleteProduct.php?id='.$product->getId().'">Usuń</a>';
+                            echo '</td><td><a href="delete.php?id='.$product->getId().'">Usuń</a>';
                             echo '</td><tr>';
                         } 

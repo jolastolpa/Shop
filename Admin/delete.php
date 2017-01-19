@@ -1,9 +1,6 @@
 <?php
 
-session_start();  
-require_once __DIR__.'/../config.php'; 
-require_once __DIR__.'/../src/Product.php'; 
-require_once __DIR__.'/../src/index.html'; 
+require_once __DIR__.'/require_once.php'; 
 
 if (!isset($_SESSION['logged'])) {
     header('Location:log.php');
@@ -11,21 +8,28 @@ if (!isset($_SESSION['logged'])) {
 }  
  
     if(isset($_POST['submit'])){   
-        $id=$_GET['id']; 
-        $loadProduct=  Product::loadProductById($conn, $id);
-        $loadProduct->delete($conn);  
-        $_SESSION['delete']="Ununięto produkt" ; 
-        header('location:searchProducts.php');   
-        
-    } 
-    
+        if(isset ($_GET['id'])){ 
+            $id=$_GET['id']; 
+            $loadProduct=  Product::loadProductById($conn, $id);
+            $loadProduct->delete($conn);  
+            $_SESSION['delete']="Ununięto produkt" ; 
+            header('location:searchProducts.php');   
+        } 
+        if(isset($_GET['idCategory'])) { 
+            $id=$_GET['idCategory']; 
+            $loadCategory= Category::loadCategoryById($conn, $id);
+            $loadCategory->deleteCategory($conn);  
+            $_SESSION['deleteCategory']="Ununięto kategorie" ; 
+            header('location:categories.php');   
+        }
+    }
 ?>
 
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Usuń produkt</title>
+        <title> Usuń </title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
         <?php include __DIR__ . '/nav.php' ?><br><br><br><br>
@@ -35,7 +39,7 @@ if (!isset($_SESSION['logged'])) {
            <li><a href="index.php">Home</a></li>
            <li><a href="products.php">Zarządzanie produktem</a></li> 
            <li><a href="searchProducts.php">Wyszukaj</a></li>
-           <li class="active">Usuń produkt </li>
+           <li class="active">Usuń </li>
         </ol><br><br><br> 
         
    

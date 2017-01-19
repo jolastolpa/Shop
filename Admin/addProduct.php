@@ -1,12 +1,7 @@
 <?php
 
-session_start();
-require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../src/Product.php';
-require_once __DIR__ . '/../src/Image.php';
-require_once __DIR__ . '/../src/Admin.php';
-require_once __DIR__ . '/../src/Category.php';
-require_once __DIR__ . '/../src/index.html';
+
+require_once __DIR__ . '/require_once.php';
 
 if (!isset($_SESSION['logged'])) {
     header('Location:log.php');
@@ -103,9 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Dodaj produkt</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
+        <title> Dodaj produkt</title> 
         <?php //include __DIR__ . '/nav.php' ?><br><br><br><br>
     </head>
     <body> 
