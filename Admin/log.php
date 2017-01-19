@@ -12,13 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = trim($_POST['password']);
 
         if( $loadedAdmin= Admin::loadAdminByEmailAndPassword($conn, $email, $password)){
-
-            $_SESSION['adminId']=$loadedAdmin->getAdminId(); 
-            $_SESSION['adminName']=$loadedAdmin->getAdminName(); 
             $_SESSION['logged'] = true;
+            $_SESSION['adminId']=$loadedAdmin->getAdminId(); 
+           
             header('location:index.php');
         } else {
-            $_SESSION['error'] = '<span style="color:red">Nieprawidlowy login 
+           echo $_SESSION['error'] = '<span style="color:red">Nieprawidlowy login 
                     lub hasło !</span>';
             header('Location:log.php');
         }

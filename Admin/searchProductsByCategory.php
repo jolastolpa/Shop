@@ -40,7 +40,11 @@ if (!isset($_SESSION['logged'])) {
                     <label for="category">Kategoria</label>
                         <select class="form-control" id="category" name="category">
                             <option value="0">Wybierz kategorię</option> 
-                            <?php echo Category::loadAllCategories($conn); ?> 
+                            <?php
+                                $allCategories = Category::loadAllCategories($conn);
+                                foreach ($allCategories as $category) {
+                                    echo "<option value='" . $category->getCategoryId() . "'>" . $category->getCategoryName() . "</option>";
+                                }?>
                         </select>
                
                 </div><br<br>

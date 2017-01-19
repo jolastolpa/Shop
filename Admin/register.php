@@ -45,10 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $newAdmin->setAdminName($form['name']);
             $newAdmin->setAdminEmail($form['email']);
             $newAdmin->setAdminPassword($form['password']);
-            $newAdmin->saveToDB($conn);
+            $newAdmin->saveAdminToDB($conn);
 
 
-            if ($newAdmin->saveToDB($conn)) {
+            if ($newAdmin->saveAdminToDB($conn)) {
                 $_SESSION['registersuccess'] = TRUE;
                 $_SESSION['newadmin'] = $form['name'];
                 header('Location:success.php');

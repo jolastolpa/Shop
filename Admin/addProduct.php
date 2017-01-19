@@ -142,7 +142,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="category">Kategoria</label>
                         <select class="form-control" id="category" name="category">
                             <option value="0">Wybierz kategorię</option> 
-                            <?php echo Category::loadAllCategories($conn); ?> 
+                             <?php
+                                $allCategories = Category::loadAllCategories($conn);
+                                foreach ($allCategories as $category) {
+                                    echo "<option value='" . $category->getCategoryId() . "'>" . $category->getCategoryName() . "</option>";
+                                }?>
                         </select>
                             <?php
                              if (isset($error['category'])) {echo $error['category'];} ?>  

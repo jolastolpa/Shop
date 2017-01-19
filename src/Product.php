@@ -230,7 +230,7 @@ class Product{
                 echo '</td><td style="width: 100px">'.$row['description'];
                 echo '</td><td style="width: 100px">'.$row['quantity']; 
                 echo '</td><td style="width: 100px">'.$row['category_name'];  
-                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" width="60%" height="3%"/> ';  
+                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" class="img-responsive"/> ';  
                 echo '</td><td><a href="editProduct.php?id='.$row['id'].'">Edytuj</a>';
                 echo '</td><td><a href="deleteProduct.php?id='.$row['id'].'">Usuń</a>';
                 echo '</td><tr>';
@@ -267,7 +267,7 @@ class Product{
                 echo '</td><td style="width: 100px">'.$row['description'];
                 echo '</td><td style="width: 100px">'.$row['quantity']; 
               
-                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" width="60%" height="3%"/> ';  
+                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" class="img-responsive"/> ';  
                 echo '</td><td><a href="editProduct.php?id='.$row['id'].'">Edytuj</a>';
                 echo '</td><td><a href="deleteProduct.php?id='.$row['id'].'">Usuń</a>';
                 echo '</td><tr>';

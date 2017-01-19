@@ -9,10 +9,11 @@ if(!isset($_SESSION['logged'])) { //zabezpieczenie przed wejsciem z
     header('Location:log.php');     // wpisujac adres w przegladarce
     exit();  
 }  
-//if(isset($_SESSION['admin_id'])) {  
- // $logAdmin=Admin::loadAdminById($conn,$_SESSION['admin_id']);  
+if(isset($_SESSION['adminId'])) {  
+  $logAdmin=Admin::loadAdminById($conn,$_SESSION['adminId']);  
+  $adminName=$logAdmin->getAdminName();
   
-//} 
+} 
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +26,7 @@ if(!isset($_SESSION['logged'])) { //zabezpieczenie przed wejsciem z
     </head>
     <body>  
         <div class="col-lg-12 text-center "> <br><br><br>
-           <h3> <?php echo  $_SESSION['adminName']?> To twój panel zarządzający sklepem</h3>
+           <h3> <?php echo  $adminName?> To twój panel zarządzający sklepem</h3>
         </div>
         
    </body>
