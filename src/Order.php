@@ -5,7 +5,6 @@ CREATE TABLE `Order`(
 order_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 order_owner_id INT NOT NULL,
 order_status INT,
-order_product BLOB,
 order_date DATETIME,
 FOREIGN KEY(order_owner_id) REFERENCES User(id)
 ON DELETE CASCADE
@@ -17,26 +16,18 @@ class Order{
     private $order_id;
     private $order_owner_id;
     private $order_status;
-    private $order_product;
     private $order_date;
     
-    public function __construct(User $user = NULL, $order_status = 0, $order_product = ""){
+    public function __construct(User $user = NULL, $order_status = 0){
         
         $this->order_id = -1;
         $user != NULL ? $this->order_owner_id = $user->getId() : $this->order_owner_id = -1;
         $this->setOrderStatus($order_status);
-        $this->setOrderProduct($order_product);
         $this->order_date = date("Y-m-d h:i:s");
     }
-
     
-    public function setOrderId($id){
-        
-        if(is_int($id)){
-            $this->order_id = $id;
-        }
-    }
-
+    
+    // getery i setery
     public function getOrderId(){
         
         return $this->order_id;
@@ -63,49 +54,25 @@ class Order{
         return $this->order_status;
     }
     
-    public function setOrderProduct($product){
+    public function setOrderCreationDate(){
         
-        // sprawdzam czy podana zmienna jest tablica
-        if(is_array($product) && !is_numeric($product) && !is_string($product)){
-            
-            // serializuje zmienna z tablicy na string
-            $serializedProduct = serialize($product);
-            $this->order_product = $serializedProduct;
-        }else{
-            
-            // jesli nie jest to nie przypisuje nic!
-            $this->order_product = "";
-        }
+        $this->order_date = date("Y-m-d h:i:s");
     }
     
-    public function getOrderProduct(){
-        
-        // zwracam produkty w postaci tablicy
-        return unserialize($this->order_product);
-    }
-    
-    // metoda wyswietlajaca kod w html
-    public function displayProductAsHTML(){
-        
-        foreach ($this->getOrderProduct() as $key => $value){
-            
-            // miejsce na kod wyswietlajacy produkty w html
-            // ................................................
-        }
-    }
-    
-    public function getOrderCreationDate() {
+    public function getOrderCreationDate(){
         
         return $this->order_date;
     }
     
+    
+    
     // operacje na bazie danych
-    public function saveToDB(mysqli $conn){
+    public function saveOrderToDB(mysqli $conn){
         
         if($this->order_id == -1){
             
-            $sql = "INSERT INTO `Order`(order_owner_id, order_status, order_product, order_date) "
-                . "VALUES ('$this->order_owner_id', '$this->order_status', '$this->order_product', '$this->order_date')";
+            $sql = "INSERT INTO `Order`(order_owner_id, order_status, order_date) "
+                . "VALUES ('$this->order_owner_id', '$this->order_status', '$this->order_date')";
 
             $result = $conn->query($sql);
             if($result == true){
@@ -115,7 +82,7 @@ class Order{
             } 
         }else{ 
             
-            $sql="UPDATE `Order` SET order_status='$this->order_status' ,order_product='$this->order_product', "
+            $sql="UPDATE `Order` SET order_status='$this->order_status', "
                 . "order_date='$this->order_date' WHERE id='$this->order_id'";
             
             $result = $conn->query($sql);
@@ -126,7 +93,7 @@ class Order{
         return false;
     } 
       
-    public function delete(mysqli $conn){
+    public function deleteOrder(mysqli $conn){
         
         if($this->order_id != -1){
             
@@ -154,8 +121,7 @@ class Order{
             $loadedOrder = new Order();
             $loadedOrder->order_id = $row['order_id'];
             $loadedOrder->order_owner_id = $row['order_owner_id'];
-            $loadedOrder->order_status = $row['order_status'];
-            $loadedOrder->order_product = unserialize($row['order_product']); 
+            $loadedOrder->order_status = $row['order_status']; 
             $loadedOrder->order_date = $row['order_date']; 
             
             return $loadedOrder;
@@ -163,9 +129,9 @@ class Order{
         return null; 
     }
     
-    static public function loadOrderByItsOwnId(mysqli $conn, $id){
+    static public function loadOrderByItsOwnId(mysqli $conn, $order_id){
         
-        $sql = "SELECT * FROM `Order` WHERE order_id='$id'";
+        $sql = "SELECT * FROM `Order` WHERE order_id='$order_id'";
         
         $result = $conn->query($sql); 
     
@@ -176,7 +142,6 @@ class Order{
             $loadedOrder->order_id = $row['order_id'];
             $loadedOrder->order_owner_id = $row['order_owner_id'];
             $loadedOrder->order_status = $row['order_status'];
-            $loadedOrder->order_product = unserialize($row['order_product']); 
             $loadedOrder->order_date = $row['order_date']; 
             
             return $loadedOrder;
@@ -197,7 +162,6 @@ class Order{
                 $loadedOrder->order_id = $row['order_id'];
                 $loadedOrder->order_owner_id = $row['order_owner_id'];
                 $loadedOrder->order_status = $row['order_status'];
-                $loadedOrder->order_product = unserialize($row['order_product']); 
                 $loadedOrder->order_date = $row['order_date']; 
                 
                 $ret[] = $loadedOrder;
@@ -205,5 +169,4 @@ class Order{
         }
         return $ret;
     } 
-    
 }

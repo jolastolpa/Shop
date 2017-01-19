@@ -9,7 +9,7 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
     protected static $mysqliConn; 
     
     private $user;
-    private $product;
+    private $order;
 
     public function getConnection(){ 
         
@@ -38,34 +38,38 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         );
     } 
     
-    // inicjacja obiektu klasy User i zmiennej produktow
+    // inicjacja obiektu klasy User oraz obiektu klasu Order
     public function setUp(){
         
-        // stworzenie obiektu klasy User i zapisanie go do DB
-        $this->user = new User();
-        $this->user->saveToDB(self::$mysqliConn);
+        // przywrócenie defaultowego działania metody getDataSet()
+        parent::setUp();
         
-        // id i ilosc produktow
-        $this->product = ["3" => "5", "7" => "11", "13" => "17"];
+        // stworzenie obiektu klasy User i zapisanie go do DB
+        $this->user = new User('Bruce', 'Wayne', 'bruce.wayne@gotham.com', 'OhJockerMyLove', 'GothamCity');
+        
+        // inicjacja nowego obiektu klasy Order
+        $this->order = new Order($this->user, 2);
     }
     
 
     
-    // test metody saveToDB() (zapis oraz update) i delete()
-    public function testSaveAndDeleteANewOrder(){ 
-         
-        // inicjacja nowego obiektu
-        $order = new Order($this->user, 2, $this->product);
+    // test zapisu z metody saveOrderToDB()
+    public function testSaveANewOrder(){ 
 
-        // test zapisu
-        $this->assertTrue($order->saveToDB(self::$mysqliConn)); 
+        $this->assertTrue($this->order->saveOrderToDB(self::$mysqliConn)); 
+    }
+    
+    // test update'u z metody saveOrderToDB()
+    public function testUpdateANewOrder(){ 
         
-        // test update'u
-        $order->setOrderStatus(3);
-        $this->assertTrue($order->saveToDB(self::$mysqliConn));
+        $this->order->setOrderStatus(3);
+        $this->assertTrue($this->order->saveOrderToDB(self::$mysqliConn));
+    }
+    
+    // test usuniecia z metody deleteOrder()
+    public function testDeleteANewOrder(){ 
         
-        // test usuniecia
-        $this->assertTrue($order->delete(self::$mysqliConn));
+        $this->assertTrue($this->order->deleteOrder(self::$mysqliConn));
     }
     
     // test metody loadOrderByOrderOwnerId()
@@ -87,12 +91,10 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         
         // test pierwszych danych z pliku Order.xml
         $loadedFirstOrder = Order::loadOrderByItsOwnId(self::$mysqliConn, 1); 
-        $this->assertTrue($loadedFirstOrder);
         $this->assertEquals('2017-01-01 11:46:26', $loadedFirstOrder->getOrderCreationDate());
 
         // test drugich danych z pliku Order.xml
         $loadedSecondOrder = Order::loadOrderByItsOwnId(self::$mysqliConn, 2);
-        $this->assertTrue($loadedSecondOrder);
         $this->assertEquals(20, $loadedSecondOrder->getOrderOwnerId()); 
     }
     
@@ -104,18 +106,19 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
     
     
     
-    // wyczyszczenie obiektu i zmiennej z atrybutow
+    // wyczyszczenie obiektów
     public function tearDown(){
         
-        // usuniecie obiektu klasy User z bazy danych
-        $this->user->delete(self::$mysqliConn);
+        // zerowanie obiektu klasy User
+        $this->user = NULL;
         
-        // zerownie tablicy z id i iloscia produktow
-        $this->product = NULL;
+        // zerowanie obiektu klasy Order
+        $this->order = NULL;
     }
     
     // zakończenie połączenia
     static public function tearDownAfterClass(){
+        
         self::$mysqliConn = null;
     }
 }
