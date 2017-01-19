@@ -12,7 +12,8 @@ ON DELETE CASCADE
 )
 */
 require_once 'TooShortExeption.php';
-require_once 'ZeroExeption.php';
+require_once 'ZeroExeption.php'; 
+
 class Product{ 
     
     private $id; 
@@ -101,6 +102,15 @@ class Product{
     public function getProductCategoryId(){
         
         return $this->category_id;
+    }   
+    
+    public function getCategoryName(){
+        
+        return $this->category_name;
+    }  
+     public function getImageLink(){
+        
+        return $this->image_link;
     } 
     
     
@@ -209,9 +219,7 @@ class Product{
         
         $result = $conn->query($sql);
         if($result == true && $result->num_rows != 0){
-            echo '<table class="table table-striped">'; 
-            echo '<tr><th> Id </th><th> Nazwa </th><th> Cena </th><th> Opis </th><th> '
-            . 'Ilosć dostępna </th><th> Kategoria </th><th>Zdjęcie</th><th> Edytuj </th><th> Usuń </th><tr>' ; 
+            
             
             foreach($result as $row){
                 $loadedProduct = new Product();
@@ -224,16 +232,7 @@ class Product{
                 $loadedProduct->category_name = $row['category_name']; 
                 $loadedProduct->image_link = $row['image_link'];
                
-                echo '<tr><td>'.$row['id']; 
-                echo '</td><td style="width: 100px">'.$row['name']; 
-                echo '</td><td style="width: 100px">'.$row['price'] ; 
-                echo '</td><td style="width: 100px">'.$row['description'];
-                echo '</td><td style="width: 100px">'.$row['quantity']; 
-                echo '</td><td style="width: 100px">'.$row['category_name'];  
-                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" class="img-responsive"/> ';  
-                echo '</td><td><a href="editProduct.php?id='.$row['id'].'">Edytuj</a>';
-                echo '</td><td><a href="deleteProduct.php?id='.$row['id'].'">Usuń</a>';
-                echo '</td><tr>';
+                
                 $ret[] = $loadedProduct;
             }
         }
@@ -247,9 +246,7 @@ class Product{
          $ret = [];
         $result = $conn->query($sql); 
         if ($result == true && $result->num_rows > 0){ 
-            echo '<table class="table table-striped">'; 
-            echo '<tr><th> Id </th><th> Nazwa </th><th> Cena </th><th> Opis </th><th> '
-            . 'Ilosć dostępna </th><th>Zdjęcie</th><th> Edytuj </th><th> Usuń </th><tr>' ; 
+           
            
             foreach ($result as $row){
                 $loadedProduct = new Product();
@@ -258,19 +255,10 @@ class Product{
                 $loadedProduct->description = $row['description'];
                 $loadedProduct->price = $row['price'];
                 $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->category_id = $row['category_id']; 
+                $loadedProduct->category_id = $row['category_id'];  
                 $loadedProduct->image_link = $row['image_link'];
                 
-                echo '<tr><td>'.$row['id']; 
-                echo '</td><td style="width: 100px">'.$row['name']; 
-                echo '</td><td style="width: 100px">'.$row['price'] ; 
-                echo '</td><td style="width: 100px">'.$row['description'];
-                echo '</td><td style="width: 100px">'.$row['quantity']; 
-              
-                echo '</td><td style="width: 100px"><img src="'.$row['image_link'].'" class="img-responsive"/> ';  
-                echo '</td><td><a href="editProduct.php?id='.$row['id'].'">Edytuj</a>';
-                echo '</td><td><a href="deleteProduct.php?id='.$row['id'].'">Usuń</a>';
-                echo '</td><tr>';
+               
                 
                 $ret[] = $loadedProduct;
             } 
