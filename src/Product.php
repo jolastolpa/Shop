@@ -8,7 +8,8 @@ price FLOAT,
 description VARCHAR(500),
 quantity INT,
 category_id INT, 
-FOREIGN KEY (category_id) REFERENCES Category(category_id)
+FOREIGN KEY (category_id) REFERENCES Category(category_id) 
+ON DELETE CASCADE
 )
 */
 
@@ -50,17 +51,13 @@ class Product{
         
         if(strlen($NewName) >= 0){
             $this->name = $NewName;
-        }else{ 
-            throw new TooShortExeption('It should be more than 1 letter!');
-        } 
+        }
     }
 
     public function setPrice($NewPrice){ 
         
         if($NewPrice > 0.00){ 
             $this->price = $NewPrice; 
-        }else{ 
-            throw new ZeroExeption ('Must be > 0');
         }
     }
 
@@ -68,8 +65,6 @@ class Product{
         
         if(strlen($NewDescription) >= 0) { 
             $this->description = $NewDescription; 
-        }else{ 
-            throw new TooShortExeption('It should be more than 1 letter!');
         }
     }  
     
@@ -77,8 +72,6 @@ class Product{
         
         if($NewQuantity > 0){ 
             $this->quantity = $NewQuantity; 
-        }else{ 
-            throw new ZeroExeption('Must be > 0');
         }
     } 
     
@@ -86,8 +79,6 @@ class Product{
         
         if($NewIdCategory > 0){ 
             $this->category_id = $NewIdCategory; 
-        }else{ 
-            throw new ZeroExeption('Must be > 0');
         }
     }
     
