@@ -26,10 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $error['email'] = "wprowadź prawidłowy email!";
             $valid = false;
         }
-        if (Admin::availibilityOfEmail($conn, $form['email']) == false) {
-            $error['email'] = "przykro mi ten email jest już zajęty!";
-            $valid = false;
-        }
+       // if (Admin::availibilityOfEmail($conn, $form['email']) == false) {
+          //  $error['email'] = "przykro mi ten email jest już zajęty!";
+           // $valid = false;
+       // }
         if ((strlen($form['password']) < 6) || (strlen($form['password']) > 20)) {
             $error['password'] = "hasło musi mieć od 6 do 20 znaków!";
             $valid = false;
