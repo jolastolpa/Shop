@@ -10,24 +10,29 @@ class TestStatus extends PHPUnit_Framework_TestCase{
     // inicjacja obiektu klasy status
     protected function setUp(){ 
         
-        $this->status = New Status();
+        parent::setUp();
+        $this->status = new Status('default_status');
     }
     
     // test dzialania konstruktora klasy status
     public function testIfCreationIsCorrect(){ 
         
         $this->assertEquals(-1, $this->status->getStatusId()); 
-        $this->assertEquals('', $this->status->getStatusName());
+        $this->assertEquals('default_status', $this->status->getStatusName());
          
     }  
     
-    // testy seterow
+    // test setera
     public function testSetGetName(){  
         
         $this->status->setStatusName("unconfirmed"); 
         $this->assertEquals("unconfirmed", $this->status->getStatusName());  
     } 
     
- 
     
+    // zerowanie obiektu
+    protected function tearDown(){
+        
+        $this->status = NULL;
+    }
 }

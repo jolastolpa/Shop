@@ -26,6 +26,7 @@ class TestStatus_DB extends PHPUnit_Extensions_Database_TestCase{
     // inicjacja obiektu
     public function setUp(){
         
+        parent::setUp();
         $this->status = new Status('waiting'); 
     }
     
@@ -40,17 +41,22 @@ class TestStatus_DB extends PHPUnit_Extensions_Database_TestCase{
         );
     }   
 
-    // test metody saveToDB() (zapis oraz update) i delete()
-    public function testSaveAndDeleteANewStatus(){ 
+    // test zapisu z metody saveToDB()
+    public function testSaveANewStatus(){ 
         
-        // test zapisu
         $this->assertTrue($this->status->saveToDB(self::$mysqliConn)); 
+    } 
+    
+    // test update'u z metody saveToDB()
+    public function testUpdateANewStatus(){ 
         
-        // test update'u
-        $this->status->setStatusName("confirmed");
+        $this->status->setStatusName("signed");
         $this->assertTrue($this->status->saveToDB(self::$mysqliConn));
-        
-        // test usuniecia
+    }
+    
+    // test usunięcia z metody delete()
+    public function testDeleteANewStatus(){ 
+
         $this->assertTrue($this->status->delete(self::$mysqliConn));
     }
        

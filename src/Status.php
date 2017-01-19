@@ -1,19 +1,22 @@
 <?php 
-/*CREATE TABLE Status (
+
+/*
+CREATE TABLE Status(
 status_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-status_name VARCHAR(30)
-) */
+status_name VARCHAR(50)
+)
+*/
 
 
 class Status{ 
     
-    private $status_id ; 
+    private $status_id; 
     private $status_name; 
      
      
-    public function __construct($id = -1, $name = ""){
+    public function __construct($name = ""){
         
-        $this->setStatusId($id);
+        $this->status_id = -1;
         $this->setStatusName($name);   
     } 
     
@@ -50,8 +53,7 @@ class Status{
         
         if($this->status_id == -1){
         
-            $sql = "INSERT INTO Status(status_name)"
-                 . "VALUES ( '$this->status_name')";
+            $sql = "INSERT INTO Status(status_name) VALUES ('$this->status_name')";
                     
             $result = $conn->query($sql);
             if($result == true){
@@ -61,7 +63,7 @@ class Status{
             } 
         }else{ 
             
-            $sql="UPDATE Status SET status_name='$this->status_name' WHERE status_id='$this->status_id'";
+            $sql = "UPDATE Status SET status_name='$this->status_name' WHERE status_id='$this->status_id'";
             
             $result = $conn->query($sql);
             if($result == true){              
@@ -89,7 +91,7 @@ class Status{
     
     static public function loadStatusById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Status WHERE status_id=$id";
+        $sql = "SELECT * FROM Status WHERE status_id='$id'";
         
         $result = $conn->query($sql); 
     
