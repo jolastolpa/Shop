@@ -1,13 +1,9 @@
 <?php
-
 //require_once __DIR__.'/vendor/autoload.php'; // - mi ta ścieżka  nie działa,próbowąłam na wiele spodobób nie wiem czemu
-
 // Poprawiona sciezka. Po wpisaniu w konsoli komendy; 
 // './tests/vendor/bin/phpunit tests/TestProduct.php'
 // gra i buczy! ;-)
 require_once __DIR__.'/../src/Product.php';
-
-
 class TestProduct extends PHPUnit_Framework_TestCase{ 
     
     private $product;

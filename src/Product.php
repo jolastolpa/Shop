@@ -1,5 +1,4 @@
 <?php
-
 /*
 CREATE TABLE Product(
 id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -8,14 +7,12 @@ price FLOAT,
 description VARCHAR(500),
 quantity INT,
 category_id INT, 
-FOREIGN KEY (category_id) REFERENCES Category(category_id)
+FOREIGN KEY (category_id) REFERENCES Category(category_id) 
+ON DELETE CASCADE
 )
 */
-
 require_once 'TooShortExeption.php';
 require_once 'ZeroExeption.php';
-
-
 class Product{ 
     
     private $id; 
@@ -28,7 +25,6 @@ class Product{
     private $image_link;
     
     public function __construct($name = "", $price = 1.00, $description = "", $quantity = 1, $idCategory = 1){ 
-
         $this->id = -1;
         $this->setName($name);
         $this->setPrice($price);
@@ -36,7 +32,6 @@ class Product{
         $this->setQuantity($quantity); 
         $this->setProductCategoryId($idCategory);
     }
-
     
     //setery
     public function setId($id){
@@ -50,26 +45,18 @@ class Product{
         
         if(strlen($NewName) >= 0){
             $this->name = $NewName;
-        }else{ 
-            throw new TooShortExeption('It should be more than 1 letter!');
-        } 
+        }
     }
-
     public function setPrice($NewPrice){ 
         
         if($NewPrice > 0.00){ 
             $this->price = $NewPrice; 
-        }else{ 
-            throw new ZeroExeption ('Must be > 0');
         }
     }
-
     public function setDescription($NewDescription){ 
         
         if(strlen($NewDescription) >= 0) { 
             $this->description = $NewDescription; 
-        }else{ 
-            throw new TooShortExeption('It should be more than 1 letter!');
         }
     }  
     
@@ -77,8 +64,6 @@ class Product{
         
         if($NewQuantity > 0){ 
             $this->quantity = $NewQuantity; 
-        }else{ 
-            throw new ZeroExeption('Must be > 0');
         }
     } 
     
@@ -86,8 +71,6 @@ class Product{
         
         if($NewIdCategory > 0){ 
             $this->category_id = $NewIdCategory; 
-        }else{ 
-            throw new ZeroExeption('Must be > 0');
         }
     }
     
@@ -97,17 +80,14 @@ class Product{
         
         return $this->id;
     }
-
     public function getName(){
         
         return $this->name;
     }
-
     public function getPrice(){
         
         return $this->price;
     }
-
     public function getDescription(){
         
         return $this->description;
@@ -171,11 +151,7 @@ class Product{
  
     static public function loadProductById(mysqli $conn, $id){
         
-
         $sql = "SELECT * FROM Product  WHERE id=$id";
-
-
-
         
         $result = $conn->query($sql); 
     
@@ -188,7 +164,6 @@ class Product{
             $loadedProduct->price = $row['price'];
             $loadedProduct->description = $row['description']; 
             $loadedProduct->quantity = $row['quantity']; 
-
             $loadedProduct->category_id = $row['category_id']; 
             
             return $loadedProduct; 
@@ -209,11 +184,8 @@ class Product{
             
             /*
                require_once 'Image.php';
-
                $p = new Product('kot', 20, 'w butach byl sobie kot', 1, 2);
-
                $i = new Image('Images/1/1.jpg', $p);
-
                echo $i->getImageId().'<br>';
                echo $i->getImageLink().'<br>';
                echo $i->getProductId().'<br>';
@@ -225,12 +197,10 @@ class Product{
             // o co innego Ci chodzilo, a ja sie wpierdzielam jak zwykle... :P
       
             
-
  
         }
         return null; 
     }
-
     static public function loadAllProducts(mysqli $conn){
         
         $sql = "SELECT * FROM Product JOIN Category ON Category.category_id = Product.category_id "
@@ -274,10 +244,8 @@ class Product{
         
        
         $sql = "SELECT * FROM Product JOIN Image ON Image.product_id=Product.id WHERE category_id = $category_id";
-
          $ret = [];
         $result = $conn->query($sql); 
-
         if ($result == true && $result->num_rows > 0){ 
             echo '<table class="table table-striped">'; 
             echo '<tr><th> Id </th><th> Nazwa </th><th> Cena </th><th> Opis </th><th> '
