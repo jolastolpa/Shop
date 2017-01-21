@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../src/connection.php';
 require_once __DIR__ . '/../src/Product.php';
 require_once __DIR__ . '/../src/Image.php';
 require_once __DIR__ . '/../src/Admin.php';

@@ -1,3 +1,4 @@
 nbproject
 tests/vendor/
 config.php
+connection.php
