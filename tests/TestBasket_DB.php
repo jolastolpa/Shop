@@ -95,6 +95,9 @@ class TestBasket_DB extends PHPUnit_Extensions_Database_TestCase {
     }
     
     protected function tearDown(){
+        
         $this->user = NULL;
+        $this->product = null;
+        $this->basket = null;
     }
 }
