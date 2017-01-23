@@ -20,23 +20,111 @@ if (!isset($_SESSION['logged'])) {
            <li><a href="index.php">Home</a></li>
            <li><a href="products.php">Zarządzanie produktem</a></li>
            <li class="active">Wszystkie produkty</li>
-        </ol><br><br><br> 
+        </ol><br>
         
-        <div class="col-sm-8 text-left  ">  
-            <h3>Wszystkie produkty dostępne w sklepie:<h3> 
-             <?php
+        <div class="col-sm-6 text-left  ">   
+           
+                <form role="form" method="POST" action="#"> 
+                
+                    <div class="form-group"><br>
+                        <label for="name">Nazwa przedmiotu</label>
+                        <input type="text" class="form-control"  id="name" name="name" >
+                    </div>
+                     <input class="btn btn-info" type="submit" value="Wyszukaj" name="submit"><br>
+                
+                </form>    
+                
+                <form role="form" method="POST" action="#"> 
+               
+                    <div class="form-group"><br>
+                        <label for="category">Kategoria</label>
+                        <select class="form-control" id="category" name="category">
+                            <option value="0">Wybierz kategorię</option> 
+                            <?php
+                                $allCategories = Category::loadAllCategories($conn);
+                                foreach ($allCategories as $category) {
+                                    echo "<option value='" . $category->getCategoryId() . "'>" . $category->getCategoryName() . "</option>";
+                                }?>
+                        </select>
+                    </div>
+                    <input class="btn btn-info" type="submit" value="Wyszukaj" name="submit"><br>
+                </form>  
+        </div><br> 
+        
+        <div class="col-sm-6 text-left  ">    
+                <form role="form" method="POST" action="#"> 
+                
+                    <div class="form-group"><br>
+                        <label for="name">Wyszukaj po cenie</label>
+                    </div>
+                    <input class="btn btn-info" type="submit" value="Wyszukaj" name="price"><br>
+                
+                </form>     
+            
+                <form role="form" method="POST" action="#"> 
+                
+                    <div class="form-group"><br>
+                        <label for="name">Wyszukaj po ilości</label>
+                    </div>
+                    <input class="btn btn-info" type="submit" value="Wyszukaj" name="quantity"><br>
+                
+                </form>  
+        
+        </div><br>
+      
+              
+
+
+ <?php   
+ 
+    if ($_SERVER['REQUEST_METHOD']=="POST" ) { 
+        if (isset($_POST['name'])) { 
+                    $productName=trim($_POST['name']); 
+                    
                     displayTitleLoadAll(); 
-                    $loadedProducts=Product::loadAllProducts($conn); 
+                    $loadedProducts=Product::loadProductByName($conn, $productName);  
+                    
+                    foreach($loadedProducts as $product){
+                       $product->showProducts();
+                    }  
+        }
+        if (isset($_POST['category'])) {
+                    $category_id = trim($_POST['category']); 
                         
-                        foreach($loadedProducts as $product){
-                            echo '<tr><td>'.$product->getId(); 
-                            echo '</td><td >'.$product->getName(); 
-                            echo '</td><td >'.$product->getPrice() ; 
-                            echo '</td><td >'.$product->getDescription();
-                            echo '</td><td >'.$product->getQuantity();
-                            echo '</td><td >'.$product->getCategoryName();
-                            echo '</td><td style="width: 100px"><img src="'.$product->getImageLink().'" class="img-responsive"/> ';  
-                            echo '</td><td><a href="editProduct.php?id='.$product->getId().'">Edytuj</a>';
-                            echo '</td><td><a href="delete.php?id='.$product->getId().'">Usuń</a>';
-                            echo '</td><tr>';
-                        } 
+                    displayTitleLoadByCategory(); 
+                    $loadedProducts=Product::loadAllProductFromCategory($conn, $category_id); 
+                        
+                    foreach($loadedProducts as $product){ 
+                        $product->showProductsFromCategory();
+                      
+                    } 
+        } 
+        if (isset($_POST['price'])) {
+      
+                    displayTitleLoadAll(); 
+                    $loadedProducts=Product::SortProductByPrice($conn); 
+                        
+                    foreach($loadedProducts as $product){ 
+                        $product->showProducts();
+                      
+                    } 
+        } 
+        if (isset($_POST['quantity'])) {
+      
+                    displayTitleLoadAll(); 
+                    $loadedProducts=Product::SortProductByQuantity($conn); 
+                        
+                    foreach($loadedProducts as $product){ 
+                        $product->showProducts();
+                      
+                    }  
+        }
+    } 
+      else {
+        displayTitleLoadAll(); 
+        $loadedProducts=Product::loadAllProducts($conn); 
+        
+        foreach($loadedProducts as $product){ 
+            $product->showProducts();                   
+        } 
+    }

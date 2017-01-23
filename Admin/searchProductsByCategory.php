@@ -27,42 +27,11 @@ if (!isset($_SESSION['logged'])) {
    
         <div class="col-md-8 text-left panel panel-success "> 
            
-            <form role="form" method="POST" action="#"> 
-                <div class="form-group">
-                    <label for="category">Kategoria</label>
-                        <select class="form-control" id="category" name="category">
-                            <option value="0">Wybierz kategorię</option> 
-                            <?php
-                                $allCategories = Category::loadAllCategories($conn);
-                                foreach ($allCategories as $category) {
-                                    echo "<option value='" . $category->getCategoryId() . "'>" . $category->getCategoryName() . "</option>";
-                                }?>
-                        </select>
-               
-                </div><br<br>
-                    <input class="btn btn-info" type="submit" value="Wyszukaj" name="submit"><br>
-            </form> 
+        
         </div> 
         
         <div class="col-md-8 text-left ">  
-            <?php   if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['category'])) {
-                        $category_id = trim($_POST['category']); 
-                        
-                        displayTitleLoadByCategory(); 
-                        $loadedProducts=Product::loadAllProductFromCategory($conn, $category_id); 
-                        
-                        foreach($loadedProducts as $product){
-                            echo '<tr><td>'.$product->getId(); 
-                            echo '</td><td >'.$product->getName(); 
-                            echo '</td><td >'.$product->getPrice() ; 
-                            echo '</td><td >'.$product->getDescription();
-                            echo '</td><td >'.$product->getQuantity();
-                            echo '</td><td style="width: 100px"><img src="'.$product->getImageLink().'" class="img-responsive"/> ';  
-                            echo '</td><td><a href="editProduct.php?id='.$product->getId().'">Edytuj</a>';
-                            echo '</td><td><a href="delete.php?id='.$product->getId().'">Usuń</a>';
-                            echo '</td><tr>';
-                        } 
-                    }
+            <?php 
             ?> 
         </div>
 

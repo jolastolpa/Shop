@@ -34,20 +34,9 @@ if (!isset($_SESSION['logged'])) {
    
         <div class="col-md-8 text-left panel panel-success "> 
            
-            <form role="form" method="POST" action="#"> 
-                
-                <div class="form-group"><br>
-                     <label for="name">Nazwa przedmiotu</label>
-                     <input type="text" class="form-control"  id="name" name="name" >
-                </div> <br>
-                 <input class="btn btn-info" type="submit" value="Wyszukaj" name="submit"><br>
-                
-            </form> 
+           
         </div> 
         
         <div class="col-md-8 text-left ">  
-            <?php if ($_SERVER['REQUEST_METHOD']=="POST"  && isset($_POST['name'])) { 
-                      $productName=trim($_POST['name']); 
-                      Product::loadProductsSearchByAdmin($conn, $productName);
-                  }?> 
+          
         </div>
