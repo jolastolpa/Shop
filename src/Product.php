@@ -177,40 +177,10 @@ class Product{
             $loadedProduct->category_id = $row['category_id']; 
             
             return $loadedProduct; 
-            
-            // cholera wie czy tak sie da
-            
-            // Zastanawiam się ciągle czy w ogóle trzeba? W sensie przy tworzeniu 
-            // produktu bedziemy inicjowac obiekt klasy Image do ktorego wpiszemy id
-            // tego wlasnie produktu wiec pozniej w ten sposob bedzie mozna dojsc do 
-            // korealacji... ale wiadomo, mozna i w jednej metodzie to zrobic i moze
-            // z użyciem np array_merge(stworzyc tutaj nowy obiekt klasy Image, 
-            // przypisac jego wartosci w postaci asocjacyjnej (tak jak się to ma w $loadedProdukt), 
-            // a nastepnie polaczyc przez array_merge tablice z danymi z Image z $loadedProdukt)
-            // 
-            // Ponizej wklejam prosty przyklad ktory pokazuje,
-            // ze juz teraz mozna dojsc do latwego dostepu do linkow zdjec(jesli chcesz to wklej 
-            // sobie ten kod pod klasa Product i odpal):
-            
-            /*
-               require_once 'Image.php';
-               $p = new Product('kot', 20, 'w butach byl sobie kot', 1, 2);
-               $i = new Image('Images/1/1.jpg', $p);
-               echo $i->getImageId().'<br>';
-               echo $i->getImageLink().'<br>';
-               echo $i->getProductId().'<br>';
-              
-                //ewentualnie: var_dump($i);   i wsio
-            */
-            
-            // Moge się mylić oczywiście!! Wciąz się uczymy w końcu!! :-) No i może
-            // o co innego Ci chodzilo, a ja sie wpierdzielam jak zwykle... :P
-      
-            
- 
         }
         return null; 
-    }
+    } 
+    
     static public function loadAllProducts(mysqli $conn){
         
         $sql = "SELECT * FROM Product JOIN Category ON Category.category_id = Product.category_id "
@@ -232,7 +202,6 @@ class Product{
                 $loadedProduct->category_name = $row['category_name']; 
                 $loadedProduct->image_link = $row['image_link'];
                
-                
                 $ret[] = $loadedProduct;
             }
         }
@@ -258,14 +227,114 @@ class Product{
                 $loadedProduct->category_id = $row['category_id'];  
                 $loadedProduct->image_link = $row['image_link'];
                 
-               
+                $ret[] = $loadedProduct;
+            } 
+            return $ret;
+        }
+       return $ret;
+    } 
+    
+    public static function loadProductByName(mysqli $conn, $name) { 
+        $sql = "SELECT * FROM Product JOIN Image ON Image.product_id=Product.id  "
+                . "JOIN Category ON Category.category_id=Product.category_id WHERE name LIKE '%". $name."%'";
+         $ret = [];
+        $result = $conn->query($sql); 
+        if ($result == true && $result->num_rows > 0){ 
+           
+           
+            foreach ($result as $row){
+                $loadedProduct = new Product();
+                $loadedProduct->id = $row['id'];
+                $loadedProduct->name = $row['name'];
+                $loadedProduct->description = $row['description'];
+                $loadedProduct->price = $row['price'];
+                $loadedProduct->quantity = $row['quantity'];
+                $loadedProduct->category_id = $row['category_id'];  
+                $loadedProduct->category_name = $row['category_name']; 
+                $loadedProduct->image_link = $row['image_link'];
                 
                 $ret[] = $loadedProduct;
             } 
             return $ret;
         }
        return $ret;
+    }   
+    
+    public static function SortProductByPrice(mysqli $conn) { 
+        $sql = "SELECT * FROM Product JOIN Image ON Image.product_id=Product.id  "
+                . "JOIN Category ON Category.category_id=Product.category_id ORDER BY price";
+         $ret = [];
+        $result = $conn->query($sql); 
+        if ($result == true && $result->num_rows > 0){ 
+           
+           
+            foreach ($result as $row){
+                $loadedProduct = new Product();
+                $loadedProduct->id = $row['id'];
+                $loadedProduct->name = $row['name'];
+                $loadedProduct->description = $row['description'];
+                $loadedProduct->price = $row['price'];
+                $loadedProduct->quantity = $row['quantity'];
+                $loadedProduct->category_id = $row['category_id'];  
+                $loadedProduct->category_name = $row['category_name']; 
+                $loadedProduct->image_link = $row['image_link'];
+                
+                $ret[] = $loadedProduct;
+            } 
+            return $ret;
+        }
+       return $ret;
+    }  
+    
+    public static function SortProductByQuantity(mysqli $conn) { 
+        $sql = "SELECT * FROM Product JOIN Image ON Image.product_id=Product.id  "
+                . "JOIN Category ON Category.category_id=Product.category_id ORDER BY quantity";
+         $ret = [];
+        $result = $conn->query($sql); 
+        if ($result == true && $result->num_rows > 0){ 
+           
+           
+            foreach ($result as $row){
+                $loadedProduct = new Product();
+                $loadedProduct->id = $row['id'];
+                $loadedProduct->name = $row['name'];
+                $loadedProduct->description = $row['description'];
+                $loadedProduct->price = $row['price'];
+                $loadedProduct->quantity = $row['quantity'];
+                $loadedProduct->category_id = $row['category_id'];  
+                $loadedProduct->category_name = $row['category_name']; 
+                $loadedProduct->image_link = $row['image_link'];
+                
+                $ret[] = $loadedProduct;
+            } 
+            return $ret;
+        }
+       return $ret;
+    } 
+    
+    public function showProducts() {   
+        echo '<tr><td>'.$this->getId(); 
+        echo '</td><td >'. $this->getName();
+        echo '</td><td >'.$this->getPrice() ; 
+        echo '</td><td >'.$this->getDescription();
+        echo '</td><td >'.$this->getQuantity(); 
+        echo '</td><td >'.$this->getCategoryName();
+        echo '</td><td style="width: 100px"><img src="'.$this->getImageLink().'" class="img-responsive"/> ';  
+        echo '</td><td><a href="editProduct.php?id='.$this->getImageLink().'">Edytuj</a>';
+        echo '</td><td><a href="delete.php?id='.$this->getImageLink().'">Usuń</a>';
+        echo '</td><tr>';
+    } 
+    
+    public function showProductsFromCategory() {  
+        echo '<tr><td>'.$this->getId();  
+        echo '</td><td >'.$this->getName(); 
+        echo '</td><td >'.$this->getPrice() ; 
+        echo '</td><td >'.$this->getDescription();
+        echo '</td><td >'.$this->getQuantity();
+        echo '</td><td style="width: 100px"><img src="'.$this->getImageLink().'" class="img-responsive"/> ';  
+        echo '</td><td><a href="editProduct.php?id='.$this->getId().'">Edytuj</a>';
+        echo '</td><td><a href="delete.php?id='.$this->getId().'">Usuń</a>';
+        echo '</td><tr>';
     }
-      
-   
-}   
+              
+} 

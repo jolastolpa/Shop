@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <User
+        id="1"
+        name="Marek"
+        surname="Korcz"
+        email="mark.korcz@gmail.com"
+        password="$2y$10$oV3sZgPrPQ99Ch42CM8vZ.9pIOz.NJBsN6XjRT4Wo/CJR7Ot4YwFS"
+        deliver_addr="Sezamkowa"
+    />
+        <!-- password: 'tralala' -->
+    <Product 
+        id="1"
+        name="desk" 
+        price="1.00" 
+        description="beautiful" 
+        quantity="5" 
+        category_id="1"  
+    />
+    <Basket
+        basket_id="1"
+        user_id="1"
+        product_id="1"
+        product_amount="10"
+        product_price="1.00"   
+    />
+    <Basket
+        basket_id="2"
+        user_id="1"
+        product_id="1"
+        product_amount="30"
+        product_price="1.00"   
+    />
+</dataset>
