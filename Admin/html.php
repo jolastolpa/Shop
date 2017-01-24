@@ -15,5 +15,11 @@ function displayTitleLoadAll(){
 function displayCategories() { 
             echo '<table class="table table-striped">'; 
             echo '<tr><th> Id </th><th> Nazwa </th><th> Edytuj </th><th> Usuń </th><th>' ; 
+}  
+
+function displayOrders() { 
+            echo '<table class="table table-striped">'; 
+            echo '<tr><th> Id </th><th> Id użytkownika </th><th> Status </th><th>'
+            . 'Data powstania</th> <th> Edytuj </th><th> Usuń </th><th>' ; 
 } 
 

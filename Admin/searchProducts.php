@@ -85,7 +85,7 @@ if (!isset($_SESSION['logged'])) {
                     $loadedProducts=Product::loadProductByName($conn, $productName);  
                     
                     foreach($loadedProducts as $product){
-                       $product->showProducts();
+                       $product->showProductsForAdmin();
                     }  
         }
         if (isset($_POST['category'])) {
@@ -105,7 +105,7 @@ if (!isset($_SESSION['logged'])) {
                     $loadedProducts=Product::SortProductByPrice($conn); 
                         
                     foreach($loadedProducts as $product){ 
-                        $product->showProducts();
+                        $product->showProductsForAdmin();
                       
                     } 
         } 
@@ -115,7 +115,7 @@ if (!isset($_SESSION['logged'])) {
                     $loadedProducts=Product::SortProductByQuantity($conn); 
                         
                     foreach($loadedProducts as $product){ 
-                        $product->showProducts();
+                        $product->showProductsForAdmin();
                       
                     }  
         }
@@ -125,6 +125,6 @@ if (!isset($_SESSION['logged'])) {
         $loadedProducts=Product::loadAllProducts($conn); 
         
         foreach($loadedProducts as $product){ 
-            $product->showProducts();                   
+            $product->showProductsForAdmin();                   
         } 
     }
