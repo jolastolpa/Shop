@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                           
                             <input class="form-control" type="file" name="fileToUpload" id="fileToUpload"><br>
                             <?php if (isset($error['fileToUpload'])) {echo $error['fileToUpload'];} ?>
-                </div>
+                </div> 
                 
                 <input class="btn btn-success" type="submit" value="Dodaj produkt" name="submit"><br>
                 

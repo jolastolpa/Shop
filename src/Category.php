@@ -134,6 +134,14 @@ class Category {
             }
         }
         return $categories;
+    } 
+    public function showCategoriesForAdmin() { 
+        
+         echo '<tr><td>'.$this->getCategoryId(); 
+         echo '</td><td >'.$this->getCategoryName(); 
+         echo '</td><td><a href="editCategory.php?idCategory='.$this->getCategoryId().'">Edytuj</a>';
+         echo '</td><td><a href="delete.php?idCategory='.$this->getCategoryId().'">Usuń</a>';
+         echo '</td><tr>';
     }
 }
 

@@ -11,16 +11,32 @@ if (!isset($_SESSION['logged'])) {
         if(isset ($_GET['id'])){ 
             $id=$_GET['id']; 
             $loadProduct=  Product::loadProductById($conn, $id);
-            $loadProduct->delete($conn);  
-            $_SESSION['delete']="Ununięto produkt" ; 
+            $loadProduct->delete($conn);   
             header('location:searchProducts.php');   
         } 
         if(isset($_GET['idCategory'])) { 
             $id=$_GET['idCategory']; 
             $loadCategory= Category::loadCategoryById($conn, $id);
             $loadCategory->deleteCategory($conn);  
-            $_SESSION['deleteCategory']="Ununięto kategorie" ; 
             header('location:categories.php');   
+        } 
+         if(isset($_GET['idOrder'])) { 
+            $id=$_GET['idOrder']; 
+            $loadOrder= Order::loadOrderByItsOwnId($conn, $id);
+            $loadOrder->deleteOrder($conn);   
+            header('location:orders.php');   
+        } 
+        if(isset($_GET['idUser'])) { 
+            $id=$_GET['idUser']; 
+            $loadUser= User::loadUserById($conn, $id);
+            $loadUser->deleteUser($conn);   
+            header('location:users.php');   
+        } 
+         if(isset($_GET['idAdmin'])) { 
+            $id=$_GET['idAdmin']; 
+            $loadAdmin= Admin::loadAdminById($conn, $id);
+            $loadAdmin->deleteAdmin($conn);   
+            header('location:index.php');   
         }
     }
 ?>
@@ -35,15 +51,7 @@ if (!isset($_SESSION['logged'])) {
         <?php include __DIR__ . '/nav.php' ?><br><br><br><br>
     </head>
     <body> 
-        <ol class="breadcrumb">
-           <li><a href="index.php">Home</a></li>
-           <li><a href="products.php">Zarządzanie produktem</a></li> 
-           <li><a href="searchProducts.php">Wyszukaj</a></li>
-           <li class="active">Usuń </li>
-        </ol><br><br><br> 
-        
-   
-        <div class="col-md-8 text-left "> 
+       <div class="col-md-8 text-left "> 
             <h4> Na pewno chcesz usunąć ??? </h4> 
             <form method="POST" > 
             <input class="btn btn-danger" type="submit" value="Usuń" name="submit"><br>

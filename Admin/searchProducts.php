@@ -1,39 +1,130 @@
 <?php
-session_start();  
-require_once __DIR__.'/../config.php'; 
-require_once __DIR__.'/../src/Product.php'; 
-require_once __DIR__.'/../src/index.html'; 
 
-?> 
+
+require_once __DIR__.'/require_once.php'; 
+ 
+if (!isset($_SESSION['logged'])) {
+    header('Location:log.php');
+    exit();
+} ?> 
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Szukaj</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/style.css" type="text/css" /> 
-        
-             <?php include __DIR__ . '/nav.php' ?>
-    </head>
-    <body>  
+        <title> Wszukaj</title>
+
+    <?php include __DIR__ . '/nav.php' ?><br><br><br><br>
+    
+    <body> 
         <ol class="breadcrumb">
            <li><a href="index.php">Home</a></li>
            <li><a href="products.php">Zarządzanie produktem</a></li>
-           <li class="active">Wyszukaj</li>
-        </ol><br> 
-             <?php if (isset($_SESSION['delete'])){ 
-                   echo $_SESSION['delete']; 
-                   unset( $_SESSION['delete']);
-             } ?>
-       
-        <div class="col-lg-12 text-center  "> <br><br><br>
-            <div class="list-group"> <br><br>
-                <h3>
-            <a href="searchProductsByName.php" class="list-group-item">Szukaj po nazwie  </a> 
-            <a href="searchProductsByCategory.php" class="list-group-item">Szukaj po kategorii  </a>
-            <a href="searchProductsByPrice.php" class="list-group-item">Szukaj po cenie</a>
-            <a href="searchProductsByQuantity.php" class="list-group-item">Szukaj po ilość  </a>
-                </h3>
-          </div>
-        </div>
+           <li class="active">Wszystkie produkty</li>
+        </ol><br>
+        
+        <div class="col-sm-6 text-left  ">   
+           
+                <form role="form" method="POST" action="#"> 
+                
+                    <div class="form-group"><br>
+                        <label for="name">Nazwa przedmiotu</label>
+                        <input type="text" class="form-control"  id="name" name="name" >
+                    </div>
+                     <input class="btn btn-info" type="submit" value="Wyszukaj" name="submit"><br>
+                
+                </form>    
+                
+                <form role="form" method="POST" action="#"> 
+               
+                    <div class="form-group"><br>
+                        <label for="category">Kategoria</label>
+                        <select class="form-control" id="category" name="category">
+                            <option value="0">Wybierz kategorię</option> 
+                            <?php
+                                $allCategories = Category::loadAllCategories($conn);
+                                foreach ($allCategories as $category) {
+                                    echo "<option value='" . $category->getCategoryId() . "'>" . $category->getCategoryName() . "</option>";
+                                }?>
+                        </select>
+                    </div>
+                    <input class="btn btn-info" type="submit" value="Wyszukaj" name="submit"><br>
+                </form>  
+        </div><br> 
+        
+        <div class="col-sm-6 text-left  ">    
+                <form role="form" method="POST" action="#"> 
+                
+                    <div class="form-group"><br>
+                        <label for="name">Wyszukaj po cenie</label>
+                    </div>
+                    <input class="btn btn-info" type="submit" value="Wyszukaj" name="price"><br>
+                
+                </form>     
+            
+                <form role="form" method="POST" action="#"> 
+                
+                    <div class="form-group"><br>
+                        <label for="name">Wyszukaj po ilości</label>
+                    </div>
+                    <input class="btn btn-info" type="submit" value="Wyszukaj" name="quantity"><br>
+                
+                </form>  
+        
+        </div><br>
+      
+              
 
+
+ <?php   
+ 
+    if ($_SERVER['REQUEST_METHOD']=="POST" ) { 
+        if (isset($_POST['name'])) { 
+                    $productName=trim($_POST['name']); 
+                    
+                    displayTitleLoadAll(); 
+                    $loadedProducts=Product::loadProductByName($conn, $productName);  
+                    
+                    foreach($loadedProducts as $product){
+                       $product->showProductsForAdmin();
+                    }  
+        }
+        if (isset($_POST['category'])) {
+                    $category_id = trim($_POST['category']); 
+                        
+                    displayTitleLoadByCategory(); 
+                    $loadedProducts=Product::loadAllProductFromCategory($conn, $category_id); 
+                        
+                    foreach($loadedProducts as $product){ 
+                        $product->showProductsFromCategory();
+                      
+                    } 
+        } 
+        if (isset($_POST['price'])) {
+      
+                    displayTitleLoadAll(); 
+                    $loadedProducts=Product::SortProductByPrice($conn); 
+                        
+                    foreach($loadedProducts as $product){ 
+                        $product->showProductsForAdmin();
+                      
+                    } 
+        } 
+        if (isset($_POST['quantity'])) {
+      
+                    displayTitleLoadAll(); 
+                    $loadedProducts=Product::SortProductByQuantity($conn); 
+                        
+                    foreach($loadedProducts as $product){ 
+                        $product->showProductsForAdmin();
+                      
+                    }  
+        }
+    } 
+      else {
+        displayTitleLoadAll(); 
+        $loadedProducts=Product::loadAllProducts($conn); 
+        
+        foreach($loadedProducts as $product){ 
+            $product->showProductsForAdmin();                   
+        } 
+    }

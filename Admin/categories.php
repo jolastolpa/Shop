@@ -55,10 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $loadedCategories=Category::loadAllCategories($conn); 
                         
                         foreach($loadedCategories as $category){
-                            echo '<tr><td>'.$category->getCategoryId(); 
-                            echo '</td><td >'.$category->getCategoryName(); 
-                            echo '</td><td><a href="editProduct.php?id='.$category->getCategoryId().'">Edytuj</a>';
-                            echo '</td><td><a href="delete.php?idCategory='.$category->getCategoryId().'">Usuń</a>';
-                            echo '</td><tr>';
+                           $category->showCategoriesForAdmin();
                         } ?>
         </div>

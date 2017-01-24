@@ -192,6 +192,17 @@ class Order{
         } 
         return true; 
     }
+               
+    public function showOrdersForAdmin(){ 
+        
+        echo '<tr><td>'.$this->getOrderId();  
+        echo '</td><td>'.$this->getOrderOwnerId(); 
+        echo '</td><td>'.$this->getOrderStatus() ; 
+        echo '</td><td>'.$this->getOrderCreationDate();  
+        echo '</td><td><a href="orders.php?idOrder='.$this->getOrderId().'">Edytuj status</a>';
+        echo '</td><td><a href="delete.php?idOrder='.$this->getOrderId().'">Usuń</a>';
+        echo '</td><tr>';
+    }
     
     static public function loadOrderByOrderOwnerId(mysqli $conn, $owner_id){
         
@@ -261,7 +272,7 @@ class Order{
             }
         }
         return $ret;
-    }    
+    }  
     
     
     

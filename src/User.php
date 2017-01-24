@@ -219,5 +219,16 @@ class User{
             return $loadedUser;
         }
         return null; 
+    } 
+    
+    public function showUsersForAdmin() {  
+        echo '<tr><td>'.$this->getId(); 
+        echo '</td><td>'.$this->getName();
+        echo '</td><td>'.$this->getSurname(); 
+        echo '</td><td>'.$this->getEmail() ; 
+        echo '</td><td>'.$this->getDeliverAddress();  
+        echo '</td><td><a href="sendMessage.php?idUser='.$this->getId().'">Wyślij wiadomość</a>';
+        echo '</td><td><a href="delete.php?idUser='.$this->getId().'">Usuń użytkownika</a>';
+        echo '</td><tr>';
     }
 }
