@@ -1,19 +1,33 @@
-<?php
-
+<?php 
 
 require_once __DIR__ . '/require_once.php';
 
 if (!isset($_SESSION['logged'])) {
     header('Location:log.php');
     exit();
-}
+} 
+if (isset($_GET['id'])) { 
+    $id=$_GET['id']; 
+    $productToEdit=Product::loadProductById($conn, $id); 
+    // wyciągam dane z produktu by obecne dane pojawiły sie w formularzu
+    $name=$productToEdit->getName(); 
+    $price=$productToEdit->getPrice(); 
+    $quantity=$productToEdit->getQuantity(); 
+    $description=$productToEdit->getDescription(); 
+    $categoryName=$productToEdit->getCategoryName(); 
+    
+    $imageToEdit=Image::loadImagesByProductId($conn, $id);    
+    
+} else { 
+    header('Location:searchProducts.php');
+  }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errorStart = '<span style="color:red">';
     $errorEnd = "</span>";
     $error = '';
 
-    if (isset($_POST['name']) && isset($_POST['price']) && isset($_POST['quantity']) && isset($_POST['description'])) {
+    if (isset($_POST['name']) || isset($_POST['price']) || isset($_POST['quantity']) || isset($_POST['description'])) {
 
         $valid = TRUE; // zakładam prawidłowe dodanie danych  
 
@@ -40,94 +54,76 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if ($valid) {
-            $newProduct = new Product();
-            $newProduct->setName($_POST['name']);
-            $newProduct->setPrice($_POST['price']);
-            $newProduct->setQuantity($_POST['quantity']);
-            $newProduct->setProductCategoryId($_POST['category']);
-            $newProduct->setDescription($_POST['description']);
-            $newProduct->saveToDB($conn);
+        
+            $productToEdit->setName($_POST['name']);
+            $productToEdit->setPrice($_POST['price']);
+            $productToEdit->setQuantity($_POST['quantity']);
+            $productToEdit->setProductCategoryId($_POST['category']);
+            $productToEdit->setDescription($_POST['description']);
+            $productToEdit->saveToDB($conn);
 
-            if ($newProduct->saveToDB($conn)) {
-                $_SESSION['lastId'] = $newProduct->getId();
-            } else {
-                echo "Nie udało sie dodać produktu do bazy" . $mysqli->error;
-            }
+           
         }
     }
 
     if (isset($_FILES['fileToUpload'])) {
-
-        if ($_FILES['fileToUpload']['size'] == 0) {
-
-            $error['fileToUpload'] = $errorStart . "Nie przesłano pliku" . $errorEnd;
-            $valid = false;
-        } 
         
-        $lastId = $_SESSION['lastId'];
-        echo $lastId;
         $uploadDir = '../Images';
 
-        if (is_dir($uploadDir . '/' . $lastId)) {
-            echo $uploadDir . '/' . $lastId . 'exists<br>';
+        if (is_dir($uploadDir . '/' . $id)) {
+            echo $uploadDir . '/' . $id . 'exists<br>';
         } else {
-            mkdir($uploadDir . '/' . $lastId);
-            echo $uploadDir . '/' . $lastId . 'created<br>';
+            mkdir($uploadDir . '/' . $id);
+            echo $uploadDir . '/' . $id . 'created<br>';
         }
 
-        $file = $uploadDir . '/' . $lastId . '/' . basename($_FILES['fileToUpload']['name']);
+        $file = $uploadDir . '/' . $id . '/' . basename($_FILES['fileToUpload']['name']);
         if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $file)) {
-
-            $newImage = new Image();
-            $newImage->setImageLink($file);
-            $newImage->setProductId($lastId);
-            $newImage->saveToDb($conn);
+            
+            $imageToEdit->setImageLink($file);
+            $imageToEdit->saveToDb($conn);
         }
-        if (!$newImage->saveToDb($conn)) {
-
-            echo "Nie udało sie dodać zdjęcia do bazy" . $conn->error;
-        }
+        
     } 
-    
-    if ($newProduct->saveToDB($conn) && $newImage->saveToDb($conn)) {
-        echo "Dodano produkt";
-    }
 }
 ?>  
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Dodaj produkt</title> 
+        <title> Edytuj produkt</title> 
         <?php //include __DIR__ . '/nav.php' ?><br><br><br><br>
     </head>
-    <body> 
+      <body> 
         <ol class="breadcrumb">
            <li><a href="index.php">Home</a></li>
-           <li><a href="products.php">Zarządzanie produktem</a></li>
+           <li><a href="products.php">Zarządzanie produktem</a></li> 
+            <li><a href="searchProducts.php">Wyszukiwanie produktu</a></li>
            <li class="active">Dodaj produkt</li>
-        </ol><br>
+        </ol><br> 
+        
         <div class="col-sm-8 text-left panel panel-success "> 
            
             <form enctype="multipart/form-data" role="form" method="POST" action="#"> 
                 
                 <div class="form-group">
                      <label for="name">Nazwa przedmiotu</label>
-                     <input type="text" class="form-control"  id="name" name="name" value="<?php if(isset($form['name'])) echo $form['name']; //stosowane by dobrze wprowadzone dane nie ginęły gdy pojawi sie jakiś błąd?>"/> 
+                     <input type="text" class="form-control"  id="name" name="name" 
+                            value="<?php $value= isset($form['name']) ? $form['name'] : $name; echo $value; ?>"/> 
                             <?php if (isset($error['name'])) {echo $error['name']; } ?>
                 </div> 
                 
                 <div class="form-group">
                     <label for="price">Cena</label>
                     <input type="number" class="form-control" id="price" name="price" step="0.01"
-                           value="<?php if(isset($form['price'])){ echo $form['price'];} ?>"/> 
+                           value="<?php $value= isset($form['price']) ? $form['price'] : $price; echo $value;  ?>"/> 
                             <?php if (isset($error['price'])) {echo $error['price'];} ?>
                 </div>  
                 
                 <div class="form-group">
                     <label for="quantity">Ilość</label>
                     <input type="number" class="form-control" id="quantity" name="quantity" 
-                           value="<?php if(isset($form['quantity'])) { echo $form['quantity'];}?>"/> 
+                           value="<?php $value= isset($form['quantity']) ? $form['quantity'] : $quantity; echo $value; ?>"/> 
                             <?php if (isset($error['quantity'])) {echo $error['quantity'];} ?>
                 </div>   
                 
@@ -148,23 +144,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="form-group"> 
                     
                     <label for="description">Opis</label>
-                    <textarea class="form-control" rows="3" name="description"
-                             value="<?php if(isset($form['description'])) {echo $form['description'];} ?>"/> 
+                    <textarea class="form-control" rows="3" name="description">
+                            <?php $value=isset($form['description']) ? $form['description'] : $description; echo $value;?>
                     </textarea>  
-                     <?php if (isset($error['description'])) {echo $error['description'];} ?>
+                           <?php if (isset($error['description'])) {echo $error['description'];} ?>
                 </div>    
                 
                 <div class="form-group">
                           
-                            <input class="form-control" type="file" name="fileToUpload" id="fileToUpload"><br>
-                            <?php if (isset($error['fileToUpload'])) {echo $error['fileToUpload'];} ?>
+                            <input class="form-control" type="file" name="fileToUpload" id="fileToUpload" <br>
+                            <?php if(isset($error['fileToUpload'])) {echo $error['fileToUpload'];} ?>
                 </div> 
+                <input type="hidden"name="tweetId"value="<?php if (isset($_GET['id'])) echo $_GET['id'];?>">
                 
-                <input class="btn btn-success" type="submit" value="Dodaj produkt" name="submit"><br>
+                <input class="btn btn-success" type="submit" value="Edytuj produkt" name="submit"><br>
                 
             </form> 
         </div>
         
- 
-        
-            

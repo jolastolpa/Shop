@@ -73,8 +73,13 @@ class Product{
         if($NewIdCategory > 0){ 
             $this->category_id = $NewIdCategory; 
         }
-    }
-    
+    } 
+     public function setImageLink($NewImageLink){ 
+        
+        if($NewImageLink> 0){ 
+            $this->image_link = $NewImageLink; 
+        }
+     }
     
     // getery
     public function getId(){
@@ -320,7 +325,7 @@ class Product{
         echo '</td><td >'.$this->getQuantity(); 
         echo '</td><td >'.$this->getCategoryName();
         echo '</td><td style="width: 100px"><img src="'.$this->getImageLink().'" class="img-responsive"/> ';  
-        echo '</td><td><a href="editProduct.php?id='.$this->getImageLink().'">Edytuj</a>';
+        echo '</td><td><a href="editProduct.php?id='.$this->getId().'">Edytuj</a>';
         echo '</td><td><a href="delete.php?id='.$this->getImageLink().'">Usuń</a>';
         echo '</td><tr>';
     } 

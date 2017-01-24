@@ -15,4 +15,5 @@ function displayTitleLoadAll(){
 function displayCategories() { 
             echo '<table class="table table-striped">'; 
             echo '<tr><th> Id </th><th> Nazwa </th><th> Edytuj </th><th> Usuń </th><th>' ; 
-}
+} 
+
