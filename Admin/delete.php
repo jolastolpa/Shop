@@ -25,6 +25,12 @@ if (!isset($_SESSION['logged'])) {
             $loadOrder= Order::loadOrderByItsOwnId($conn, $id);
             $loadOrder->deleteOrder($conn);   
             header('location:orders.php');   
+        } 
+        if(isset($_GET['idUser'])) { 
+            $id=$_GET['idUser']; 
+            $loadUser= User::loadUserById($conn, $id);
+            $loadOrder->deleteUser($conn);   
+            header('location:users.php');   
         }
     }
 ?>

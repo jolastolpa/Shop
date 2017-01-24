@@ -21,5 +21,10 @@ function displayOrders() {
             echo '<table class="table table-striped">'; 
             echo '<tr><th> Id </th><th> Id użytkownika </th><th> Status </th><th>'
             . 'Data powstania</th> <th> Edytuj </th><th> Usuń </th><th>' ; 
+}  
+function displayUsers() { 
+            echo '<table class="table table-striped">'; 
+            echo '<tr><th> Id </th><th> Imie </th><th> Nazwisko </th><th>'
+            . 'Email</th><th>Adres</th><th> Wiadomość</th><th> Usuń </th><tr>' ; 
 } 
 

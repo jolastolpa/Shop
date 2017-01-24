@@ -12,7 +12,7 @@ if (!isset($_SESSION['logged'])) {
     <head>
         <title> Zamówienia</title>
 
-    <?php // include __DIR__ . '/nav.php' ?><br><br>
+    <?php  include __DIR__ . '/nav.php' ?><br><br>
     
     <body> 
         <?php

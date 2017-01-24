@@ -317,7 +317,7 @@ class Product{
        return $ret;
     } 
     
-    public function showProducts() {   
+    public function showProductsForAdmin() {   
         echo '<tr><td>'.$this->getId(); 
         echo '</td><td >'. $this->getName();
         echo '</td><td >'.$this->getPrice() ; 
@@ -330,7 +330,7 @@ class Product{
         echo '</td><tr>';
     } 
     
-    public function showProductsFromCategory() {  
+    public function showProductsFromCategoryForAdmin() {  
         echo '<tr><td>'.$this->getId();  
         echo '</td><td >'.$this->getName(); 
         echo '</td><td >'.$this->getPrice() ; 
