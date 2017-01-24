@@ -223,7 +223,7 @@ class User{
     
     public function showUsersForAdmin() {  
         echo '<tr><td>'.$this->getId(); 
-        echo '<tr><td>'.$this->getName();  
+        echo '</td><td>'.$this->getName();
         echo '</td><td>'.$this->getSurname(); 
         echo '</td><td>'.$this->getEmail() ; 
         echo '</td><td>'.$this->getDeliverAddress();  

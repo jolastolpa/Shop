@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged'])) {
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Kategorie</title>
+        <title> Użytkownicy</title>
 
     <?php  include __DIR__ . '/nav.php' ?><br><br><br><br>
     

@@ -29,8 +29,14 @@ if (!isset($_SESSION['logged'])) {
         if(isset($_GET['idUser'])) { 
             $id=$_GET['idUser']; 
             $loadUser= User::loadUserById($conn, $id);
-            $loadOrder->deleteUser($conn);   
+            $loadUser->deleteUser($conn);   
             header('location:users.php');   
+        } 
+         if(isset($_GET['idAdmin'])) { 
+            $id=$_GET['idAdmin']; 
+            $loadAdmin= Admin::loadAdminById($conn, $id);
+            $loadAdmin->deleteAdmin($conn);   
+            header('location:index.php');   
         }
     }
 ?>
