@@ -22,13 +22,13 @@ class Product{
     private $description; 
     private $quantity; 
     private $category_id; 
-    private $category_name; 
-    private $image_link;
+    //private $category_name; 
+    //private $image_link;
     
     public function __construct($name = "", $price = 1.00, $description = "", $quantity = 1, $idCategory = 1){ 
         $this->id = -1;
         $this->setName($name);
-        $this->setPrice($price);
+        $this->setPrice((int)$price);
         $this->setDescription($description); 
         $this->setQuantity($quantity); 
         $this->setProductCategoryId($idCategory);
@@ -120,8 +120,8 @@ class Product{
         if($this->id == -1){
         
             $sql = "INSERT INTO Product(name, price, description, quantity, category_id)"
-                . "VALUES ('$this->name', $this->price,'$this->description', $this->quantity,"
-                . "$this->category_id)";
+                . "VALUES ('$this->name', '$this->price', '$this->description', '$this->quantity',"
+                . "'$this->category_id')";
                     
             $result = $conn->query($sql);
             if($result == true){
@@ -131,9 +131,9 @@ class Product{
             } 
         }else{ 
             
-            $sql="UPDATE Product SET name='$this->name' ,price=$this->price,"
-                . "description='$this->description', quantity=$this->quantity,"
-                . "category_id=$this->category_id WHERE id=$this->id";
+            $sql="UPDATE Product SET name='$this->name' ,price='$this->price',"
+                . "description='$this->description', quantity='$this->quantity',"
+                . "category_id='$this->category_id' WHERE id='$this->id'";
             
             $result = $conn->query($sql);
             if($result == true){              

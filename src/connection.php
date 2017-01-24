@@ -4,7 +4,7 @@
 $servername = 'localhost';
 $username = 'root';
 $password = 'CodersLab';
-$basename = 'Shop';
+$basename = 'Shop_Test';
 
 // tworzenie nowego połączenia
 $conn = new mysqli($servername, $username, $password, $basename);
