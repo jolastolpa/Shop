@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
      <User
-        id="1"
+        id="10"
         name="Marek"
         surname="Korcz"
         email="mark.korcz@gmail.com"
@@ -10,7 +10,7 @@
     />
         <!-- password: 'tralala' -->
     <User
-        id="2"
+        id="20"
         name="Darek"
         surname="Talarek"
         email="darek.talarek@gmail.com"
@@ -20,14 +20,30 @@
         <!-- password: 'tralala' -->
     <Order
         order_id="1"
-        order_owner_id="1"
+        order_owner_id="10"
         order_status="2"
         order_date="2017-01-01 11:46:26"
     />
     <Order
         order_id="2"
-        order_owner_id="2"
+        order_owner_id="20"
         order_status="3"
         order_date="2016-12-31 11:48:40"
+    />
+    <Product 
+        id="3"
+        name="stool" 
+        price="999 " 
+        description="new" 
+        quantity="6" 
+        category_id="3"  
+    />  
+     <Product 
+        id="4"
+        name="sofa" 
+        price="19 " 
+        description="new" 
+        quantity="7" 
+        category_id="3"  
     />
 </dataset>

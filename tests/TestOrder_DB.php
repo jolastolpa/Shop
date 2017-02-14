@@ -2,6 +2,7 @@
 
 require_once __DIR__.'/../src/Order.php';
 require_once __DIR__.'/../src/User.php';
+require_once __DIR__.'/../src/Product.php';
 
 
 class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{ 
@@ -44,48 +45,48 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         // przywrócenie defaultowego działania metody getDataSet()
         parent::setUp();
         
-        // stworzenie obiektu klasy User i zapisanie go do DB
+        // inicjacja i zapis obiektu klasy user
         $this->user = new User('Bruce', 'Wayne', 'bruce.wayne@gotham.com', 'OhJockerMyLove', 'GothamCity');
-        
-        // inicjacja nowego obiektu klasy Order
+        $this->user->saveUserToDB(self::$mysqliConn);
+
         $this->order = new Order($this->user, 2);
     }
     
-
+    /*
+        testy dla tabeli Order
+    */
     
     // test zapisu z metody saveOrderToDB()
     public function testSaveANewOrder(){ 
-
+        
         $this->assertTrue($this->order->saveOrderToDB(self::$mysqliConn)); 
     }
-    
+
     // test update'u z metody saveOrderToDB()
     public function testUpdateANewOrder(){ 
         
         $this->order->setOrderStatus(3);
         $this->assertTrue($this->order->saveOrderToDB(self::$mysqliConn));
     }
-    
+        
     // test usuniecia z metody deleteOrder()
     public function testDeleteANewOrder(){ 
         
         $this->assertTrue($this->order->deleteOrder(self::$mysqliConn));
     }
-    
+
     // test metody loadOrderByOrderOwnerId()
     public function testIfAbleToLoadOrderByOrderOwnerId(){ 
          
         // Pierwsze dane z pliku Order.xml
         $loadedFirstOrder = Order::loadOrderByOrderOwnerId(self::$mysqliConn, 10); 
-        $this->assertTrue($loadedFirstOrder);
         $this->assertEquals(1, $loadedFirstOrder->getOrderId());
         
         // Drugie dane z pliku Order.xml
         $loadedSecondOrder = Order::loadOrderByOrderOwnerId(self::$mysqliConn, 20);
-        $this->assertTrue($loadedSecondOrder);
         $this->assertEquals(3, $loadedSecondOrder->getOrderStatus());
     }
-    
+
     // test metody loadOrderByItsOwnId()
     public function testIfAbleToLoadOrderByItsOwnId(){
         
@@ -97,12 +98,21 @@ class TestProduct_DB extends PHPUnit_Extensions_Database_TestCase{
         $loadedSecondOrder = Order::loadOrderByItsOwnId(self::$mysqliConn, 2);
         $this->assertEquals(20, $loadedSecondOrder->getOrderOwnerId()); 
     }
-    
+
     // test metody loadAllOrders()
     public function testIfReturnsAnArrayOfOrders(){
         
         $this->assertTrue(is_array(Order::loadAllOrders(self::$mysqliConn)));
     }
+    
+    
+    
+    
+    /*
+        testy dla tabeli Item_Order
+    */
+    
+    // chwilowy brak czasu na ich napisanie....
     
     
     

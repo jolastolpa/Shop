@@ -11,7 +11,7 @@ ON DELETE CASCADE
 )
  
 CREATE TABLE `Item_Order`(
-item_order_id NOT NULL PRIMARY KEY AUTO_INCREMENT,
+item_order_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 order_id INT NOT NULL,
 product_id INT NOT NULL,
 product_amount INT,
@@ -33,17 +33,8 @@ class Order{
     private $order_status;
     private $order_date;
     
-    // zmienne do tabeli `Item_Order`
-    private $item_order_id;
-    // $order_id - id zamowienia potrzebne do identyfikacji z `Order` (jest zapisywana w `Item_Order`).
-    private $product_id;
-    private $product_amount;
-    // getTotalPrice - zwraca sume z mnozenia ilosci produktu * jego ceny
     
-    
-    
-    
-    public function __construct(User $user = NULL, $order_status = 0, Product $product = NULL, $product_amount = 0){
+    public function __construct(User $user = NULL, $order_status = 0){
         
         // automatycznie inicjalizowane id podczas zapisu do tabeli `Order`
         $this->order_id = -1;
@@ -52,14 +43,6 @@ class Order{
         $user != NULL ? $this->order_owner_id = $user->getId() : $this->order_owner_id = -1;
         $this->setOrderStatus($order_status);
         $this->setOrderCreationDate();
-        
-        
-        // automatycznie inicjalizowane id podczas zapisu do tabeli `Item_Order`
-        $this->item_order_id = -1;
-        
-        // zmienne do zapisu w tabeli `Item_Order`
-        $product != NULL ? $this->product_id = $product->getId() : $this->product_id = -1;
-        $this->setProductAmount($product_amount);
     }
     
     
@@ -106,16 +89,6 @@ class Order{
         return $this->order_owner_id;
     }
     
-    public function getItemOrderId(){
-        
-        return $this->item_order_id;
-    }
-    
-    public function getProductId(){
-        
-        return $this->product_id;
-    }
-    
     public function getOrderStatus(){
         
         return $this->order_status;
@@ -124,41 +97,22 @@ class Order{
     public function getOrderCreationDate(){
         
         return $this->order_date;
-    }
-    
-    public function getProductAmount(){
-        
-        return $this->product_amount;
-    }
-    
-    // geter obliczajacy łączną cene danego produktu w zamwówieniu.
-    // sumy nie przypisuje do żadnej zmiennej żeby nie marnować miejsca w DB
-    public function getTotalPrice(){
-        
-        // tworze nowe połączenie
-        $conn = new mysqli('localhost', 'root', 'CodersLab', 'Shop_Test');
-
-        if($conn->connect_error){
-            die("Polaczenie nieudane. Blad: " . $conn->connect_error."<br>");
-        }
-        
-        // inicjuje obiekt klasy Produkt by wyciagnac z niego cene produktu
-        $p = Product::loadProductById($conn, $this->product_id);
-
-        return $this->product_amount * $p->getPrice();
-    }
+    }   
     
     
     
     
-    // operacje na tabeli `Order`
+    /*
+        metody dla tabeli `Order`
+    */
+    
     public function saveOrderToDB(mysqli $conn){
         
         if($this->order_id == -1){
             
             $sql = "INSERT INTO `Order`(order_owner_id, order_status, order_date) "
                 . "VALUES ('$this->order_owner_id', '$this->order_status', '$this->order_date')";
-
+            
             $result = $conn->query($sql);
             if($result == true){
                 
@@ -204,9 +158,9 @@ class Order{
         echo '</td><tr>';
     }
     
-    static public function loadOrderByOrderOwnerId(mysqli $conn, $owner_id){
+    static public function loadOrderByOrderOwnerId(mysqli $conn, $ownerId){
         
-        $sql = "SELECT * FROM `Order` WHERE order_owner_id='$owner_id'";
+        $sql = "SELECT * FROM `Order` WHERE order_owner_id='$ownerId'";
         
         $result = $conn->query($sql); 
     
@@ -218,18 +172,15 @@ class Order{
             $loadedOrder->order_owner_id = $row['order_owner_id'];
             $loadedOrder->order_status = $row['order_status']; 
             $loadedOrder->order_date = $row['order_date']; 
-            $loadedOrder->item_order_id = NULL;
-            $loadedOrder->product_id = NULL;
-            $loadedOrder->product_amount = NULL;
             
             return $loadedOrder;
         }
         return null; 
     }
     
-    static public function loadOrderByItsOwnId(mysqli $conn, $order_id){
+    static public function loadOrderByItsOwnId(mysqli $conn, $orderId){
         
-        $sql = "SELECT * FROM `Order` WHERE order_id='$order_id'";
+        $sql = "SELECT * FROM `Order` WHERE order_id='$orderId'";
         
         $result = $conn->query($sql); 
     
@@ -241,15 +192,12 @@ class Order{
             $loadedOrder->order_owner_id = $row['order_owner_id'];
             $loadedOrder->order_status = $row['order_status'];
             $loadedOrder->order_date = $row['order_date'];
-            $loadedOrder->item_order_id = NULL;
-            $loadedOrder->product_id = NULL;
-            $loadedOrder->product_amount = NULL;
             
             return $loadedOrder;
         }
         return null; 
     }
-    
+
     static public function loadAllOrders(mysqli $conn){
         
         $sql = "SELECT * FROM `Order`";
@@ -264,9 +212,6 @@ class Order{
                 $loadedOrder->order_owner_id = $row['order_owner_id'];
                 $loadedOrder->order_status = $row['order_status'];
                 $loadedOrder->order_date = $row['order_date'];
-                $loadedOrder->item_order_id = NULL;
-                $loadedOrder->product_id = NULL;
-                $loadedOrder->product_amount = NULL;
                 
                 $ret[] = $loadedOrder;
             }
@@ -277,33 +222,60 @@ class Order{
     
     
     
-    // operacje na tabeli `Item_Order`
-    public function saveItemOrderToDB(mysqli $conn){
+    /*
+        metody dla tabeli `Item_Order`
+    */
+    
+    // metoda użyta w addItemOrder(). Status zero zamowienia jest potrzebny do 
+    // dodawania produktow do koszyka 
+    static public function provideThatUsersOrderWithStatusZeroIsCreated(mysqli $conn, $userId) {
+               
+        $order = Order::loadOrderByOrderOwnerId($conn, $userId);
         
-        if($this->item_order_id == -1){
+        if($order){
             
-            $sql = "INSERT INTO `Item_Order`(order_id, product_id, product_amount) "
-                . "VALUES ('$this->order_id', '$this->product_id', '$this->product_amount')";
-
-            $result = $conn->query($sql);
-            if($result == true){
-                
-                $this->item_order_id = $conn->insert_id;
-                return true;
-            } 
+            return $order->getOrderId();
+        }else{
+            
+            $user = User::loadUserById($conn, $userId);
+            
+            $order = new Order($user, 0);
+            $order->saveOrderToDB($conn);
+            
+            if($order->getOrderId() > 0){
+                return $order->getOrderId();
+            }
         }
         return false;
     }
     
-    public function deleteItemOrder(mysqli $conn){
+    static public function addItemOrder(mysqli $conn, $userId, $productId, $productAmount){
+
+        $orderId = Order::provideThatUsersOrderWithStatusZeroIsCreated($conn, $userId);
+
+        $sql = "INSERT INTO `Item_Order`(order_id, product_id, product_amount) ".
+               "VALUES ('$orderId', '$productId', '$productAmount')";
         
-        if($this->item_order_id != -1){
+        $result = $conn->query($sql);
+        
+        if($result == true){
+
+            return true;
+        }
+        return false;
+    }
+
+    
+    static public function updateItemOrder(mysqli $conn, $itemOrderId, $productAmount){
+        
+        if($itemOrderId > 0){
             
-            $sql = "DELETE FROM `Item_Order` WHERE item_order_id='$this->item_order_id'";
-            
+            $sql = "UPDATE `Item_Order` SET product_amount='$productAmount' ".
+                   "WHERE item_order_id='$itemOrderId'";
+
             $result = $conn->query($sql);
             if($result == true){
-                $this->item_order_id = -1;
+
                 return true;
             }
             return false;
@@ -311,25 +283,44 @@ class Order{
         return true; 
     }
     
-    static public function loadItemOrderByOrderId(mysqli $conn, $order_id){
+    static public function deleteItemOrder(mysqli $conn, $itemOrderId){
         
-        $sql = "SELECT * FROM `Item_Order` WHERE order_id='$order_id'";
+        if($itemOrderId > 0){
+            
+            $sql = "DELETE FROM `Item_Order` WHERE item_order_id='$itemOrderId'";
+            
+            $result = $conn->query($sql);
+            if($result == true){
+
+                return true;
+            }
+        }
+        return false;
+    }   
+    
+    static public function loadItemOrdersByOrderId(mysqli $conn, $orderId){
+        
+        $sql = "SELECT * FROM `Item_Order` WHERE order_id='$orderId'";
+        
+        $arr = [];
         
         $result = $conn->query($sql); 
-    
-        if($result == true && $result->num_rows == 1){
+        if($result == true && $result->num_rows > 0){
             
-            $row = $result->fetch_assoc();
-            $loadedItemOrder = new Order();
-            $loadedItemOrder->order_id = NULL;
-            $loadedItemOrder->order_owner_id = NULL;
-            $loadedItemOrder->order_status = NULL; 
-            $loadedItemOrder->order_date = NULL; 
-            $loadedItemOrder->item_order_id = $row['item_order_id'];
-            $loadedItemOrder->product_id = $row['product_id'];
-            $loadedItemOrder->product_amount = $row['product_amount'];
-            
-            return $loadedItemOrder;
+            foreach($result as $row){
+                
+                $product = Product::loadProductById($conn, $row['product_id']);
+                $productPrice = $product->getPrice();
+                
+                $arr[] = [
+                    "item_order_id"       => (int)$row['item_order_id'],
+                    "order_id"            => (int)$row['order_id'],
+                    "product_id"          => (int)$row['product_id'],
+                    "product_amount"      => (int)$row['product_amount'],
+                    "product_total_price" => $productPrice * $row['product_amount']
+                ];
+            }         
+            return $arr;
         }
         return null; 
     }

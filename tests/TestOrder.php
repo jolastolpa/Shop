@@ -15,7 +15,7 @@ class TestOrder extends PHPUnit_Framework_TestCase{
         $this->user = new User('Bruce', 'Wayne', 'bruce.wayne@gotham.com', 'OhJockerMyLove', 'GothamCity');
         
         // inicjuje obiekt klasy Order
-        $this->order = new Order($this->user, 1);
+        $this->order = new Order($this->user, 0);
     }
     
     
@@ -32,7 +32,7 @@ class TestOrder extends PHPUnit_Framework_TestCase{
     
     public function testIfOrderStatusIsSet(){
         
-        $this->assertEquals(1, $this->order->getOrderStatus());
+        $this->assertEquals(0, $this->order->getOrderStatus());
     }
     
     public function testIfOrderCreationDateIsSet(){
