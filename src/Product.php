@@ -14,16 +14,17 @@ ON DELETE CASCADE
 require_once 'TooShortExeption.php';
 require_once 'ZeroExeption.php'; 
 
+require_once 'Image.php';
+require_once 'Category.php';
+
 class Product{ 
     
     private $id; 
-    private $name; 
+    private $name;
     private $price;
-    private $description; 
-    private $quantity; 
-    private $category_id; 
-    //private $category_name; 
-    //private $image_link;
+    private $description;
+    private $quantity;
+    private $category_id;
     
     public function __construct($name = "", $price = 1.00, $description = "", $quantity = 1, $idCategory = 1){ 
         $this->id = -1;
@@ -73,13 +74,7 @@ class Product{
         if($NewIdCategory > 0){ 
             $this->category_id = $NewIdCategory; 
         }
-    } 
-     public function setImageLink($NewImageLink){ 
-        
-        if($NewImageLink> 0){ 
-            $this->image_link = $NewImageLink; 
-        }
-     }
+    }
     
     // getery
     public function getId(){
@@ -107,16 +102,7 @@ class Product{
     public function getProductCategoryId(){
         
         return $this->category_id;
-    }   
-    
-    public function getCategoryName(){
-        
-        return $this->category_name;
-    }  
-     public function getImageLink(){
-        
-        return $this->image_link;
-    } 
+    }
     
     
     // operacje na bazie danych
@@ -166,7 +152,7 @@ class Product{
  
     static public function loadProductById(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Product  WHERE id=$id";
+        $sql = "SELECT * FROM Product  WHERE id='$id'";
         
         $result = $conn->query($sql); 
     
@@ -182,140 +168,88 @@ class Product{
             $loadedProduct->category_id = $row['category_id']; 
             
             return $loadedProduct; 
-        }
-        return null; 
-    } 
+        } 
+    }
     
-    static public function loadAllProducts(mysqli $conn){
+    static public function loadProductByIdAndReturnAssocArr(mysqli $conn, $id){
         
-        $sql = "SELECT * FROM Product JOIN Category ON Category.category_id = Product.category_id "
-                . " JOIN Image ON Image.product_id=Product.id ORDER BY id DESC";
-        $ret = [];
+        $sql = "SELECT * FROM Product WHERE id='$id'";
         
         $result = $conn->query($sql);
+        
         if($result == true && $result->num_rows != 0){
             
-            
-            foreach($result as $row){
-                $loadedProduct = new Product();
-                $loadedProduct->id = $row['id'];
-                $loadedProduct->name = $row['name'];
-                $loadedProduct->price = $row['price'];
-                $loadedProduct->description = $row['description']; 
-                $loadedProduct->quantity = $row['quantity']; 
-                $loadedProduct->category_id = $row['category_id']; 
-                $loadedProduct->category_name = $row['category_name']; 
-                $loadedProduct->image_link = $row['image_link'];
-               
-                $ret[] = $loadedProduct;
-            }
+            return self::arrayFormForOne($conn, $result);
         }
-        return $ret;
+    }
+    
+    static public function loadAllProductsInRandomOrderAndReturnAssocArr(mysqli $conn){
+        
+        $sql = "SELECT * FROM Product ORDER BY RAND()";
+
+        $result = $conn->query($sql);
+        if($result == true && $result->num_rows > 0){
+            
+            return self::arrayFormForMany($conn, $result);
+        }
     }    
     
-    public static function loadAllProductFromCategory(mysqli $conn, $category_id) { 
+    static public function loadAllProductsByCategoryIdAndReturnAssocArr(mysqli $conn, $category_id) { 
         
        
-        $sql = "SELECT * FROM Product JOIN Image ON Image.product_id=Product.id WHERE category_id = $category_id";
-         $ret = [];
+        $sql = "SELECT * FROM Product WHERE category_id='$category_id'";
+        
         $result = $conn->query($sql); 
         if ($result == true && $result->num_rows > 0){ 
            
-           
-            foreach ($result as $row){
-                $loadedProduct = new Product();
-                $loadedProduct->id = $row['id'];
-                $loadedProduct->name = $row['name'];
-                $loadedProduct->description = $row['description'];
-                $loadedProduct->price = $row['price'];
-                $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->category_id = $row['category_id'];  
-                $loadedProduct->image_link = $row['image_link'];
-                
-                $ret[] = $loadedProduct;
-            } 
-            return $ret;
+            return self::arrayFormForMany($conn, $result); 
         }
-       return $ret;
     } 
     
-    public static function loadProductByName(mysqli $conn, $name) { 
-        $sql = "SELECT * FROM Product JOIN Image ON Image.product_id=Product.id  "
-                . "JOIN Category ON Category.category_id=Product.category_id WHERE name LIKE '%". $name."%'";
-         $ret = [];
+    static public function loadProductByNameAndReturnAssocArr(mysqli $conn, $name){ 
+        
+        $newName = '%'.$name.'%';
+        
+        $sql = "SELECT * FROM Product WHERE name LIKE '$newName'";
+
         $result = $conn->query($sql); 
+        
         if ($result == true && $result->num_rows > 0){ 
            
-           
-            foreach ($result as $row){
-                $loadedProduct = new Product();
-                $loadedProduct->id = $row['id'];
-                $loadedProduct->name = $row['name'];
-                $loadedProduct->description = $row['description'];
-                $loadedProduct->price = $row['price'];
-                $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->category_id = $row['category_id'];  
-                $loadedProduct->category_name = $row['category_name']; 
-                $loadedProduct->image_link = $row['image_link'];
-                
-                $ret[] = $loadedProduct;
-            } 
-            return $ret;
+            return self::arrayFormForMany($conn, $result); 
         }
-       return $ret;
-    }   
+    }
     
-    public static function SortProductByPrice(mysqli $conn) { 
-        $sql = "SELECT * FROM Product JOIN Image ON Image.product_id=Product.id  "
-                . "JOIN Category ON Category.category_id=Product.category_id ORDER BY price";
-         $ret = [];
-        $result = $conn->query($sql); 
-        if ($result == true && $result->num_rows > 0){ 
-           
-           
-            foreach ($result as $row){
-                $loadedProduct = new Product();
-                $loadedProduct->id = $row['id'];
-                $loadedProduct->name = $row['name'];
-                $loadedProduct->description = $row['description'];
-                $loadedProduct->price = $row['price'];
-                $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->category_id = $row['category_id'];  
-                $loadedProduct->category_name = $row['category_name']; 
-                $loadedProduct->image_link = $row['image_link'];
-                
-                $ret[] = $loadedProduct;
-            } 
-            return $ret;
-        }
-       return $ret;
-    }  
     
-    public static function SortProductByQuantity(mysqli $conn) { 
-        $sql = "SELECT * FROM Product JOIN Image ON Image.product_id=Product.id  "
-                . "JOIN Category ON Category.category_id=Product.category_id ORDER BY quantity";
-         $ret = [];
-        $result = $conn->query($sql); 
-        if ($result == true && $result->num_rows > 0){ 
-           
-           
-            foreach ($result as $row){
-                $loadedProduct = new Product();
-                $loadedProduct->id = $row['id'];
-                $loadedProduct->name = $row['name'];
-                $loadedProduct->description = $row['description'];
-                $loadedProduct->price = $row['price'];
-                $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->category_id = $row['category_id'];  
-                $loadedProduct->category_name = $row['category_name']; 
-                $loadedProduct->image_link = $row['image_link'];
-                
-                $ret[] = $loadedProduct;
-            } 
-            return $ret;
-        }
-       return $ret;
-    } 
+    // metody wyświetlające html 
+    static public function displayProductAsHtmlInAListOfProducts($product){
+        
+        $productId = $product['id'];
+        $productName = $product['name'];
+        $productPrice = $product['price'];
+        $productDesc = $product['description'];
+        $productCatName = $product['category_name'];
+        $productImageLinksArr = $product['image_links'][1];
+        
+echo <<< EOT
+        <div class="padd">
+            <div class="block">
+                <div class="col-md-2">
+                    <img src="$productImageLinksArr" class="img-rounded" 
+                            alt="$productName" width="100" height="100">
+                </div>
+                <div class="col-md-8">
+                    <h4> $productName </h4>
+                    <p> $productCatName </p>
+                    <p> $productDesc </p>
+                </div>
+                <div class="col-md-2">
+                    <h4> $productPrice </h4>
+                </div>
+            </div>
+        </div>
+EOT;
+    }
     
     public function showProductsForAdmin() {   
         echo '<tr><td>'.$this->getId(); 
@@ -341,5 +275,121 @@ class Product{
         echo '</td><td><a href="delete.php?id='.$this->getId().'">Usuń</a>';
         echo '</td><tr>';
     }
-              
-} 
+    
+    
+    // metody sortujace
+    static public function sortAndDisplayController(mysqli $conn, $key = null){
+        
+        // wczytanie tablicy produktow z bazy danych w losowej kolejnosci
+        $productsArr = Product::loadAllProductsInRandomOrderAndReturnAssocArr($conn);
+        
+        switch ($key){
+        case 1:
+            $productsArr = Product::sortByIdAsc($productsArr);
+            break;
+        case 2:
+            $productsArr = Product::sortByIdDesc($productsArr);
+            break;
+        case 3:
+            $productsArr = Product::sortByPriceAsc($productsArr);
+            break;
+        case 4:
+            $productsArr = Product::sortByPriceDesc($productsArr);
+            break;
+        case 5:
+            $productsArr = Product::sortByQuantityAsc($productsArr);
+            break;
+        case 6:
+            $productsArr = Product::sortByQuantityDesc($productsArr);
+            break;
+        }
+        
+        return self::iterateAnArrayOfProductsAndPassEachSingleProductIntoDisplayingMethod($productsArr);
+    }
+    
+    static public function iterateAnArrayOfProductsAndPassEachSingleProductIntoDisplayingMethod($productsArr){
+    
+        for($i = 0; $i < count($productsArr); $i++){
+            
+            //var_dump($productsArr[$i]);
+            self::displayProductAsHtmlInAListOfProducts($productsArr[$i]);
+        } 
+    }
+    
+    static public function sortByIdAsc($arr){
+        
+        usort($arr, function($a, $b) {
+            return $a['id'] - $b['id'];
+        });
+        
+        return $arr;
+    }
+    
+    static public function sortByIdDesc($arr){
+
+        return array_reverse(Product::sortByIdAsc($arr));
+    }
+    
+    static public function sortByPriceAsc($arr){
+        
+        usort($arr, function($a, $b) {
+            return $a['price'] - $b['price'];
+        });
+        
+        return $arr;
+    }
+    
+    static public function sortByPriceDesc($arr){
+
+        return array_reverse(Product::sortByPriceAsc($arr));
+    }
+    
+    static public function sortByQuantityAsc($arr){
+        
+        usort($arr, function($a, $b) {
+            return $a['quantity'] - $b['quantity'];
+        });
+        
+        return $arr;
+    }
+    
+    static public function sortByQuantityDesc($arr){
+
+        return array_reverse(Product::sortByQuantityAsc($arr));
+    }
+    
+    // wyexportowane komponenty
+    static private function arrayFormForMany(mysqli $conn, $result){
+        
+        foreach($result as $row){   
+                
+            $arr[] = [
+                'id'            => $row['id'],
+                'name'          => $row['name'],
+                'price'         => $row['price'],
+                'description'   => $row['description'], 
+                'quantity'      => $row['quantity'], 
+                'category_name' => Category::loadCategoryById($conn, $row['category_id'])->getCategoryName(),
+                'image_links'   => Image::loadImageLinksByProductId($conn, $row['id'])
+            ];
+        }
+        return $arr;
+    }
+    
+    static private function arrayFormForOne(mysqli $conn, $result){
+        
+        foreach($result as $row){   
+                
+            $one = [
+                'id'            => $row['id'],
+                'name'          => $row['name'],
+                'price'         => $row['price'],
+                'description'   => $row['description'], 
+                'quantity'      => $row['quantity'], 
+                'category_name' => Category::loadCategoryById($conn, $row['category_id'])->getCategoryName(),
+                'image_links'   => Image::loadImageLinksByProductId($conn, $row['id'])
+            ];
+        }
+        return $one;
+    }
+}

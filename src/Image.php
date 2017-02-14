@@ -3,8 +3,8 @@
 /*
 CREATE TABLE `Image`(
 image_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-image_link VARCHAR(255) NOT NULL,
 product_id INT NOT NULL,
+image_link VARCHAR(255) NOT NULL,
 FOREIGN KEY(product_id) REFERENCES Product(id)
 ON DELETE CASCADE
 )
@@ -13,30 +13,23 @@ ON DELETE CASCADE
 class Image {
     
     private $image_id;
-    private $image_link;
     private $product_id;
+    private $image_link;
     
     
     public function __construct($image_id = -1, $image_link = "", Product $product = NULL) {
         
         $this->setId($image_id);
-        $this->setImageLink($image_link);
         $product != NULL ? $this->setProductId($product->getId()) : $this->setProductId(-1);  
+        $this->setImageLink($image_link);
     } 
     
     
-    // setery i getery
+    // setery
     public function setId($newId){
         
         if(is_int($newId)){
             $this->image_id = $newId;
-        }
-    }
-    
-    public function setImageLink($newImageLink){
-        
-        if(is_string($newImageLink) && strlen($newImageLink) > 0){
-            $this->image_link = $newImageLink;
         }
     }
     
@@ -47,6 +40,19 @@ class Image {
         }
     }
     
+    public function setImageLink($newImageLink){
+        
+        if(is_string($newImageLink) && strlen($newImageLink) > 0){
+            $this->image_link = $newImageLink;
+        }
+    }
+    
+    
+    // getery
+    public function getProductId() {
+        
+        return $this->product_id;
+    }
     public function getImageId(){
         
         return $this->image_id;
@@ -56,11 +62,6 @@ class Image {
         
         return $this->image_link;
     }
-    
-    public function getProductId() {
-        
-        return $this->product_id;
-    }
    
 
     // operacje na bazie danych
@@ -68,8 +69,8 @@ class Image {
         
         if($this->image_id == -1){
         
-            $sql = "INSERT INTO Image(image_link, product_id)"
-                . "VALUES ('$this->image_link', $this->product_id)";
+            $sql = "INSERT INTO Image(product_id, image_link)"
+                . "VALUES ('$this->product_id', '$this->image_link')";
                     
             $result = $conn->query($sql);
             if($result == true){
@@ -79,8 +80,9 @@ class Image {
             } 
         }else{ 
             
-            $sql="UPDATE Image SET image_link='$this->image_link', "
-               . "product_id=$this->product_id WHERE image_id=$this->image_id";
+            $sql = "UPDATE Image SET product_id='$this->product_id', "
+               . "image_link='$this->image_link' WHERE image_id='$this->image_id'";
+            
             $result = $conn->query($sql);
             if($result == true){              
                 return true;
@@ -105,9 +107,9 @@ class Image {
         return true; 
     }
  
-    static public function loadImageById(mysqli $conn, $id){
+    static public function loadImageById(mysqli $conn, $imageId){
         
-        $sql = "SELECT * FROM Image WHERE image_id='$id'";
+        $sql = "SELECT * FROM Image WHERE image_id='$imageId'";
         
         $result = $conn->query($sql); 
     
@@ -116,8 +118,8 @@ class Image {
             $row = $result->fetch_assoc();
             $loadedImage = new Image();
             $loadedImage->image_id = $row['image_id'];
-            $loadedImage->image_link = $row['image_link'];
             $loadedImage->product_id = $row['product_id'];
+            $loadedImage->image_link = $row['image_link'];
             
             return $loadedImage;
         }
@@ -126,31 +128,22 @@ class Image {
     
     
    
-   static public function loadImagesByProductId(mysqli $conn, $product_id){
+   static public function loadImageLinksByProductId(mysqli $conn, $productId){
         
-        $sql = "SELECT * FROM Image WHERE product_id='$product_id'";
-        $ret=[]; 
+        $sql = "SELECT image_link FROM Image WHERE product_id='$productId'";
+        
+        $arr = []; 
+        
         $result = $conn->query($sql); 
     
-        if($result == true && $result->num_rows >0){
+        if($result == true && $result->num_rows > 0){
             
-            foreach ($result as $row){
-                $loadedImage = new Image();
-                $loadedImage->image_id = $row['image_id'];
-                $loadedImage->image_link = $row['image_link'];
-                $loadedImage->product_id = $row['product_id'];
-                $ret[] = $loadedImage;
+            foreach($result as $row){
+                
+                $arr[] = $row['image_link'];
             }
-            return $ret;
+            return $arr;
         }
         return null;
-    }
-    
+    }   
 }
-    
-        
-
-
-    
-
-
